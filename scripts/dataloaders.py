@@ -49,8 +49,7 @@ class SpatiotemporalDataset(Dataset):
         data_dir,
         poi_name,
         n_steps,
-        bandwidth=3,
-        # transform=transforms.Pad(3, padding_mode = 'edge')
+        bandwidth=10,
         transform=None
     ):
         self.bandwidth = bandwidth
@@ -122,17 +121,14 @@ class SpatiotemporalDataset(Dataset):
     def __getitem__(self, idx):
         # use index to get original x,y coords, then slice the padded pixel
         x_loc = idx // self.original_shape[2]
-        # x_min, x_max = x_loc, x_loc + self.bandwidth*2 + 1
+        x_min, x_max = x_loc, x_loc + self.bandwidth*2 + 1
 
         y_loc = idx % self.original_shape[3]
-        # y_min, y_max = y_loc, y_loc + self.bandwidth*2 + 1
+        y_min, y_max = y_loc, y_loc + self.bandwidth*2 + 1
 
-        # x_core = self.X[:, :, x_min:x_max, y_min:y_max]
-
-        # TODO: trying out padding directly with the conv layer, delete the above if unneeded
-        x_core = self.X[:, :, x_loc, y_loc]
-        # y doesn't need to be offset as above since it was not padded
-        y_core = self.y[:, x_loc, y_loc]
+        # get the center pixel and all it's bandwidth neighbors
+        x_core = self.X[:, :, x_min:x_max, y_min:y_max]
+        y_core = self.y[:, x_min:x_max, y_min:y_max]
 
         return (x_core, y_core)
 

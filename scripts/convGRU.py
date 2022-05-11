@@ -4,6 +4,9 @@ import os
 import torch
 from torch import nn
 from torch.autograd import Variable
+import evaluation
+from tqdm import tqdm
+import dataloaders
 
 class ConvGRUCell(nn.Module):
     def __init__(self, input_dim, input_channels, hidden_channels, kernel_size, bias, cuda_=False):
@@ -78,8 +81,8 @@ class ConvGRUCell(nn.Module):
 
 
 class ConvGRU(nn.Module):
-    def __init__(self, input_dim, input_channels, hidden_channels, kernel_size, num_layers,
-                 batch_first=False, bias=True, return_all_layers=False, cuda_ = False):
+    def __init__(self, input_dim, input_channels, hidden_channels, n_output_classes,
+                 kernel_size, num_layers, batch_first=False, bias=True, cuda_ = False):
         """
         A GRU with convolutions between current input channels and hidden
         state channels which persist through time, allowing for spatiotemporal
@@ -95,8 +98,6 @@ class ConvGRU(nn.Module):
             cuda_: (bool) Whether to use gpu acceleration
             batch_first: (bool) if the first position of array is batch or not
             bias: (bool) binary to add a trainable bias term to output.
-            return_all_layers: (bool) whether to return hidden and cell states
-                for all layers
         """
         super(ConvGRU, self).__init__()
 
@@ -114,7 +115,6 @@ class ConvGRU(nn.Module):
         self.num_layers = num_layers
         self.batch_first = batch_first
         self.bias = bias
-        self.return_all_layers = return_all_layers
 
         cell_list = []
         for i in range(0, self.num_layers):
@@ -128,6 +128,10 @@ class ConvGRU(nn.Module):
 
         # convert python list to pytorch module
         self.cell_list = nn.ModuleList(cell_list)
+        self.lin_out = nn.Linear(
+            in_features = self.hidden_channels[-1],
+            out_features = n_output_classes
+        )
 
     def forward(self, input_current):
         """
@@ -167,11 +171,12 @@ class ConvGRU(nn.Module):
             layer_output_list.append(layer_output)
             last_state_list.append([hidden_next])
 
-        if not self.return_all_layers:
-            layer_output_list = layer_output_list[-1:]
-            last_state_list   = last_state_list[-1:]
+        # take last timestep for classification and make the hidden layer the last
+        # dim for compatability with nn.Linear to convert our 7 out classes
+        class_out = layer_output[:, -1, :, :, :].permute(0,2,3,1)
+        class_val = self.lin_out(class_out)
 
-        return layer_output_list, last_state_list
+        return class_val
 
     def _init_hidden(self, batch_size):
         init_states = []
@@ -191,18 +196,9 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
+def train_ConvGRU(train_loader, test_loader, input_dim=4, output_dim=7, epochs=50, learning_rate=.01, criterion = torch.nn.CrossEntropyLoss()):
 
-if __name__ == '__main__':
-
-    # detect if CUDA is available or not
-    cuda_ = torch.cuda.is_available()
-
-    x_dim = y_dim = 128
-    input_channels = 4
-    hidden_channels = [2,4]
-    kernel_size = (3,3) # kernel size for two stacked hidden layer
-    num_layers = 2 # number of stacked hidden layer
-    model = ConvGRU(input_dim=(x_dim, y_dim),
+    model = ConvGRU(input_dim=input_dim,
                     input_channels=input_channels,
                     hidden_channels=hidden_channels,
                     kernel_size=kernel_size,
@@ -211,8 +207,50 @@ if __name__ == '__main__':
                     bias = True,
                     return_all_layers = False,
                     cuda_=cuda_)
+                    
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
-    batch_size = 1
+    model.train()
+    accuracies = []
+    
+    for epoch in tqdm(range(epochs),desc='Training Epochs'):
+        for iter, (batch_x, batch_y) in enumerate(train_loader):
+            outputs = model(batch_x)
+            # batch_y_ind = torch.tensor(np.where(batch_y == 1)[1]).long()
+            batch_y_ind = batch_y
+            loss = criterion(outputs, batch_y_ind)
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            if iter % 1000 == 0 and iter > 0:
+                print(f'At iteration {iter} the loss is {loss:.3f}.')
+        acc = evaluation.get_accuracy(model, test_loader)
+        accuracies.append(acc)
+        print(f'After epoch: accuracy is {acc:.3f}.')
+    return model, accuracies
+
+if __name__ == '__main__':
+
+    # detect if CUDA is available or not
+    cuda_ = torch.cuda.is_available()
+
+    x_dim = y_dim = 128
+    input_channels = 4
+    hidden_channels = [12,24]
+    n_output_classes = 7 
+    kernel_size = (3,3) # kernel size for two stacked hidden layer
+    num_layers = 2 # number of stacked hidden layer
+    model = ConvGRU(input_dim=(x_dim, y_dim),
+                    input_channels=input_channels,
+                    hidden_channels=hidden_channels,
+                    n_output_classes=n_output_classes,
+                    kernel_size=kernel_size,
+                    num_layers=num_layers,
+                    batch_first=True,
+                    bias = True,
+                    cuda_=cuda_)
+
+    batch_size = 2
     time_steps = 3
     input_current = torch.rand(batch_size, time_steps, input_channels, x_dim, y_dim)  # (b,t,c,h,w)
     layer_output_list, last_state_list = model(input_current)
