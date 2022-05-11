@@ -8,13 +8,13 @@ from torch.autograd import Variable
 class ConvGRUCell(nn.Module):
     def __init__(self, input_dim, input_channels, hidden_channels, kernel_size, bias, cuda_=False):
         """
-        Initialize the ConvLSTM cell
+        Initialize a single ConvGRU cell
         
         Inputs:
             input_dim: (int, int) Height/width of spatial layer (x_dim, x_dim).
             input_channels: (int) Number of channels of spatial layer
                 (should be {R, G, B, NIR} = 4).
-            param hidden_dim: (int) Number of channels of hidden state.
+            hidden_channels: (int) Number of channels of hidden state.
             kernel_size: (int, int) Size of the convolutional kernel.
             bias: (bool) binary to add a trainable bias term to output.
             cuda: (bool) binary on whether to use cuda.
@@ -81,26 +81,22 @@ class ConvGRU(nn.Module):
     def __init__(self, input_dim, input_channels, hidden_channels, kernel_size, num_layers,
                  batch_first=False, bias=True, return_all_layers=False, cuda_ = False):
         """
-        :param input_dim: (int, int)
-            Height and width of input tensor as (height, width).
-        :param input_channels: int e.g. 256
-            Number of channels of input tensor.
-        :param hidden_channels: int e.g. 1024
-            Number of channels of hidden state.
-        :param kernel_size: (int, int)
-            Size of the convolutional kernel.
-        :param num_layers: int
-            Number of ConvLSTM layers
-        :param dtype: torch.cuda.FloatTensor or torch.FloatTensor
-            Whether or not to use cuda.
-        :param alexnet_path: str
-            pretrained alexnet parameters
-        :param batch_first: bool
-            if the first position of array is batch or not
-        :param bias: bool
-            Whether or not to add the bias.
-        :param return_all_layers: bool
-            if return hidden and cell states for all layers
+        A GRU with convolutions between current input channels and hidden
+        state channels which persist through time, allowing for spatiotemporal
+        nonlinearities to help us predict land use classifications (or whatever else). 
+
+        Inputs:
+            input_dim: (int, int) Height/width of spatial layer (x_dim, x_dim).
+            input_channels: (int) Number of channels of spatial layer
+                (should be {R, G, B, NIR} = 4).
+            hidden_channels: (int) Number of channels of hidden state.
+            kernel_size: (int, int) Size of the convolutional kernel.
+            num_layers: (int) Number of ConvLSTM layers (for spatial dimension)
+            cuda_: (bool) Whether to use gpu acceleration
+            batch_first: (bool) if the first position of array is batch or not
+            bias: (bool) binary to add a trainable bias term to output.
+            return_all_layers: (bool) whether to return hidden and cell states
+                for all layers
         """
         super(ConvGRU, self).__init__()
 
@@ -133,38 +129,34 @@ class ConvGRU(nn.Module):
         # convert python list to pytorch module
         self.cell_list = nn.ModuleList(cell_list)
 
-    def forward(self, input_current, hidden_state=None):
+    def forward(self, input_current):
         """
-        :param input_tensor: (b, t, c, h, w) or (t,b,c,h,w) depends on if batch first or not
-            extracted features from alexnet
-        :param hidden_state:
-        :return: layer_output_list, last_state_list
-        """
-        if not self.batch_first:
-            # (t, b, c, h, w) -> (b, t, c, h, w)
-            input_current = input_current.permute(1, 0, 2, 3, 4)
+        Fit the ConvGRU on the current input data and past states
 
-        # Implement stateful ConvLSTM
-        if hidden_state is not None:
-            raise NotImplementedError()
-        else:
-            hidden_state = self._init_hidden(batch_size=input_current.size(0))
+        Inputs:
+            input_tensor: tensor with dims (batch, time, input_channels, x_dim, y_dim)
+            hidden_state: tensor with dims (batch, time, hidden_channels, x_dim, y_dim)
+        
+        Outputs:
+            layer_output_list, last_state_list
+        """
+        assert self.batch_first
 
         layer_output_list = []
         last_state_list   = []
-
+        hidden_state = self._init_hidden(batch_size=input_current.size(0))
         seq_len = input_current.size(1)
         cur_layer_input = input_current
 
         for layer_idx in range(self.num_layers):
             hidden_current = hidden_state[layer_idx]
             output_inner = []
-            for t in range(seq_len):
+            for time_idx in range(seq_len):
                 # input current hidden and cell state then compute the next
                 # hidden and cell state through ConvGRUCell forward function
                 # index dims should be (batch, time, input_channels, x_dim, y_dim)
                 hidden_next = self.cell_list[layer_idx](
-                    input_current=cur_layer_input[:, t, :, :, :], 
+                    input_current=cur_layer_input[:, time_idx, :, :, :], 
                     hidden_current=hidden_current
                 )
                 output_inner.append(hidden_next)
@@ -201,8 +193,6 @@ class ConvGRU(nn.Module):
 
 
 if __name__ == '__main__':
-    # set CUDA device
-    os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
     # detect if CUDA is available or not
     cuda_ = torch.cuda.is_available()
