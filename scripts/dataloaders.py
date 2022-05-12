@@ -49,10 +49,10 @@ class SpatiotemporalDataset(Dataset):
         data_dir,
         poi_name,
         n_steps,
-        bandwidth=10,
+        radius=10,
         transform=None
     ):
-        self.bandwidth = bandwidth
+        self.radius = radius
         rgb_dir = os.path.join(data_dir, "planet", poi_name)
         rgb_files = os.listdir(rgb_dir)
 
@@ -121,12 +121,12 @@ class SpatiotemporalDataset(Dataset):
     def __getitem__(self, idx):
         # use index to get original x,y coords, then slice the padded pixel
         x_loc = idx // self.original_shape[2]
-        x_min, x_max = x_loc, x_loc + self.bandwidth*2 + 1
+        x_min, x_max = x_loc, x_loc + self.radius*2 + 1
 
         y_loc = idx % self.original_shape[3]
-        y_min, y_max = y_loc, y_loc + self.bandwidth*2 + 1
+        y_min, y_max = y_loc, y_loc + self.radius*2 + 1
 
-        # get the center pixel and all it's bandwidth neighbors
+        # get the center pixel and all it's radius neighbors
         x_core = self.X[:, :, x_min:x_max, y_min:y_max]
         y_core = self.y[:, x_min:x_max, y_min:y_max]
 
