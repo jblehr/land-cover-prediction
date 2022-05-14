@@ -9,6 +9,6 @@ def get_accuracy(model, dataloader):
         for batch_x, batch_y in dataloader:
             log_probs = model(batch_x)
             predicted = log_probs.max(axis=1).indices
-            n_correct += int(np.equal(dense_y, predicted).sum())
+            n_correct += int(np.equal(batch_y, predicted).sum())
             n_eval += len(batch_y)
     return n_correct / n_eval

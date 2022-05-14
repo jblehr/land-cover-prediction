@@ -114,16 +114,14 @@ class SpatiotemporalDataset(Dataset):
 
     def __len__(self):
         # each pixel is an observation, but we will also pass its past and neighbors
-        # also remove padding since we don't want to directly sample those edge pixels,
-        # it is merely to prevent the edges from causing issues
-        return self.original_shape[2] * self.original_shape[3]
+        return (self.original_shape[2] - self.radius) * (self.original_shape[3] - self.radius)
 
     def __getitem__(self, idx):
         # use index to get original x,y coords, then slice the padded pixel
-        x_loc = idx // self.original_shape[2]
+        x_loc = idx // (self.original_shape[2] - self.radius)
         x_min, x_max = x_loc, x_loc + self.radius*2 + 1
 
-        y_loc = idx % self.original_shape[3]
+        y_loc = idx % (self.original_shape[3] - self.radius)
         y_min, y_max = y_loc, y_loc + self.radius*2 + 1
 
         # get the center pixel and all it's radius neighbors

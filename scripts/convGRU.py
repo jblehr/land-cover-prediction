@@ -223,51 +223,69 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
-# def train_ConvGRU(
-#     train_loader,
-#     test_loader,
-#     input_dim,
-#     input_channels,
-#     hidden_channels,
-#     kernel_size,
-#     num_layers,
-#     output_dim,
-#     epochs=50,
-#     learning_rate=0.01,
-#     criterion=torch.nn.CrossEntropyLoss(),
-# ):
+def train_ConvGRU(
+    train_loader,
+    test_loader,
+    input_dim,
+    input_channels,
+    hidden_channels,
+    kernel_size,
+    num_layers,
+    output_dim,
+    epochs=50,
+    learning_rate=0.01,
+    criterion=torch.nn.CrossEntropyLoss(),
+):
 
-#     model = ConvGRU(
-#         input_dim=input_dim,
-#         input_channels=input_channels,
-#         hidden_channels=hidden_channels,
-#         kernel_size=kernel_size,
-#         num_layers=num_layers,
-#         output_dim=output_dim,
-#         batch_first=True,
-#         bias=True,
-#         cuda_=cuda_,
-#     )
+    model = ConvGRU(
+        input_dim=input_dim,
+        input_channels=input_channels,
+        hidden_channels=hidden_channels,
+        kernel_size=kernel_size,
+        num_layers=num_layers,
+        output_dim=output_dim,
+        batch_first=True,
+        bias=True,
+        cuda_=cuda_,
+    )
 
-#     optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
-#     model.train()
-#     accuracies = []
+    model.train()
+    accuracies = []
 
-#     for epoch in tqdm(range(epochs), desc="Training Epochs"):
-#         for iter, (batch_x, batch_y) in enumerate(train_loader):
-#             outputs = model(batch_x)
-#             batch_y_ind = batch_y
-#             loss = criterion(outputs, batch_y_ind)
-#             loss.backward()
-#             optimizer.step()
-#             optimizer.zero_grad()
-#             if iter % 1000 == 0 and iter > 0:
-#                 print(f"At iteration {iter} the loss is {loss:.3f}.")
-#         acc = evaluation.get_accuracy(model, test_loader)
-#         accuracies.append(acc)
-#         print(f"After epoch: accuracy is {acc:.3f}.")
-#     return model, accuracies
+    for epoch in tqdm(range(epochs), desc="Training Epochs"):
+        for iter, (batch_x, batch_y) in enumerate(train_loader):
+            for timestep in range(batch_x.shape[1] - 1):
+                
+                # For each BPTT step, get all timesteps up until now, model them
+                inputs = batch_x[:,0:timestep+1,:,:]
+                outputs = model(inputs)
+
+                # Then, choose next timestep target to predict
+                targets = batch_y[:,timestep+1,:,:]
+
+                # For compatability with CrossEntropyLoss, reshape to ignore
+                # spatial dims and batches for loss - doesn't matter in this
+                # case anyways as we just want pixels to line up properly
+                flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
+
+                outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
+                targets_flat = targets.reshape(flat_dim)
+
+                loss = criterion(outputs_flat, targets_flat)
+
+                loss.backward()
+
+                optimizer.step()
+                optimizer.zero_grad()
+
+                # if iter % 1000 == 0 and iter > 0:
+                print(f"At iteration {iter} the loss is {loss:.3f}.")
+            # acc = evaluation.get_accuracy(model, test_loader)
+            # accuracies.append(acc)
+            # print(f"After epoch: accuracy is {acc:.3f}.")
+    return model, accuracies
 
 
 if __name__ == "__main__":
@@ -283,7 +301,7 @@ if __name__ == "__main__":
     num_layers = 2  # number of stacked hidden layers
     radius = 10 # radius of data to train with per forward pass
     n_steps = 5
-    batch_size=3
+    batch_size = 3
     STData = dataloaders.SpatiotemporalDataset(
         "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps, radius=radius
     )
@@ -294,42 +312,42 @@ if __name__ == "__main__":
     # can train at all for now
     test_dataloader = torch.utils.data.DataLoader(STData, batch_size=batch_size, shuffle=True)
     
-    # model, accuracies = train_ConvGRU(
-    #     train_loader=train_dataloader,
-    #     test_loader=test_dataloader,
-    #     input_dim=(x_dim, y_dim),
-    #     input_channels=input_channels,
-    #     hidden_channels=hidden_channels,
-    #     kernel_size=kernel_size,
-    #     num_layers=num_layers,
-    #     output_dim=n_output_classes
-    # )
-    model = ConvGRU(
+    model, accuracies = train_ConvGRU(
+        train_loader=train_dataloader,
+        test_loader=test_dataloader,
         input_dim=(x_dim, y_dim),
         input_channels=input_channels,
         hidden_channels=hidden_channels,
-        output_dim=n_output_classes,
         kernel_size=kernel_size,
         num_layers=num_layers,
-        batch_first=True,
-        bias=True,
-        cuda_=cuda_,
+        output_dim=n_output_classes
     )
+    # model = ConvGRU(
+    #     input_dim=(x_dim, y_dim),
+    #     input_channels=input_channels,
+    #     hidden_channels=hidden_channels,
+    #     output_dim=n_output_classes,
+    #     kernel_size=kernel_size,
+    #     num_layers=num_layers,
+    #     batch_first=True,
+    #     bias=True,
+    #     cuda_=cuda_,
+    # )
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
+    # optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
 
-    for (features, target) in iter(train_dataloader):
-        train_bptt.train_bptt(
-            model,
-            features,
-            target,
-            seed=1220,
-            optimizer=optimizer,
-            batch_size=batch_size,
-            bptt=2,
-            cost_fn=nn.CrossEntropyLoss(),
-            clip_grad_norm=.1
-        )
+    # for (features, target) in iter(train_dataloader):
+    #     train_bptt.train_bptt(
+    #         model,
+    #         features,
+    #         target,
+    #         seed=1220,
+    #         optimizer=optimizer,
+    #         batch_size=batch_size,
+    #         bptt=2,
+    #         cost_fn=nn.CrossEntropyLoss(),
+    #         clip_grad_norm=.1
+    #     )
 
     # batch_size = 2
     # time_steps = 3
