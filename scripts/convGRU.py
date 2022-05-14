@@ -233,7 +233,8 @@ def train_ConvGRU(
     num_layers,
     output_dim,
     epochs=50,
-    learning_rate=0.01,
+    learning_rate=0.0005,
+    momentum=.9,
     criterion=torch.nn.CrossEntropyLoss(),
 ):
 
@@ -249,7 +250,7 @@ def train_ConvGRU(
         cuda_=cuda_,
     )
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
 
     model.train()
     accuracies = []
@@ -281,10 +282,10 @@ def train_ConvGRU(
                 optimizer.zero_grad()
 
                 # if iter % 1000 == 0 and iter > 0:
-                print(f"At iteration {iter} the loss is {loss:.3f}.")
-            # acc = evaluation.get_accuracy(model, test_loader)
-            # accuracies.append(acc)
-            # print(f"After epoch: accuracy is {acc:.3f}.")
+                # print(f"At iteration {iter}, timestep {timestep}, the loss is {loss:.3f}.")
+        acc = evaluation.get_accuracy(model, test_loader)
+        accuracies.append(acc)
+        print(f"After epoch {epoch}: accuracy is {acc:.3f}.")
     return model, accuracies
 
 
@@ -293,7 +294,6 @@ if __name__ == "__main__":
     # detect if CUDA is available or not
     cuda_ = torch.cuda.is_available()
 
-    x_dim = y_dim = 21
     input_channels = 4
     hidden_channels = [6, 8]
     n_output_classes = 7
@@ -302,16 +302,22 @@ if __name__ == "__main__":
     radius = 10 # radius of data to train with per forward pass
     n_steps = 5
     batch_size = 3
+    train_pct = .8
+
     STData = dataloaders.SpatiotemporalDataset(
-        "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps, radius=radius
+        "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps
     )
 
-    train_dataloader = torch.utils.data.DataLoader(STData, batch_size=batch_size, shuffle=True)
-    # Train and test on same data, very bad yes, but will almost certainly have
-    # to change the implementation of how we load data so just want to be sure we
-    # can train at all for now
-    test_dataloader = torch.utils.data.DataLoader(STData, batch_size=batch_size, shuffle=True)
-    
+    x_dim = y_dim = STData.cell_width
+    n_train = int(len(STData) * train_pct)
+    n_test = len(STData) - n_train
+
+    train_dataset, test_dataset = \
+        torch.utils.data.random_split(STData, [n_train, n_test])
+
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+
     model, accuracies = train_ConvGRU(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
@@ -322,37 +328,4 @@ if __name__ == "__main__":
         num_layers=num_layers,
         output_dim=n_output_classes
     )
-    # model = ConvGRU(
-    #     input_dim=(x_dim, y_dim),
-    #     input_channels=input_channels,
-    #     hidden_channels=hidden_channels,
-    #     output_dim=n_output_classes,
-    #     kernel_size=kernel_size,
-    #     num_layers=num_layers,
-    #     batch_first=True,
-    #     bias=True,
-    #     cuda_=cuda_,
-    # )
-
-    # optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
-
-    # for (features, target) in iter(train_dataloader):
-    #     train_bptt.train_bptt(
-    #         model,
-    #         features,
-    #         target,
-    #         seed=1220,
-    #         optimizer=optimizer,
-    #         batch_size=batch_size,
-    #         bptt=2,
-    #         cost_fn=nn.CrossEntropyLoss(),
-    #         clip_grad_norm=.1
-    #     )
-
-    # batch_size = 2
-    # time_steps = 3
-    # input_current = torch.rand(
-    #     batch_size, time_steps, input_channels, x_dim, y_dim
-    # )  # (b,t,c,h,w)
-    # layer_output_list, last_state_list = model(input_current)
-    # pass
+  

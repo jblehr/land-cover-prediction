@@ -49,10 +49,10 @@ class SpatiotemporalDataset(Dataset):
         data_dir,
         poi_name,
         n_steps,
-        radius=10,
+        cell_width=16,
         transform=None
     ):
-        self.radius = radius
+        self.cell_width = cell_width
         rgb_dir = os.path.join(data_dir, "planet", poi_name)
         rgb_files = os.listdir(rgb_dir)
 
@@ -95,9 +95,11 @@ class SpatiotemporalDataset(Dataset):
         ]
         lab_st = np.stack(lab_cubes)
 
+        assert rgb_st.shape[2] % cell_width == 0
+        assert rgb_st.shape[3] % cell_width == 0
+        
         # save target and predictors
         self.X = torch.tensor(rgb_st.astype(np.float32))
-        self.original_shape = rgb_st.shape
         self.transform = transform
         if self.transform:
             self.X = self.transform(self.X)
@@ -113,25 +115,29 @@ class SpatiotemporalDataset(Dataset):
         return land_class
 
     def __len__(self):
-        # each pixel is an observation, but we will also pass its past and neighbors
-        return (self.original_shape[2] - self.radius) * (self.original_shape[3] - self.radius)
-
+        # In new method, we split the 1024x1024 image into individual cells of 
+        # width cell_width. So, we have 1024/cell_width * 1024/cell_width obs
+        return int(self.X.shape[2] / self.cell_width) * \
+            int(self.X.shape[3] / self.cell_width) 
+        
     def __getitem__(self, idx):
         # use index to get original x,y coords, then slice the padded pixel
-        x_loc = idx // (self.original_shape[2] - self.radius)
-        x_min, x_max = x_loc, x_loc + self.radius*2 + 1
+        x_cell_loc = int(idx % (self.X.shape[2] / self.cell_width))
+        y_cell_loc = int(idx // (self.X.shape[3] / self.cell_width))
 
-        y_loc = idx % (self.original_shape[3] - self.radius)
-        y_min, y_max = y_loc, y_loc + self.radius*2 + 1
+        x_pix_min, x_pix_max = \
+            x_cell_loc * self.cell_width, (x_cell_loc + 1) * self.cell_width
+        y_pix_min, y_pix_max = \
+            y_cell_loc * self.cell_width, (y_cell_loc + 1) * self.cell_width
 
         # get the center pixel and all it's radius neighbors
-        x_core = self.X[:, :, x_min:x_max, y_min:y_max]
-        y_core = self.y[:, x_min:x_max, y_min:y_max]
+        x_core = self.X[:, :, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
+        y_core = self.y[:, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
 
         return (x_core, y_core)
 
 
 if __name__ == "__main__":
     STData = SpatiotemporalDataset("data/processed/npz", "1700_3100_13_13N", 5)
-
-    STData.__getitem__(1030)
+    len(STData)
+    STData.__getitem__(65)
