@@ -1,10 +1,10 @@
 # Code based on https://github.com/happyjin/ConvGRU-pytorch/blob/9e932822e11db19b78e3761cb71018850a1247ff/convGRU.py
 
-import os
 from pydoc import cli
 import torch
 from torch import nn
 from torch.autograd import Variable
+import torchvision
 import evaluation
 from tqdm import tqdm
 import dataloaders
@@ -13,7 +13,7 @@ from aim import Run
 
 class ConvGRUCell(nn.Module):
     def __init__(
-        self, input_dim, input_channels, hidden_channels, kernel_size, bias, cuda_=False
+        self, input_dim, input_channels, hidden_channels, kernel_size, bias, conv_padding_mode, cuda_=False
     ):
         """
         Initialize a single ConvGRU cell
@@ -29,7 +29,9 @@ class ConvGRUCell(nn.Module):
         """
         super(ConvGRUCell, self).__init__()
         self.x_dim, self.y_dim = input_dim
-        self.padding = kernel_size[0] // 2, kernel_size[1] // 2
+        # self.padding = [kernel_size[0] // 2 + 1, kernel_size[1] // 2]
+        self.padding='same'
+        self.padding_mode = conv_padding_mode
         self.hidden_channels = hidden_channels
         self.bias = bias
 
@@ -40,10 +42,11 @@ class ConvGRUCell(nn.Module):
 
         self.conv_gates = nn.Conv2d(
             in_channels=input_channels + hidden_channels,
-            out_channels=2
-            * self.hidden_channels,  # for update_gate,reset_gate respectively
+            out_channels=2*self.hidden_channels,  # for update_gate,reset_gate respectively
             kernel_size=kernel_size,
             padding=self.padding,
+            stride=1,
+            padding_mode=conv_padding_mode,
             bias=self.bias,
         )
 
@@ -52,6 +55,8 @@ class ConvGRUCell(nn.Module):
             out_channels=self.hidden_channels,  # for candidate neural memory
             kernel_size=kernel_size,
             padding=self.padding,
+            stride=1,
+            padding_mode=conv_padding_mode,
             bias=self.bias,
         )
 
@@ -98,6 +103,7 @@ class ConvGRU(nn.Module):
         output_dim,
         kernel_size,
         num_layers,
+        conv_padding_mode,
         batch_first=False,
         bias=True,
         cuda_=False,
@@ -134,7 +140,6 @@ class ConvGRU(nn.Module):
         self.num_layers = num_layers
         self.batch_first = batch_first
         self.bias = bias
-
         cell_list = []
 
         for i in range(0, self.num_layers):
@@ -148,7 +153,8 @@ class ConvGRU(nn.Module):
                     hidden_channels=self.hidden_channels[i],
                     kernel_size=self.kernel_size[i],
                     bias=self.bias,
-                    cuda_=cuda_,
+                    conv_padding_mode=conv_padding_mode,
+                    cuda_=cuda_
                 )
             )
 
@@ -203,25 +209,12 @@ class ConvGRU(nn.Module):
 
         return class_val
 
-    def fit(self, train_loader, test_loader, optim, lr, momentum, epochs = 50):
+    def fit(self, train_loader, test_loader, optim, lr, momentum, epochs = 50, max_norm=False, track_run=False):
 
         if optim == 'adam':
             optimizer = torch.optim.Adam(self.parameters(), lr=lr)
         else:
             optimizer = torch.optim.SGD(self.parameters(), lr=lr, momentum=momentum)
-        
-        track_run = Run()
-        track_run['hparams'] = {
-                'lr': lr,
-                'batch_size': train_loader.batch_size,
-                'momentum' : momentum,
-                'hidden_channels':str(self.hidden_channels),
-                'conv_kernel_size':str(self.kernel_size),
-                'hidden_layers':str(self.num_layers),
-                'bias':self.bias,
-                'epochs':epochs,
-                'optim':optim
-        }
 
         self.train()
         criterion=torch.nn.CrossEntropyLoss()
@@ -248,6 +241,12 @@ class ConvGRU(nn.Module):
                     targets_flat = targets.reshape(flat_dim)
 
                     loss = criterion(outputs_flat, targets_flat)
+                    if max_norm:
+                        nn.utils.clip_grad_norm_(
+                            self.parameters(),
+                            max_norm=max_norm,
+                            norm_type=2
+                        )
 
                     loss.backward()
 
@@ -257,13 +256,13 @@ class ConvGRU(nn.Module):
                     losses.append(float(loss))
 
             mean_loss = np.mean(losses)
-            track_run.track(mean_loss, name='mean_loss', epoch=epoch)
-
             train_acc = evaluation.get_accuracy(self, train_loader)
-            track_run.track(train_acc, name='train_accuracy', epoch=epoch)
-
             test_acc = evaluation.get_accuracy(self, test_loader)
-            track_run.track(test_acc, name='test_accuracy', epoch=epoch)
+
+            if track_run:
+                track_run.track(mean_loss, name='mean_loss', epoch=epoch)
+                track_run.track(train_acc, name='train_accuracy', epoch=epoch)
+                track_run.track(test_acc, name='test_accuracy', epoch=epoch)
 
             #TODO: The following works, but many test areas that don't have
             # any changes at all... that might be right, need to do some EDA
@@ -306,17 +305,38 @@ if __name__ == "__main__":
     cuda_ = torch.cuda.is_available()
 
     input_channels = 4
-    hidden_channels = [6, 8]
+    # input_channels = 7 # for labs_as_features
+    hidden_channels = [16, 32, 64]
     n_output_classes = 7
-    kernel_size = (3, 3)  # kernel size for stacked hidden layer
-    num_layers = 2  # number of stacked hidden layers
+    kernel_size = (3,3)  # kernel size for stacked hidden layer
+    num_layers = 3  # number of stacked hidden layers
     n_steps = 5
     batch_size = 3
     train_pct = .8
-    cell_width = 16
+    cell_width = 32
+    lr = .1
+    momentum = .001
+    bias=True
+    optim='sgd'
+    epochs=50
+    conv_padding_mode = 'replicate'
+    experiment_desc = 'more channels in hidden states'
+    blur=False
+    clip_max_norm = .10
+    if blur:
+        guassian_sigma = 3.0
+        guassian_kernel = int(guassian_sigma * 6) + 1 #from https://stackoverflow.com/questions/3149279/optimal-sigma-for-gaussian-filtering-of-an-image
+        transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
+    else:
+        guassian_sigma = guassian_kernel = transform = None
 
     STData = dataloaders.SpatiotemporalDataset(
-        "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps, cell_width=cell_width
+        "data/processed/npz",
+        "1700_3100_13_13N",
+        n_steps=n_steps,
+        cell_width=cell_width,
+        labs_as_features=False,
+        transform=transform
     )
 
     x_dim = y_dim = STData.cell_width
@@ -326,8 +346,16 @@ if __name__ == "__main__":
     train_dataset, test_dataset = \
         torch.utils.data.random_split(STData, [n_train, n_test])
 
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+    train_dataloader = torch.utils.data.DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True
+    )
+    test_dataloader = torch.utils.data.DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=True
+    )
 
     convGRU = ConvGRU(
         input_dim=(x_dim,y_dim),
@@ -336,26 +364,36 @@ if __name__ == "__main__":
         hidden_channels=hidden_channels,
         output_dim=n_output_classes,
         kernel_size=kernel_size,
-        batch_first=True
+        batch_first=True,
+        conv_padding_mode=conv_padding_mode,
+        bias=bias
     )
+
+    track_run = Run(experiment=experiment_desc)
+    track_run['hparams'] = {
+            'lr': lr,
+            'batch_size': batch_size,
+            'momentum' : momentum,
+            'hidden_channels':hidden_channels,
+            'conv_kernel_size':kernel_size,
+            'hidden_layers':num_layers,
+            'bias':bias,
+            'epochs':epochs,
+            'optim':optim,
+            'cell_width':cell_width,
+            'conv_padding_mode':conv_padding_mode,
+            'guassian_kernel':guassian_kernel,
+            'guassian_sigma':guassian_sigma,
+            'clip_max_norm':clip_max_norm
+    }
 
     convGRU.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
-        optim='adam',
-        lr=.001,
-        momentum=.01,
-        epochs=50
+        optim=optim,
+        lr=lr,
+        momentum=momentum,
+        epochs=epochs,
+        max_norm=clip_max_norm,
+        track_run=track_run
     )
-
-    # model, accuracies = train_ConvGRU(
-    #     train_loader=train_dataloader,
-    #     test_loader=test_dataloader,
-    #     input_dim=(x_dim, y_dim),
-    #     input_channels=input_channels,
-    #     hidden_channels=hidden_channels,
-    #     kernel_size=kernel_size,
-    #     num_layers=num_layers,
-    #     output_dim=n_output_classes
-    # )
-  
