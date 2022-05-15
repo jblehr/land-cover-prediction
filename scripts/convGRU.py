@@ -8,7 +8,8 @@ from torch.autograd import Variable
 import evaluation
 from tqdm import tqdm
 import dataloaders
-import train_bptt
+import numpy as np
+from aim import Run
 
 class ConvGRUCell(nn.Module):
     def __init__(
@@ -133,7 +134,9 @@ class ConvGRU(nn.Module):
         self.num_layers = num_layers
         self.batch_first = batch_first
         self.bias = bias
+
         cell_list = []
+
         for i in range(0, self.num_layers):
             current_input_channels = (
                 input_channels if i == 0 else hidden_channels[i - 1]
@@ -200,6 +203,79 @@ class ConvGRU(nn.Module):
 
         return class_val
 
+    def fit(self, train_loader, test_loader, optim, lr, momentum, epochs = 50):
+
+        if optim == 'adam':
+            optimizer = torch.optim.Adam(self.parameters(), lr=lr)
+        else:
+            optimizer = torch.optim.SGD(self.parameters(), lr=lr, momentum=momentum)
+        
+        track_run = Run()
+        track_run['hparams'] = {
+                'lr': lr,
+                'batch_size': train_loader.batch_size,
+                'momentum' : momentum,
+                'hidden_channels':str(self.hidden_channels),
+                'conv_kernel_size':str(self.kernel_size),
+                'hidden_layers':str(self.num_layers),
+                'bias':self.bias,
+                'epochs':epochs,
+                'optim':optim
+        }
+
+        self.train()
+        criterion=torch.nn.CrossEntropyLoss()
+
+        for epoch in tqdm(range(epochs), desc="Training Epochs"):
+            losses=[]
+            for idx, (batch_x, batch_y) in enumerate(train_loader):
+
+                for timestep in range(batch_x.shape[1] - 1):
+                    
+                    # For each BPTT step, get all timesteps up until now, model them
+                    inputs = batch_x[:,0:timestep+1,:,:]
+                    outputs = self(inputs)
+
+                    # Then, choose next timestep target to predict
+                    targets = batch_y[:,timestep+1,:,:]
+
+                    # For compatability with CrossEntropyLoss, reshape to ignore
+                    # spatial dims and batches for loss - doesn't matter in this
+                    # case anyways as we just want pixels to line up properly
+                    flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
+
+                    outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
+                    targets_flat = targets.reshape(flat_dim)
+
+                    loss = criterion(outputs_flat, targets_flat)
+
+                    loss.backward()
+
+                    optimizer.step()
+                    optimizer.zero_grad()
+
+                    losses.append(float(loss))
+
+            mean_loss = np.mean(losses)
+            track_run.track(mean_loss, name='mean_loss', epoch=epoch)
+
+            train_acc = evaluation.get_accuracy(self, train_loader)
+            track_run.track(train_acc, name='train_accuracy', epoch=epoch)
+
+            test_acc = evaluation.get_accuracy(self, test_loader)
+            track_run.track(test_acc, name='test_accuracy', epoch=epoch)
+
+            #TODO: The following works, but many test areas that don't have
+            # any changes at all... that might be right, need to do some EDA
+
+            # train_changedAcc = evaluation.get_accuracy(self, train_loader, changed_only=True)
+            # track_run.track(train_changedAcc, name='train_changedAccuracy', epoch=epoch)
+
+            # test_changedAcc = evaluation.get_accuracy(self, test_loader, changed_only=True)
+            # track_run.track(test_changedAcc, name='test_changedAccuracy', epoch=epoch)
+
+            print(f"After epoch {epoch}:\n  train acc: {train_acc:.3f}, test acc: {test_acc:.3f}")
+
     def _init_hidden(self, batch_size):
         init_states = []
         for i in range(self.num_layers):
@@ -223,71 +299,6 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
-def train_ConvGRU(
-    train_loader,
-    test_loader,
-    input_dim,
-    input_channels,
-    hidden_channels,
-    kernel_size,
-    num_layers,
-    output_dim,
-    epochs=50,
-    learning_rate=0.0005,
-    momentum=.9,
-    criterion=torch.nn.CrossEntropyLoss(),
-):
-
-    model = ConvGRU(
-        input_dim=input_dim,
-        input_channels=input_channels,
-        hidden_channels=hidden_channels,
-        kernel_size=kernel_size,
-        num_layers=num_layers,
-        output_dim=output_dim,
-        batch_first=True,
-        bias=True,
-        cuda_=cuda_,
-    )
-
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
-
-    model.train()
-    accuracies = []
-
-    for epoch in tqdm(range(epochs), desc="Training Epochs"):
-        for iter, (batch_x, batch_y) in enumerate(train_loader):
-            for timestep in range(batch_x.shape[1] - 1):
-                
-                # For each BPTT step, get all timesteps up until now, model them
-                inputs = batch_x[:,0:timestep+1,:,:]
-                outputs = model(inputs)
-
-                # Then, choose next timestep target to predict
-                targets = batch_y[:,timestep+1,:,:]
-
-                # For compatability with CrossEntropyLoss, reshape to ignore
-                # spatial dims and batches for loss - doesn't matter in this
-                # case anyways as we just want pixels to line up properly
-                flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
-
-                outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
-                targets_flat = targets.reshape(flat_dim)
-
-                loss = criterion(outputs_flat, targets_flat)
-
-                loss.backward()
-
-                optimizer.step()
-                optimizer.zero_grad()
-
-                # if iter % 1000 == 0 and iter > 0:
-                # print(f"At iteration {iter}, timestep {timestep}, the loss is {loss:.3f}.")
-        acc = evaluation.get_accuracy(model, test_loader)
-        accuracies.append(acc)
-        print(f"After epoch {epoch}: accuracy is {acc:.3f}.")
-    return model, accuracies
-
 
 if __name__ == "__main__":
 
@@ -297,15 +308,15 @@ if __name__ == "__main__":
     input_channels = 4
     hidden_channels = [6, 8]
     n_output_classes = 7
-    kernel_size = (3, 3)  # kernel size for two stacked hidden layer
+    kernel_size = (3, 3)  # kernel size for stacked hidden layer
     num_layers = 2  # number of stacked hidden layers
-    radius = 10 # radius of data to train with per forward pass
     n_steps = 5
     batch_size = 3
     train_pct = .8
+    cell_width = 16
 
     STData = dataloaders.SpatiotemporalDataset(
-        "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps
+        "data/processed/npz", "1700_3100_13_13N", n_steps=n_steps, cell_width=cell_width
     )
 
     x_dim = y_dim = STData.cell_width
@@ -318,14 +329,33 @@ if __name__ == "__main__":
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
-    model, accuracies = train_ConvGRU(
-        train_loader=train_dataloader,
-        test_loader=test_dataloader,
-        input_dim=(x_dim, y_dim),
+    convGRU = ConvGRU(
+        input_dim=(x_dim,y_dim),
+        num_layers=num_layers,
         input_channels=input_channels,
         hidden_channels=hidden_channels,
+        output_dim=n_output_classes,
         kernel_size=kernel_size,
-        num_layers=num_layers,
-        output_dim=n_output_classes
+        batch_first=True
     )
+
+    convGRU.fit(
+        train_loader=train_dataloader,
+        test_loader=test_dataloader,
+        optim='adam',
+        lr=.001,
+        momentum=.01,
+        epochs=50
+    )
+
+    # model, accuracies = train_ConvGRU(
+    #     train_loader=train_dataloader,
+    #     test_loader=test_dataloader,
+    #     input_dim=(x_dim, y_dim),
+    #     input_channels=input_channels,
+    #     hidden_channels=hidden_channels,
+    #     kernel_size=kernel_size,
+    #     num_layers=num_layers,
+    #     output_dim=n_output_classes
+    # )
   

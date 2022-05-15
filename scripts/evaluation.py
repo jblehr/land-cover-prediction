@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-def get_accuracy(model, dataloader):
+def get_accuracy(model, dataloader, changed_only=False):
     model.eval()
     n_correct = 0
     n_eval = 0
@@ -16,9 +16,19 @@ def get_accuracy(model, dataloader):
                 # Then, choose next timestep target to predict
                 targets = batch_y[:,timestep+1,:,:]
 
-                predicted = outputs.softmax(3).argmax(3)
+                if changed_only:
+                    last_targets = batch_y[:,timestep,:,:]
+                    changed = ~torch.eq(targets, last_targets)
+                    targets = targets[changed]
+                    outputs = outputs[changed]
+                if not changed_only or (changed_only and len(outputs) > 0):
+                    if changed_only:
+                        pass
+                        changed_only
+                    predicted = outputs.softmax(3).argmax(3)
 
-                assert targets.size() == predicted.size()
-                n_correct += int(np.equal(targets, predicted).sum())
-                n_eval += targets.numel()
+                    assert targets.size() == predicted.size()
+                    n_correct += int(np.equal(targets, predicted).sum())
+                    n_eval += targets.numel()
+
     return n_correct / n_eval
