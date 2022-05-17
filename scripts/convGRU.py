@@ -308,7 +308,7 @@ if __name__ == "__main__":
     # input_channels = 7 # for labs_as_features
     hidden_channels = [16, 32, 64]
     n_output_classes = 7
-    kernel_size = (3,3)  # kernel size for stacked hidden layer
+    kernel_size = (6,6)  # kernel size for stacked hidden layer
     num_layers = 3  # number of stacked hidden layers
     n_steps = 5
     batch_size = 3
@@ -320,7 +320,7 @@ if __name__ == "__main__":
     optim='sgd'
     epochs=50
     conv_padding_mode = 'replicate'
-    experiment_desc = 'more channels in hidden states'
+    experiment_desc = 'wider conv kernels'
     blur=False
     clip_max_norm = .10
     if blur:
