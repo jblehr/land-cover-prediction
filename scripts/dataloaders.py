@@ -1,3 +1,5 @@
+from itertools import product
+from pyexpat.model import XML_CQUANT_PLUS
 from torch.utils.data import Dataset, DataLoader, random_split
 import torch
 import numpy as np
@@ -47,30 +49,34 @@ class SpatiotemporalDataset(Dataset):
     def __init__(
         self,
         data_dir,
-        poi_name,
+        poi_list,
         n_steps,
+        dims,
         cell_width=16,
         transform=None,
         labs_as_features=False
     ):
+        self.poi_list = poi_list
         self.cell_width = cell_width
-        rgb_dir = os.path.join(data_dir, "planet", poi_name)
+        self.data_dir = data_dir
+        self.n_steps = n_steps
+        self.transform = transform
+        self.labs_as_features = labs_as_features
+        self.n_ambigious = 0
+        self.x_dim, self.y_dim = dims
+
+    def read_hypercube(self, poi_name):
+
+        rgb_dir = os.path.join(self.data_dir, "planet", poi_name)
         rgb_files = os.listdir(rgb_dir)
 
-        date_range = [
-            datetime.datetime.strptime(rgb_file.replace(".npz", ""), "%Y-%m-%d")
-            for rgb_file in rgb_files
-        ]
-
         rgb_files = [os.path.join(rgb_dir, rgb_file) for rgb_file in rgb_files]
-        rgb_files = rgb_files[:n_steps]
+        rgb_files = rgb_files[:self.n_steps]
 
-        lab_dir = os.path.join(data_dir, "labels", poi_name)
+        lab_dir = os.path.join(self.data_dir, "labels", poi_name)
         lab_files = os.listdir(lab_dir)
         lab_files = [os.path.join(lab_dir, lab_file) for lab_file in lab_files]
-        lab_files = lab_files[:n_steps]
-
-        self.date_range = date_range[:n_steps]
+        lab_files = lab_files[:self.n_steps]
 
         # ensure no mismatch between cubes
         assert all(
@@ -82,7 +88,7 @@ class SpatiotemporalDataset(Dataset):
 
         lab_cubes = [np.load(lab_file)["arr_0"] for lab_file in lab_files]
 
-        if not labs_as_features:
+        if not self.labs_as_features:
             rgb_cubes = [np.load(rgb_file)["arr_0"] for rgb_file in rgb_files]
             # rgb needs no preprocessing, so just stack
             rgb_st = np.stack(rgb_cubes)
@@ -96,23 +102,22 @@ class SpatiotemporalDataset(Dataset):
         # need to get idx label in one mask from labels, then stack
         # n_ambigious increases when we have to arbitrarily choose a class
         # because there are multiple nonzeros in the land class masks
-        self.n_ambigious = 0
         lab_cubes = [
             np.apply_along_axis(self.idx_from_multimask, 0, lab_cube)
             for lab_cube in lab_cubes
         ]
         lab_st = np.stack(lab_cubes)
 
-
-        assert rgb_st.shape[2] % cell_width == 0
-        assert rgb_st.shape[3] % cell_width == 0
+        assert rgb_st.shape[2] % self.cell_width == 0
+        assert rgb_st.shape[3] % self.cell_width == 0
 
         # save target and predictors
-        self.X = torch.tensor(rgb_st.astype(np.float32))
-        self.transform = transform
+        X = torch.tensor(rgb_st.astype(np.float32))
         if self.transform:
-            self.X = self.transform(self.X)
-        self.y = torch.tensor(lab_st).squeeze().long()
+            X = self.transform(X)
+        Y = torch.tensor(lab_st).squeeze().long()
+
+        return (X, Y)
 
     def idx_from_multimask(self, arr_1d):
         # TODO: 1.7% ambiguity in the first tried... need a better solution
@@ -125,27 +130,59 @@ class SpatiotemporalDataset(Dataset):
     def __len__(self):
         # In new method, we split the 1024x1024 image into individual cells of 
         # width cell_width. So, we have 1024/cell_width * 1024/cell_width obs
-        return int(self.X.shape[2] / self.cell_width) * \
-            int(self.X.shape[3] / self.cell_width) 
+        # return int(self.x_dim / self.cell_width) * \
+            # int(self.y_dim / self.cell_width) *
+        return len(self.poi_list)
 
     def __getitem__(self, idx):
-        # use index to get original x,y coords, then slice the padded pixel
-        x_cell_loc = int(idx % (self.X.shape[2] / self.cell_width))
-        y_cell_loc = int(idx // (self.X.shape[3] / self.cell_width))
 
-        x_pix_min, x_pix_max = \
-            x_cell_loc * self.cell_width, (x_cell_loc + 1) * self.cell_width
-        y_pix_min, y_pix_max = \
-            y_cell_loc * self.cell_width, (y_cell_loc + 1) * self.cell_width
+        cube_path = self.poi_list[idx]
+        datX, datY = self.read_hypercube(poi_name=cube_path)
+        x_steps = np.arange(0, datX.shape[2], self.cell_width)
+        y_steps = np.arange(0, datX.shape[3], self.cell_width)
 
-        # get the center pixel and all it's radius neighbors
-        x_core = self.X[:, :, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
-        y_core = self.y[:, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
+        locs = product(x_steps, y_steps)
 
-        return (x_core, y_core)
+        out_tensor_X = np.empty(shape = (
+            int(datX.shape[2]/self.cell_width * datX.shape[3]/self.cell_width), #Batch size (sliced image)
+            self.n_steps, # Number of timesteps
+            datX.shape[1], # N channels
+            self.cell_width, 
+            self.cell_width
+        ))
+
+        out_tensor_Y = np.empty(shape = (
+            int(datX.shape[2]/self.cell_width * datX.shape[3]/self.cell_width), #Batch size (sliced image)
+            self.n_steps, # Number of timesteps
+            self.cell_width, 
+            self.cell_width
+        ))
+
+        for batch_idx, loc_idx in enumerate(locs):
+
+            x_pix_min, y_pix_min = loc_idx
+            x_pix_max = x_pix_min + self.cell_width
+            y_pix_max = y_pix_min + self.cell_width
+
+            x_core = datX[:, :, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
+            y_core = datY[:, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
+
+            out_tensor_X[batch_idx, :, :, :, : ] = x_core
+            out_tensor_Y[batch_idx, :, :, : ] = y_core
+
+        return (
+            torch.tensor(out_tensor_X.astype(np.float32)),
+            torch.tensor(out_tensor_Y).long()
+        )
 
 
 if __name__ == "__main__":
-    STData = SpatiotemporalDataset("data/processed/npz", "1700_3100_13_13N", 5)
-    len(STData)
-    STData.__getitem__(65)
+    poi_list = ['1700_3100_13_13N', '2065_3647_13_16N', '2697_3715_13_20N']
+    STData = SpatiotemporalDataset(
+        "data/processed/npz",
+        poi_list=poi_list,
+        cell_width=128,
+        dims = (1024,1024),
+        n_steps=5
+    )
+    outX, outY = STData.__getitem__(2)

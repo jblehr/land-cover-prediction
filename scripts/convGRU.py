@@ -209,7 +209,7 @@ class ConvGRU(nn.Module):
 
         return class_val
 
-    def fit(self, train_loader, test_loader, optim, lr, momentum, epochs = 50, max_norm=False, track_run=False):
+    def fit(self, train_loader, test_loader, optim, lr, momentum, bptt_len=3, epochs = 50, max_norm=False, track_run=False):
 
         if optim == 'adam':
             optimizer = torch.optim.Adam(self.parameters(), lr=lr)
@@ -224,9 +224,11 @@ class ConvGRU(nn.Module):
             for idx, (batch_x, batch_y) in enumerate(train_loader):
 
                 for timestep in range(batch_x.shape[1] - 1):
-                    
-                    # For each BPTT step, get all timesteps up until now, model them
-                    inputs = batch_x[:,0:timestep+1,:,:]
+
+                    min_step = max(0, timestep-bptt_len)
+
+                    # For each BPTT step, get all timesteps (t-bptt_len):t, model them
+                    inputs = batch_x[:,min_step:timestep+1,:,:]
                     outputs = self(inputs)
 
                     # Then, choose next timestep target to predict
@@ -313,16 +315,17 @@ if __name__ == "__main__":
     n_steps = 5
     batch_size = 3
     train_pct = .8
-    cell_width = 32
+    cell_width = 128
     lr = .1
     momentum = .001
     bias=True
     optim='sgd'
-    epochs=50
+    epochs=3
     conv_padding_mode = 'replicate'
     experiment_desc = 'more channels in hidden states'
     blur=False
     clip_max_norm = .10
+
     if blur:
         guassian_sigma = 3.0
         guassian_kernel = int(guassian_sigma * 6) + 1 #from https://stackoverflow.com/questions/3149279/optimal-sigma-for-gaussian-filtering-of-an-image
@@ -330,9 +333,12 @@ if __name__ == "__main__":
     else:
         guassian_sigma = guassian_kernel = transform = None
 
+    poi_list = ['1700_3100_13_13N', '2065_3647_13_16N', '2697_3715_13_20N']
+
     STData = dataloaders.SpatiotemporalDataset(
         "data/processed/npz",
-        "1700_3100_13_13N",
+        dims = (1024, 1024),
+        poi_list=poi_list,
         n_steps=n_steps,
         cell_width=cell_width,
         labs_as_features=False,
@@ -348,12 +354,15 @@ if __name__ == "__main__":
 
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
-        batch_size=batch_size,
+        # batch_size=batch_size,
+        batch_size=None, #batches determined by cell width
         shuffle=True
     )
+
     test_dataloader = torch.utils.data.DataLoader(
         test_dataset,
-        batch_size=batch_size,
+        # batch_size=batch_size,
+        batch_size=None, #batches determined by cell width
         shuffle=True
     )
 
@@ -370,6 +379,7 @@ if __name__ == "__main__":
     )
 
     track_run = Run(experiment=experiment_desc)
+
     track_run['hparams'] = {
             'lr': lr,
             'batch_size': batch_size,
