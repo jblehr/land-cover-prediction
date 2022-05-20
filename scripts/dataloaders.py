@@ -68,13 +68,13 @@ class SpatiotemporalDataset(Dataset):
     def read_hypercube(self, poi_name):
 
         rgb_dir = os.path.join(self.data_dir, "planet", poi_name)
-        rgb_files = os.listdir(rgb_dir)
+        rgb_files = sorted(os.listdir(rgb_dir))
 
         rgb_files = [os.path.join(rgb_dir, rgb_file) for rgb_file in rgb_files]
         rgb_files = rgb_files[:self.n_steps]
 
         lab_dir = os.path.join(self.data_dir, "labels", poi_name)
-        lab_files = os.listdir(lab_dir)
+        lab_files = sorted(os.listdir(lab_dir))
         lab_files = [os.path.join(lab_dir, lab_file) for lab_file in lab_files]
         lab_files = lab_files[:self.n_steps]
 
