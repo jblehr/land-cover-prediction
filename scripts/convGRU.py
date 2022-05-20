@@ -34,6 +34,7 @@ class ConvGRUCell(nn.Module):
         self.padding_mode = conv_padding_mode
         self.hidden_channels = hidden_channels
         self.bias = bias
+        self.cuda_ = cuda_
 
         if cuda_:
             self.dtype = torch.cuda.FloatTensor  # computation in GPU
@@ -48,7 +49,10 @@ class ConvGRUCell(nn.Module):
             stride=1,
             padding_mode=conv_padding_mode,
             bias=self.bias,
-        )
+        )   
+
+        if cuda_:
+            self.conv_gates.to('cuda')
 
         self.conv_can = nn.Conv2d(
             in_channels=input_channels + hidden_channels,
@@ -59,6 +63,10 @@ class ConvGRUCell(nn.Module):
             padding_mode=conv_padding_mode,
             bias=self.bias,
         )
+        if cuda_:
+            self.conv_gates.to('cuda')
+            self.conv_can.to('cuda')
+
 
     def init_hidden(self, batch_size):
         return Variable(
@@ -77,6 +85,9 @@ class ConvGRUCell(nn.Module):
         Outputs:
             hidden_next: 4-d tensor as above of next hidden state
         """
+        if self.cuda_:
+            input_current = input_current.to('cuda')
+
         combined = torch.cat([input_current, hidden_current], dim=1)
         combined_conv = self.conv_gates(combined)
 
@@ -140,6 +151,7 @@ class ConvGRU(nn.Module):
         self.num_layers = num_layers
         self.batch_first = batch_first
         self.bias = bias
+        self.cuda_ = cuda_
         cell_list = []
 
         for i in range(0, self.num_layers):
@@ -241,6 +253,9 @@ class ConvGRU(nn.Module):
 
                     outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
                     targets_flat = targets.reshape(flat_dim)
+                    if self.cuda_:
+                        targets_flat = targets_flat.to('cuda')
+
 
                     loss = criterion(outputs_flat, targets_flat)
                     if max_norm:
@@ -305,6 +320,10 @@ if __name__ == "__main__":
 
     # detect if CUDA is available or not
     cuda_ = torch.cuda.is_available()
+    if cuda_:
+        device = 'cuda'
+    else:
+        device = 'cpu'
 
     input_channels = 4
     # input_channels = 7 # for labs_as_features
@@ -312,7 +331,7 @@ if __name__ == "__main__":
     n_output_classes = 7
     kernel_size = (3,3)  # kernel size for stacked hidden layer
     num_layers = 3  # number of stacked hidden layers
-    n_steps = 5
+    n_steps = 2 # only take 2 steps
     batch_size = 3
     train_pct = .8
     cell_width = 128
@@ -365,7 +384,7 @@ if __name__ == "__main__":
         batch_size=None, #batches determined by cell width
         shuffle=True
     )
-
+    
     convGRU = ConvGRU(
         input_dim=(x_dim,y_dim),
         num_layers=num_layers,
@@ -375,8 +394,11 @@ if __name__ == "__main__":
         kernel_size=kernel_size,
         batch_first=True,
         conv_padding_mode=conv_padding_mode,
-        bias=bias
+        bias=bias,
+        cuda_=cuda_
     )
+    if cuda_:
+        convGRU = convGRU.to('cuda')
 
     track_run = Run(experiment=experiment_desc)
 

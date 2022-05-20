@@ -28,6 +28,8 @@ def get_accuracy(model, dataloader, changed_only=False):
                     predicted = outputs.softmax(3).argmax(3)
 
                     assert targets.size() == predicted.size()
+                    if model.cuda_:
+                        predicted = predicted.to('cpu')
                     n_correct += int(np.equal(targets, predicted).sum())
                     n_eval += targets.numel()
 
