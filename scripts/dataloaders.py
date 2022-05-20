@@ -102,10 +102,7 @@ class SpatiotemporalDataset(Dataset):
         # need to get idx label in one mask from labels, then stack
         # n_ambigious increases when we have to arbitrarily choose a class
         # because there are multiple nonzeros in the land class masks
-        lab_cubes = [
-            np.apply_along_axis(self.idx_from_multimask, 0, lab_cube)
-            for lab_cube in lab_cubes
-        ]
+        lab_cubes = [self.collapse_labels(lab_cube) for lab_cube in lab_cubes]
         lab_st = np.stack(lab_cubes)
 
         assert rgb_st.shape[2] % self.cell_width == 0
@@ -119,13 +116,20 @@ class SpatiotemporalDataset(Dataset):
 
         return (X, Y)
 
-    def idx_from_multimask(self, arr_1d):
-        # TODO: 1.7% ambiguity in the first tried... need a better solution
-        land_class = np.where(arr_1d == 255)[0]
-        if len(land_class) > 1:
-            land_class = land_class[0]
-            self.n_ambigious += 1
-        return land_class
+    def collapse_labels(self, label_7d):
+        '''
+        Convert 7 dim label mask to (1, m, m) by assigning index value
+        '''
+        # dim = 1 for final labels
+        label_1d = np.empty((1, label_7d.shape[1], label_7d.shape[2])) 
+        for i in range(label_7d.shape[1]):
+            for j in range(label_7d.shape[2]):
+                for k in range(label_7d.shape[0]):
+                    # TODO: consider another way to break ties. Right now, only select first value == 255
+                    if label_7d[k, i, j] == 255:
+                        label_1d[0, i, j] = k
+                        break 
+        return label_1d.astype(np.uint8)
 
     def __len__(self):
         # In new method, we split the 1024x1024 image into individual cells of 
