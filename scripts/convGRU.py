@@ -231,6 +231,7 @@ class ConvGRU(nn.Module):
 
         self.train()
         criterion=torch.nn.CrossEntropyLoss()
+        aim_epoch=0
 
         for epoch in tqdm(range(epochs), desc="Training Epochs"):
             losses=[]
@@ -274,13 +275,16 @@ class ConvGRU(nn.Module):
                     losses.append(float(loss))
 
                 mean_loss = np.mean(losses)
-                train_acc = evaluation.get_accuracy(self, train_loader)
+                # train_acc = evaluation.get_accuracy(self, train_loader)
                 test_acc = evaluation.get_accuracy(self, test_loader)
 
                 if track_run:
-                    track_run.track(mean_loss, name='mean_loss', epoch=epoch+idx)
-                    track_run.track(train_acc, name='train_accuracy', epoch=epoch+idx)
-                    track_run.track(test_acc, name='test_accuracy', epoch=epoch+idx)
+                    print('epoch+idx: ' + str(epoch+idx))
+                    aim_epoch += 1
+                    track_run.track(mean_loss, name='mean_loss', epoch=aim_epoch)
+                    # track_run.track(train_acc, name='train_accuracy', epoch=epoch+idx)
+                    track_run.track(test_acc, name='test_accuracy', epoch=aim_epoch)
+                    print(f"After epoch {epoch}:\n test acc: {test_acc:.3f}")
 
             #TODO: The following works, but many test areas that don't have
             # any changes at all... that might be right, need to do some EDA
@@ -291,7 +295,8 @@ class ConvGRU(nn.Module):
             # test_changedAcc = evaluation.get_accuracy(self, test_loader, changed_only=True)
             # track_run.track(test_changedAcc, name='test_changedAccuracy', epoch=epoch)
 
-            print(f"After epoch {epoch}:\n  train acc: {train_acc:.3f}, test acc: {test_acc:.3f}")
+            print(f"After epoch {epoch}:\n test acc: {test_acc:.3f}")
+            # print(f"After epoch {epoch}:\n  train acc: {train_acc:.3f}, test acc: {test_acc:.3f}")
 
     def _init_hidden(self, batch_size):
         init_states = []
