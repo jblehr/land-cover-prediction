@@ -273,14 +273,14 @@ class ConvGRU(nn.Module):
 
                     losses.append(float(loss))
 
-            mean_loss = np.mean(losses)
-            train_acc = evaluation.get_accuracy(self, train_loader)
-            test_acc = evaluation.get_accuracy(self, test_loader)
+                mean_loss = np.mean(losses)
+                train_acc = evaluation.get_accuracy(self, train_loader)
+                test_acc = evaluation.get_accuracy(self, test_loader)
 
-            if track_run:
-                track_run.track(mean_loss, name='mean_loss', epoch=epoch)
-                track_run.track(train_acc, name='train_accuracy', epoch=epoch)
-                track_run.track(test_acc, name='test_accuracy', epoch=epoch)
+                if track_run:
+                    track_run.track(mean_loss, name='mean_loss', epoch=epoch+idx)
+                    track_run.track(train_acc, name='train_accuracy', epoch=epoch+idx)
+                    track_run.track(test_acc, name='test_accuracy', epoch=epoch+idx)
 
             #TODO: The following works, but many test areas that don't have
             # any changes at all... that might be right, need to do some EDA
