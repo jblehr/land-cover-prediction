@@ -110,9 +110,10 @@ class ConvGRU(nn.Module):
     def __init__(
         self,
         input_dim,
+        output_dim,
         input_channels,
         hidden_channels,
-        output_dim,
+        n_output_classes,
         kernel_size,
         num_layers,
         conv_padding_mode,
@@ -145,7 +146,8 @@ class ConvGRU(nn.Module):
         if not len(kernel_size) == len(hidden_channels) == num_layers:
             raise ValueError("Inconsistent list length.")
 
-        self.x_dim, self.y_dim = input_dim
+        self.in_xDim, self.in_yDim = input_dim
+        self.out_xDim, self.out_yDim = output_dim
         self.input_channels = input_channels
         self.hidden_channels = hidden_channels
         self.kernel_size = kernel_size
@@ -153,6 +155,7 @@ class ConvGRU(nn.Module):
         self.batch_first = batch_first
         self.bias = bias
         self.cuda_ = cuda_
+
         cell_list = []
 
         for i in range(0, self.num_layers):
@@ -161,7 +164,7 @@ class ConvGRU(nn.Module):
             )
             cell_list.append(
                 ConvGRUCell(
-                    input_dim=(self.x_dim, self.y_dim),
+                    input_dim=(self.in_xDim, self.in_yDim),
                     input_channels=current_input_channels,
                     hidden_channels=self.hidden_channels[i],
                     kernel_size=self.kernel_size[i],
@@ -174,8 +177,10 @@ class ConvGRU(nn.Module):
         # convert python list to pytorch module
         self.cell_list = nn.ModuleList(cell_list)
         self.lin_out = nn.Linear(
-            in_features=self.hidden_channels[-1], out_features=output_dim
+            in_features=self.hidden_channels[-1], out_features=n_output_classes
         )
+        if not (self.in_xDim == self.out_xDim and self.in_yDim == self.out_yDim):
+            self.upsampler = torchvision.transforms.Resize((self.out_xDim, self.out_yDim))
 
     def forward(self, input_current):
         """
@@ -217,8 +222,10 @@ class ConvGRU(nn.Module):
 
         # take last timestep for classification and make the hidden layer the last
         # dim for compatability with nn.Linear to convert our 7 out classes
-        class_out = layer_output[:, -1, :, :, :].permute(0, 2, 3, 1)
-        class_val = self.lin_out(class_out)
+        last_output = layer_output[:, -1, :, :, :]
+        if self.upsampler:
+            last_output = self.upsampler(last_output)
+        class_val = self.lin_out(last_output.permute(0, 2, 3, 1))
 
         return class_val
 
@@ -284,7 +291,7 @@ class ConvGRU(nn.Module):
                     track_run.track(mean_loss, name='mean_loss', epoch=aim_epoch)
                     # track_run.track(train_acc, name='train_accuracy', epoch=epoch+idx)
                     track_run.track(test_acc, name='test_accuracy', epoch=aim_epoch)
-                    print(f"After epoch {epoch}:\n test acc: {test_acc:.3f}")
+                    print(f"After sub-epoch {epoch}:\n test acc: {test_acc:.3f}")
 
             #TODO: The following works, but many test areas that don't have
             # any changes at all... that might be right, need to do some EDA
@@ -321,48 +328,37 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
-
-if __name__ == "__main__":
-
-    # detect if CUDA is available or not
+def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size,
+                   num_layers,n_steps, train_pct, cell_width, lr,
+                   momentum, bias, optim, epochs, conv_padding_mode, experiment_desc, 
+                   guassian_blur, guassian_sigma, guassian_kernel, downsample,
+                   downsample_dim, clip_max_norm):
+ 
     cuda_ = torch.cuda.is_available()
-    if cuda_:
-        device = 'cuda'
-    else:
-        device = 'cpu'
+    track_run = Run(experiment=experiment_desc)
 
-    input_channels = 4
-    # input_channels = 7 # for labs_as_features
-    hidden_channels = [16, 32, 64]
-    n_output_classes = 7
-    kernel_size = (3,3)  # kernel size for stacked hidden layer
-    num_layers = 3  # number of stacked hidden layers
-    n_steps = 2 # only take 2 steps
-    batch_size = 3
-    train_pct = .8
-    cell_width = 128
-    lr = .1
-    momentum = .001
-    bias=True
-    optim='adam'
-    epochs=10
-    conv_padding_mode = 'replicate'
-    experiment_desc = 'more AOIS (7) - normalized'
-    blur=False
-    clip_max_norm = .10
-
-    if blur:
-        guassian_sigma = 3.0
-        guassian_kernel = int(guassian_sigma * 6) + 1 #from https://stackoverflow.com/questions/3149279/optimal-sigma-for-gaussian-filtering-of-an-image
-        transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
+    if guassian_blur:
+        blur_transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
+    
+    if downsample:
+        downsample_transform = torchvision.transforms.Resize(size=(downsample_outDim, downsample_outDim))
+    
+    if guassian_blur and downsample:
+        transform = torchvision.transforms.Compose(
+            [downsample_transform, blur_transform]
+        )
+    elif guassian_blur:
+        transform = blur_transform
+    elif downsample:
+        transform = downsample_transform
     else:
-        guassian_sigma = guassian_kernel = transform = None
+        transform = None
 
     poi_list = os.listdir('data/processed/npz/planet')
 
     STData = dataloaders.SpatiotemporalDataset(
         "data/processed/npz",
-        dims = (1024, 1024),
+        dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=n_steps,
         cell_width=cell_width,
@@ -370,7 +366,12 @@ if __name__ == "__main__":
         transform=transform
     )
 
-    x_dim = y_dim = STData.cell_width
+    if downsample:
+        in_xDim = in_yDim = downsample_dim
+        out_xDim = out_yDim = STData.cell_width
+    else:
+        in_xDim = in_yDim = out_xDim = out_yDim= STData.cell_width
+
     n_train = int(len(STData) * train_pct)
     n_test = len(STData) - n_train
 
@@ -391,12 +392,13 @@ if __name__ == "__main__":
         shuffle=True
     )
     
-    convGRU = ConvGRU(
-        input_dim=(x_dim,y_dim),
+    convGRU_mod = ConvGRU(
+        input_dim=(in_xDim,in_yDim),
+        output_dim=(out_xDim, out_yDim),
         num_layers=num_layers,
         input_channels=input_channels,
         hidden_channels=hidden_channels,
-        output_dim=n_output_classes,
+        n_output_classes=n_output_classes,
         kernel_size=kernel_size,
         batch_first=True,
         conv_padding_mode=conv_padding_mode,
@@ -404,13 +406,10 @@ if __name__ == "__main__":
         cuda_=cuda_
     )
     if cuda_:
-        convGRU = convGRU.to('cuda')
-
-    track_run = Run(experiment=experiment_desc)
+        convGRU_mod = convGRU_mod.to('cuda')
 
     track_run['hparams'] = {
             'lr': lr,
-            'batch_size': batch_size,
             'momentum' : momentum,
             'hidden_channels':hidden_channels,
             'conv_kernel_size':kernel_size,
@@ -420,12 +419,15 @@ if __name__ == "__main__":
             'optim':optim,
             'cell_width':cell_width,
             'conv_padding_mode':conv_padding_mode,
+            'guassian_blur':guassian_blur,
             'guassian_kernel':guassian_kernel,
             'guassian_sigma':guassian_sigma,
-            'clip_max_norm':clip_max_norm
+            'clip_max_norm':clip_max_norm,
+            'downsample':downsample,
+            'downsample_dim': 512,
     }
 
-    convGRU.fit(
+    convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
         optim=optim,
@@ -435,3 +437,31 @@ if __name__ == "__main__":
         max_norm=clip_max_norm,
         track_run=track_run
     )
+
+if __name__ == "__main__":
+
+    param_dict = {
+        'experiment_desc' : 'Vanilla proof of colab concept run',
+        'input_channels' : 4,
+        'hidden_channels' : [2, 4, 8],
+        'n_output_classes' : 7,
+        'kernel_size' : (3,3),  # kernel size for stacked hidden layer
+        'num_layers' : 3,  # number of stacked hidden layers
+        'n_steps' : 2, # only take 2 steps
+        'train_pct' : .8,
+        'cell_width' : 256,
+        'lr' : .1,
+        'momentum' : .001,
+        'bias' : True,
+        'optim' : 'adam',
+        'epochs' : 10,
+        'conv_padding_mode' : 'replicate',
+        'guassian_blur' : False,
+        'guassian_sigma': 3.0,
+        'guassian_kernel': 19,
+        'downsample':True,
+        'downsample_dim': 512,
+        'clip_max_norm' : .10
+    }
+
+    hyperpar_trial(**param_dict)

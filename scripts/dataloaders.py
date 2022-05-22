@@ -157,7 +157,7 @@ class SpatiotemporalDataset(Dataset):
         y_steps = np.arange(0, datX.shape[3], self.cell_width)
 
         locs = product(x_steps, y_steps)
-
+        batch_size = int(self.x_dim/self.cell_width * self.y_dim/self.cell_width)
         out_tensor_X = np.empty(shape = (
             int(datX.shape[2]/self.cell_width * datX.shape[3]/self.cell_width), #Batch size (sliced image)
             self.n_steps, # Number of timesteps
