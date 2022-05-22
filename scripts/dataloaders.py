@@ -58,13 +58,13 @@ class SpatiotemporalDataset(Dataset):
         poi_list,
         n_steps,
         dims,
-        cell_width=16,
+        cell_width_pct,
         transform=None,
         labs_as_features=False,
         normalize=False
     ):
         self.poi_list = poi_list
-        self.cell_width = cell_width
+        self.cell_width_pct = cell_width_pct
         self.data_dir = data_dir
         self.n_steps = n_steps
         self.transform = transform
@@ -116,9 +116,6 @@ class SpatiotemporalDataset(Dataset):
         lab_cubes = [self.collapse_labels(lab_cube) for lab_cube in lab_cubes]
         lab_st = np.stack(lab_cubes)
 
-        assert rgb_st.shape[2] % self.cell_width == 0
-        assert rgb_st.shape[3] % self.cell_width == 0
-
         # save target and predictors
         X = torch.tensor(rgb_st.astype(np.float32))
         if self.transform:
@@ -143,43 +140,57 @@ class SpatiotemporalDataset(Dataset):
         return label_1d.astype(np.uint8)
 
     def __len__(self):
-        # In new method, we split the 1024x1024 image into individual cells of 
-        # width cell_width. So, we have 1024/cell_width * 1024/cell_width obs
-        # return int(self.x_dim / self.cell_width) * \
-            # int(self.y_dim / self.cell_width) *
         return len(self.poi_list)
 
     def __getitem__(self, idx):
 
         cube_path = self.poi_list[idx]
         datX, datY = self.read_hypercube(poi_name=cube_path)
-        x_steps = np.arange(0, datX.shape[2], self.cell_width)
-        y_steps = np.arange(0, datX.shape[3], self.cell_width)
+
+        transformed_cell_width = int(datX.shape[2] * self.cell_width_pct)
+        original_cell_width = int(self.x_dim * self.cell_width_pct)
+
+        assert transformed_cell_width == datX.shape[3] * self.cell_width_pct
+        assert original_cell_width == self.y_dim * self.cell_width_pct
+
+        x_steps = np.arange(0, datX.shape[2], transformed_cell_width)
+        y_steps = np.arange(0, datX.shape[3], transformed_cell_width)
+
 
         locs = product(x_steps, y_steps)
-        batch_size = int(self.x_dim/self.cell_width * self.y_dim/self.cell_width)
+        batch_size = \
+            int(datX.shape[2]/transformed_cell_width * 
+                datX.shape[3]/transformed_cell_width)
+
+        # Here and below, we want to pass the transformed x images but the 
+        # full target images. The model itself will upsample back to the 
+        # proper dimensions in the output
+
         out_tensor_X = np.empty(shape = (
-            int(datX.shape[2]/self.cell_width * datX.shape[3]/self.cell_width), #Batch size (sliced image)
+            batch_size, #Batch size (sliced image)
             self.n_steps, # Number of timesteps
             datX.shape[1], # N channels
-            self.cell_width, 
-            self.cell_width
+            transformed_cell_width, 
+            transformed_cell_width
         ))
 
         out_tensor_Y = np.empty(shape = (
-            int(datX.shape[2]/self.cell_width * datX.shape[3]/self.cell_width), #Batch size (sliced image)
+            batch_size, #Batch size (sliced image)
             self.n_steps, # Number of timesteps
-            self.cell_width, 
-            self.cell_width
+            original_cell_width, 
+            original_cell_width
         ))
 
         for batch_idx, loc_idx in enumerate(locs):
 
             x_pix_min, y_pix_min = loc_idx
-            x_pix_max = x_pix_min + self.cell_width
-            y_pix_max = y_pix_min + self.cell_width
 
+            x_pix_max = x_pix_min + transformed_cell_width
+            y_pix_max = y_pix_min + transformed_cell_width
             x_core = datX[:, :, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
+
+            x_pix_max = x_pix_min + original_cell_width
+            y_pix_max = y_pix_min + original_cell_width
             y_core = datY[:, x_pix_min:x_pix_max, y_pix_min:y_pix_max]
 
             out_tensor_X[batch_idx, :, :, :, : ] = x_core
@@ -189,15 +200,3 @@ class SpatiotemporalDataset(Dataset):
             torch.tensor(out_tensor_X.astype(np.float32)),
             torch.tensor(out_tensor_Y).long()
         )
-
-
-if __name__ == "__main__":
-    poi_list = ['1700_3100_13_13N', '2065_3647_13_16N', '2697_3715_13_20N']
-    STData = SpatiotemporalDataset(
-        "data/processed/npz",
-        poi_list=poi_list,
-        cell_width=128,
-        dims = (1024,1024),
-        n_steps=5
-    )
-    outX, outY = STData.__getitem__(2)

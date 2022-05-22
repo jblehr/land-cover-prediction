@@ -155,6 +155,7 @@ class ConvGRU(nn.Module):
         self.batch_first = batch_first
         self.bias = bias
         self.cuda_ = cuda_
+        self.upsampler = None
 
         cell_list = []
 
@@ -329,7 +330,7 @@ class ConvGRU(nn.Module):
         return param
 
 def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size,
-                   num_layers,n_steps, train_pct, cell_width, lr,
+                   num_layers,n_steps, train_pct, cell_width_pct, lr,
                    momentum, bias, optim, epochs, conv_padding_mode, experiment_desc, 
                    guassian_blur, guassian_sigma, guassian_kernel, downsample,
                    downsample_dim, clip_max_norm):
@@ -341,7 +342,7 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         blur_transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
     
     if downsample:
-        downsample_transform = torchvision.transforms.Resize(size=(downsample_outDim, downsample_outDim))
+        downsample_transform = torchvision.transforms.Resize(size=(downsample_dim, downsample_dim))
     
     if guassian_blur and downsample:
         transform = torchvision.transforms.Compose(
@@ -361,16 +362,16 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=n_steps,
-        cell_width=cell_width,
+        cell_width_pct=cell_width_pct,
         labs_as_features=False,
         transform=transform
     )
 
     if downsample:
-        in_xDim = in_yDim = downsample_dim
-        out_xDim = out_yDim = STData.cell_width
+        in_xDim = in_yDim = int(downsample_dim * cell_width_pct)
+        out_xDim = out_yDim = int(1024 * cell_width_pct)
     else:
-        in_xDim = in_yDim = out_xDim = out_yDim= STData.cell_width
+        in_xDim = in_yDim = out_xDim = out_yDim= int(1024 * cell_width_pct)
 
     n_train = int(len(STData) * train_pct)
     n_test = len(STData) - n_train
@@ -417,7 +418,7 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
             'bias':bias,
             'epochs':epochs,
             'optim':optim,
-            'cell_width':cell_width,
+            'cell_width_pct':cell_width_pct,
             'conv_padding_mode':conv_padding_mode,
             'guassian_blur':guassian_blur,
             'guassian_kernel':guassian_kernel,
@@ -449,18 +450,18 @@ if __name__ == "__main__":
         'num_layers' : 3,  # number of stacked hidden layers
         'n_steps' : 2, # only take 2 steps
         'train_pct' : .8,
-        'cell_width' : 256,
+        'cell_width_pct' : 1/4,
         'lr' : .1,
         'momentum' : .001,
         'bias' : True,
         'optim' : 'adam',
         'epochs' : 10,
         'conv_padding_mode' : 'replicate',
-        'guassian_blur' : False,
+        'guassian_blur' : True,
         'guassian_sigma': 3.0,
         'guassian_kernel': 19,
         'downsample':True,
-        'downsample_dim': 512,
+        'downsample_dim': 256,
         'clip_max_norm' : .10
     }
 
