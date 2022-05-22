@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RAW_DIR=$PWD/data/raw
-for PLANET_FILE in planet.10N planet.11N planet.15N planet.17N planet.18N
+for PLANET_FILE in planet.33S
 do
     echo $PLANET_FILE
     PLANET_FILE_DIR=$RAW_DIR/$PLANET_FILE
@@ -14,7 +14,7 @@ do
 
     echo "Unzipping file: $PLANET_FILE_DIR.zip to $PLANET_FILE_DIR"
     mkdir $PLANET_FILE_DIR
-    #Exclude QA files and only get first file of the month
+    # Exclude QA files and only get first file of the month
     unzip $PLANET_FILE_DIR.zip "*01.tif" -x "*QA*" -d $PLANET_FILE_DIR 
 
     echo "Deleting zipped file: $PLANET_FILE_DIR.zip"
