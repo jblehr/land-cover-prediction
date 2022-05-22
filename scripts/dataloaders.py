@@ -6,6 +6,7 @@ import numpy as np
 import os
 import datetime
 from torchvision import transforms
+import cv2
 
 class FullyIndependentDataset(Dataset):
     def __init__(self, img_path, label_path):
@@ -44,6 +45,11 @@ class FullyIndependentDataset(Dataset):
     def __getitem__(self, idx):
         return (self.X[idx, :], self.y[idx])
 
+def normalize(cube):
+    # Normalize
+    norm = np.zeros((cube.shape[0],cube.shape[1]))
+    final_cube = cv2.normalize(cube,  norm, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    return final_cube
 
 class SpatiotemporalDataset(Dataset):
     def __init__(
@@ -54,7 +60,8 @@ class SpatiotemporalDataset(Dataset):
         dims,
         cell_width=16,
         transform=None,
-        labs_as_features=False
+        labs_as_features=False,
+        normalize=False
     ):
         self.poi_list = poi_list
         self.cell_width = cell_width
@@ -90,6 +97,10 @@ class SpatiotemporalDataset(Dataset):
 
         if not self.labs_as_features:
             rgb_cubes = [np.load(rgb_file)["arr_0"] for rgb_file in rgb_files]
+            
+            if normalize:
+                rgb_cubes = [normalize(cube) for cube in rgb_cubes]
+
             # rgb needs no preprocessing, so just stack
             rgb_st = np.stack(rgb_cubes)
         else:

@@ -10,6 +10,7 @@ from tqdm import tqdm
 import dataloaders
 import numpy as np
 from aim import Run
+import os
 
 class ConvGRUCell(nn.Module):
     def __init__(
@@ -338,10 +339,10 @@ if __name__ == "__main__":
     lr = .1
     momentum = .001
     bias=True
-    optim='sgd'
-    epochs=3
+    optim='adam'
+    epochs=10
     conv_padding_mode = 'replicate'
-    experiment_desc = 'more channels in hidden states'
+    experiment_desc = 'more AOIS (7) - normalized'
     blur=False
     clip_max_norm = .10
 
@@ -352,7 +353,7 @@ if __name__ == "__main__":
     else:
         guassian_sigma = guassian_kernel = transform = None
 
-    poi_list = ['1700_3100_13_13N', '2065_3647_13_16N', '2697_3715_13_20N']
+    poi_list = os.listdir('data/processed/npz/planet')
 
     STData = dataloaders.SpatiotemporalDataset(
         "data/processed/npz",
