@@ -285,23 +285,23 @@ class ConvGRU(nn.Module):
                 train_loss = np.mean(losses)
                 # train_acc = evaluation.get_accuracy(self, train_loader)
                 test_acc = evaluation.get_accuracy(self, test_loader)
-                test_loss = evaluation.get_loss(self, test_loader, criterion, cuda_)
+                # test_loss = evaluation.get_loss(self, test_loader, criterion, cuda_)
 
                 print('epoch+idx: ' + str(epoch+idx))
                 aim_epoch += 1
                 print(f"After sub-epoch {aim_epoch}:\n test acc: {test_acc:.3f}")
                 print(f"    test acc: {test_acc:.3f}")
                 print(f"    train loss: {train_loss:.3f}")
-                print(f"    train loss: {test_loss:.3f}")
+                # print(f"    train loss: {test_loss:.3f}")
 
             print(f"============== End of epoch {epoch} ============")
 
-            trial.report(test_loss, epoch)
+            trial.report(train_loss, epoch)
 
             if trial.should_prune():
                 raise optuna.exceptions.TrialPruned()
 
-        return test_loss
+        return train_loss
 
     def _init_hidden(self, batch_size):
         init_states = []
@@ -353,10 +353,10 @@ def objective(trial):
     else:
         transform = None
 
-    poi_list = os.listdir('../data/processed/npz/planet')
+    poi_list = os.listdir('data/processed/npz/planet')
     cell_width_pct = trial.suggest_categorical('cell_width_pct', [1, 1/2, 1/4, 1/8, 1/16])
     STData = dataloaders.SpatiotemporalDataset(
-        "../data/processed/npz",
+        "data/processed/npz",
         dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=12, # start with one year

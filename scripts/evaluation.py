@@ -1,5 +1,8 @@
 import torch
 import numpy as np
+import dataloaders
+import os
+import convGRU
 
 def get_accuracy(model, dataloader, changed_only=False):
     model.eval()
@@ -65,3 +68,41 @@ def get_loss(model, dataloader, criterion, cuda_):
                 losses.append(float(loss))
 
     return np.mean(losses)
+
+if __name__ == '__main__':
+    poi_list = os.listdir('data/processed/npz/planet')
+    STData = dataloaders.SpatiotemporalDataset(
+        "data/processed/npz",
+        dims = (1024, 1024), #Original dims, not post-transformation
+        poi_list=poi_list,
+        n_steps=12, # start with one year
+        cell_width_pct=.5,
+        labs_as_features=False,
+        transform=None
+    )
+
+    test_dataloader = torch.utils.data.DataLoader(
+        STData,
+        # batch_size=batch_size,
+        batch_size=None, #batches determined by cell width
+        shuffle=True
+    )
+    
+    criterion=torch.nn.CrossEntropyLoss()
+
+    convGRU_mod = convGRU.ConvGRU(
+        input_dim=(1024,1024),
+        output_dim=(1024, 1024),
+        num_layers=2,
+        input_channels=4,
+        hidden_channels=[4, 6],
+        n_output_classes=7,
+        kernel_size=3,
+        batch_first=True,
+        conv_padding_mode='replicate',
+        bias=True,
+        cuda_=False
+    )
+
+    loss=get_loss(convGRU_mod, test_dataloader, criterion, False)
+    loss
