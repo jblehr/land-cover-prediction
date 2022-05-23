@@ -353,10 +353,10 @@ def objective(trial):
     else:
         transform = None
 
-    poi_list = os.listdir('data/processed/npz/planet')
+    poi_list = os.listdir('../data/processed/npz/planet')
     cell_width_pct = trial.suggest_categorical('cell_width_pct', [1, 1/2, 1/4, 1/8, 1/16])
     STData = dataloaders.SpatiotemporalDataset(
-        "data/processed/npz",
+        "../data/processed/npz",
         dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=12, # start with one year
@@ -430,9 +430,9 @@ def objective(trial):
     if cuda_:
         convGRU_mod = convGRU_mod.to('cuda')
     
-    criterion=torch.nn.CrossEntropyLoss()
-    loss = evaluation.get_loss(convGRU_mod, test_dataloader, criterion, cuda_)
-    print('Initial test loss: ' + str(loss))
+    # criterion=torch.nn.CrossEntropyLoss()
+    # loss = evaluation.get_loss(convGRU_mod, test_dataloader, criterion, cuda_)
+    # print('Initial test loss: ' + str(loss))
     
     optim = trial.suggest_categorical('optim', ['sgd', 'adam'])
     clip_max_norm = trial.suggest_float('clip_max_norm', .5, 1.5)
@@ -445,8 +445,8 @@ def objective(trial):
         momentum=momentum,
         epochs=epochs,
         max_norm=clip_max_norm,
-        trial=trial,
-        cuda_=cuda_
+        trial=trial
+        # cuda_=cuda_
     )
 
 if __name__ == "__main__":
