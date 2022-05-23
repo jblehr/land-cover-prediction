@@ -11,6 +11,8 @@ import dataloaders
 import numpy as np
 from aim import Run
 import os
+import optuna
+from optuna.trial import TrialState
 
 class ConvGRUCell(nn.Module):
     def __init__(
@@ -230,7 +232,7 @@ class ConvGRU(nn.Module):
 
         return class_val
 
-    def fit(self, train_loader, test_loader, optim, lr, momentum, bptt_len=3, epochs = 50, max_norm=False, track_run=False):
+    def fit(self, train_loader, test_loader, optim, lr, momentum, trial, bptt_len=3, epochs = 50, max_norm=False):
 
         if optim == 'adam':
             optimizer = torch.optim.Adam(self.parameters(), lr=lr)
@@ -256,7 +258,7 @@ class ConvGRU(nn.Module):
                     # Then, choose next timestep target to predict
                     targets = batch_y[:,timestep+1,:,:]
 
-                    # For compatability with CrossEntropyLoss, reshape to ignore
+                    # For compatibility with CrossEntropyLoss, reshape to ignore
                     # spatial dims and batches for loss - doesn't matter in this
                     # case anyways as we just want pixels to line up properly
                     flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
@@ -265,7 +267,6 @@ class ConvGRU(nn.Module):
                     targets_flat = targets.reshape(flat_dim)
                     if self.cuda_:
                         targets_flat = targets_flat.to('cuda')
-
 
                     loss = criterion(outputs_flat, targets_flat)
                     if max_norm:
@@ -282,29 +283,26 @@ class ConvGRU(nn.Module):
 
                     losses.append(float(loss))
 
-                mean_loss = np.mean(losses)
+                train_loss = np.mean(losses)
                 # train_acc = evaluation.get_accuracy(self, train_loader)
                 test_acc = evaluation.get_accuracy(self, test_loader)
+                test_loss = evaluation.get_loss(self, test_loader)
 
-                if track_run:
-                    print('epoch+idx: ' + str(epoch+idx))
-                    aim_epoch += 1
-                    track_run.track(mean_loss, name='mean_loss', epoch=aim_epoch)
-                    # track_run.track(train_acc, name='train_accuracy', epoch=epoch+idx)
-                    track_run.track(test_acc, name='test_accuracy', epoch=aim_epoch)
-                    print(f"After sub-epoch {epoch}:\n test acc: {test_acc:.3f}")
+                print('epoch+idx: ' + str(epoch+idx))
+                aim_epoch += 1
+                print(f"After sub-epoch {aim_epoch}:\n test acc: {test_acc:.3f}")
+                print(f"    test acc: {test_acc:.3f}")
+                print(f"    train loss: {train_loss:.3f}")
+                print(f"    train loss: {test_loss:.3f}")
 
-            #TODO: The following works, but many test areas that don't have
-            # any changes at all... that might be right, need to do some EDA
+            print(f"============== End of epoch {epoch} ============")
 
-            # train_changedAcc = evaluation.get_accuracy(self, train_loader, changed_only=True)
-            # track_run.track(train_changedAcc, name='train_changedAccuracy', epoch=epoch)
+            trial.report(test_loss, epoch)
 
-            # test_changedAcc = evaluation.get_accuracy(self, test_loader, changed_only=True)
-            # track_run.track(test_changedAcc, name='test_changedAccuracy', epoch=epoch)
+            if trial.should_prune():
+                raise optuna.exceptions.TrialPruned()
 
-            print(f"After epoch {epoch}:\n test acc: {test_acc:.3f}")
-            # print(f"After epoch {epoch}:\n  train acc: {train_acc:.3f}, test acc: {test_acc:.3f}")
+        return test_loss
 
     def _init_hidden(self, batch_size):
         init_states = []
@@ -329,19 +327,21 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
-def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size,
-                   num_layers,n_steps, train_pct, cell_width_pct, lr,
-                   momentum, bias, optim, epochs, conv_padding_mode, experiment_desc, 
-                   guassian_blur, guassian_sigma, guassian_kernel, downsample,
-                   downsample_dim, clip_max_norm):
- 
-    cuda_ = torch.cuda.is_available()
-    track_run = Run(experiment=experiment_desc)
+def objective(trial):
 
+    cuda_ = torch.cuda.is_available()
+    # track_run = Run(experiment=experiment_desc)
+    guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
     if guassian_blur:
+        guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
+        guassian_kernel = int(guassian_sigma * 3 + 1)
+        guassian_kernel = guassian_kernel - int(guassian_kernel % 2 != 1)
+
         blur_transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
     
+    downsample = trial.suggest_categorical("downsample", [True, False])
     if downsample:
+        downsample_dim = trial.suggest_categorical("downsample_dim", [64, 128, 256, 512])
         downsample_transform = torchvision.transforms.Resize(size=(downsample_dim, downsample_dim))
     
     if guassian_blur and downsample:
@@ -356,12 +356,12 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         transform = None
 
     poi_list = os.listdir('data/processed/npz/planet')
-
+    cell_width_pct = trial.suggest_categorical('cell_width_pct', [1, 1/2, 1/4, 1/8, 1/16])
     STData = dataloaders.SpatiotemporalDataset(
         "data/processed/npz",
         dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
-        n_steps=n_steps,
+        n_steps=12, # start with one year
         cell_width_pct=cell_width_pct,
         labs_as_features=False,
         transform=transform
@@ -373,7 +373,7 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
     else:
         in_xDim = in_yDim = out_xDim = out_yDim= int(1024 * cell_width_pct)
 
-    n_train = int(len(STData) * train_pct)
+    n_train = int(len(STData) * .8)
     n_test = len(STData) - n_train
 
     train_dataset, test_dataset = \
@@ -392,7 +392,26 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         batch_size=None, #batches determined by cell width
         shuffle=True
     )
-    
+
+    lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+    momentum = trial.suggest_float("momentum", 0.0, 1.0)
+    conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
+    bias = trial.suggest_categorical("bias", [True, False])
+
+    num_layers = trial.suggest_int("num_layers", 1, 5)
+    hidden_channels = []
+    for layer_idx in range(num_layers):
+        hidden_channels_idx = trial.suggest_categorical(
+            f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
+        )
+        hidden_channels.append(hidden_channels_idx)
+
+    if STData.labs_as_features:
+        input_channels = 7
+    else:
+        input_channels = 4
+    n_output_classes = 7
+
     convGRU_mod = ConvGRU(
         input_dim=(in_xDim,in_yDim),
         output_dim=(out_xDim, out_yDim),
@@ -400,34 +419,19 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         input_channels=input_channels,
         hidden_channels=hidden_channels,
         n_output_classes=n_output_classes,
-        kernel_size=kernel_size,
+        kernel_size=conv_kernel_size,
         batch_first=True,
-        conv_padding_mode=conv_padding_mode,
+        conv_padding_mode='replicate',
         bias=bias,
         cuda_=cuda_
     )
+
     if cuda_:
         convGRU_mod = convGRU_mod.to('cuda')
 
-    track_run['hparams'] = {
-            'lr': lr,
-            'momentum' : momentum,
-            'hidden_channels':hidden_channels,
-            'conv_kernel_size':kernel_size,
-            'hidden_layers':num_layers,
-            'bias':bias,
-            'epochs':epochs,
-            'optim':optim,
-            'cell_width_pct':cell_width_pct,
-            'conv_padding_mode':conv_padding_mode,
-            'guassian_blur':guassian_blur,
-            'guassian_kernel':guassian_kernel,
-            'guassian_sigma':guassian_sigma,
-            'clip_max_norm':clip_max_norm,
-            'downsample':downsample,
-            'downsample_dim': 512,
-    }
-
+    optim = trial.suggest_categorical('optim', ['sgd', 'adam'])
+    clip_max_norm = trial.suggest_float('clip_max_norm', .5, 1.5)
+    epochs = 10
     convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
@@ -436,33 +440,51 @@ def hyperpar_trial(input_channels, hidden_channels, n_output_classes,kernel_size
         momentum=momentum,
         epochs=epochs,
         max_norm=clip_max_norm,
-        track_run=track_run
+        trial=trial
     )
 
 if __name__ == "__main__":
 
-    param_dict = {
-        'experiment_desc' : 'Vanilla proof of colab concept run',
-        'input_channels' : 4,
-        'hidden_channels' : [2, 4, 8],
-        'n_output_classes' : 7,
-        'kernel_size' : (3,3),  # kernel size for stacked hidden layer
-        'num_layers' : 3,  # number of stacked hidden layers
-        'n_steps' : 2, # only take 2 steps
-        'train_pct' : .8,
-        'cell_width_pct' : 1/4,
-        'lr' : .1,
-        'momentum' : .001,
-        'bias' : True,
-        'optim' : 'adam',
-        'epochs' : 10,
-        'conv_padding_mode' : 'replicate',
-        'guassian_blur' : True,
-        'guassian_sigma': 3.0,
-        'guassian_kernel': 19,
-        'downsample':True,
-        'downsample_dim': 256,
-        'clip_max_norm' : .10
-    }
+    # param_dict = {
+    #     'experiment_desc' : 'Vanilla proof of colab concept run',
+    #     'input_channels' : 4,
+    #     'hidden_channels' : [2, 4, 8],
+    #     'n_output_classes' : 7,
+    #     'kernel_size' : (3,3),  # kernel size for stacked hidden layer
+    #     'num_layers' : 3,  # number of stacked hidden layers
+    #     'n_steps' : 2, # only take 2 steps
+    #     'train_pct' : .8,
+    #     'cell_width_pct' : 1/4,
+    #     'lr' : .1,
+    #     'momentum' : .001,
+    #     'bias' : True,
+    #     'optim' : 'adam',
+    #     'epochs' : 10,
+    #     'conv_padding_mode' : 'replicate',
+    #     'guassian_blur' : True,
+    #     'guassian_sigma': 3.0,
+    #     'guassian_kernel': 19,
+    #     'downsample':True,
+    #     'downsample_dim': 256,
+    #     'clip_max_norm' : .10
+    # }
 
-    hyperpar_trial(**param_dict)
+    study = optuna.create_study(direction="minimize")
+    study.optimize(objective, n_trials=100)
+
+    pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
+    complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
+
+    print("Study statistics: ")
+    print("  Number of finished trials: ", len(study.trials))
+    print("  Number of pruned trials: ", len(pruned_trials))
+    print("  Number of complete trials: ", len(complete_trials))
+
+    print("Best trial:")
+    trial = study.best_trial
+
+    print("  Value: ", trial.value)
+
+    print("  Params: ")
+    for key, value in trial.params.items():
+        print("    {}: {}".format(key, value))

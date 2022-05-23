@@ -34,3 +34,32 @@ def get_accuracy(model, dataloader, changed_only=False):
                     n_eval += targets.numel()
 
     return n_correct / n_eval
+
+def get_loss(model, dataloader, criterion):
+    model.eval()
+    losses=[]
+    with torch.no_grad():
+        for batch_x, batch_y in dataloader:
+            for timestep in range(batch_x.shape[1] - 1):
+
+                # For each BPTT step, get all timesteps up until now, model them
+                inputs = batch_x[:,0:timestep+1,:,:]
+                outputs = model(inputs)
+
+                # Then, choose next timestep target to predict
+                targets = batch_y[:,timestep+1,:,:]
+
+                # For compatibility with CrossEntropyLoss, reshape to ignore
+                # spatial dims and batches for loss - doesn't matter in this
+                # case anyways as we just want pixels to line up properly
+                flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
+
+                outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
+                targets_flat = targets.reshape(flat_dim)
+                # if self.cuda_:
+                #     targets_flat = targets_flat.to('cuda')
+
+                loss = criterion(outputs_flat, targets_flat)
+                losses.append(float(loss))
+
+    return np.mean(losses)
