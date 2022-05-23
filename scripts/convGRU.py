@@ -9,7 +9,6 @@ import evaluation
 from tqdm import tqdm
 import dataloaders
 import numpy as np
-from aim import Run
 import os
 import optuna
 from optuna.trial import TrialState
@@ -286,7 +285,7 @@ class ConvGRU(nn.Module):
                 train_loss = np.mean(losses)
                 # train_acc = evaluation.get_accuracy(self, train_loader)
                 test_acc = evaluation.get_accuracy(self, test_loader)
-                test_loss = evaluation.get_loss(self, test_loader)
+                test_loss = evaluation.get_loss(self, test_loader, criterion, cuda_)
 
                 print('epoch+idx: ' + str(epoch+idx))
                 aim_epoch += 1
@@ -330,7 +329,6 @@ class ConvGRU(nn.Module):
 def objective(trial):
 
     cuda_ = torch.cuda.is_available()
-    # track_run = Run(experiment=experiment_desc)
     guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
     if guassian_blur:
         guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
@@ -355,10 +353,10 @@ def objective(trial):
     else:
         transform = None
 
-    poi_list = os.listdir('data/processed/npz/planet')
+    poi_list = os.listdir('../data/processed/npz/planet')
     cell_width_pct = trial.suggest_categorical('cell_width_pct', [1, 1/2, 1/4, 1/8, 1/16])
     STData = dataloaders.SpatiotemporalDataset(
-        "data/processed/npz",
+        "../data/processed/npz",
         dims = (1024, 1024), #Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=12, # start with one year
@@ -401,8 +399,11 @@ def objective(trial):
     num_layers = trial.suggest_int("num_layers", 1, 5)
     hidden_channels = []
     for layer_idx in range(num_layers):
+        # hidden_channels_idx = trial.suggest_categorical(
+        #     f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
+        # )
         hidden_channels_idx = trial.suggest_categorical(
-            f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
+            f"layer_{layer_idx}", [4, 8, 16, 32]
         )
         hidden_channels.append(hidden_channels_idx)
 
@@ -428,7 +429,11 @@ def objective(trial):
 
     if cuda_:
         convGRU_mod = convGRU_mod.to('cuda')
-
+    
+    criterion=torch.nn.CrossEntropyLoss()
+    loss = evaluation.get_loss(convGRU_mod, test_dataloader, criterion, cuda_)
+    print('Initial test loss: ' + str(loss))
+    
     optim = trial.suggest_categorical('optim', ['sgd', 'adam'])
     clip_max_norm = trial.suggest_float('clip_max_norm', .5, 1.5)
     epochs = 10
@@ -440,7 +445,8 @@ def objective(trial):
         momentum=momentum,
         epochs=epochs,
         max_norm=clip_max_norm,
-        trial=trial
+        trial=trial,
+        cuda_=cuda_
     )
 
 if __name__ == "__main__":
@@ -488,3 +494,6 @@ if __name__ == "__main__":
     print("  Params: ")
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
+
+    fig = optuna.visualization.plot_param_importances(study)
+    fig.show()

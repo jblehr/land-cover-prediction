@@ -35,7 +35,7 @@ def get_accuracy(model, dataloader, changed_only=False):
 
     return n_correct / n_eval
 
-def get_loss(model, dataloader, criterion):
+def get_loss(model, dataloader, criterion, cuda_):
     model.eval()
     losses=[]
     with torch.no_grad():
@@ -56,8 +56,10 @@ def get_loss(model, dataloader, criterion):
 
                 outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
                 targets_flat = targets.reshape(flat_dim)
-                # if self.cuda_:
-                #     targets_flat = targets_flat.to('cuda')
+                if cuda_:
+                    targets_flat = targets_flat.to('cuda')
+                    outputs_flat = targets_flat.to('cuda')
+
 
                 loss = criterion(outputs_flat, targets_flat)
                 losses.append(float(loss))
