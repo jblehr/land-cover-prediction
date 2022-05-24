@@ -9,7 +9,7 @@
 #SBATCH --chdir=/home/npg/land-cover-prediction
 #SBATCH --partition=debug
 
-module load python/anaconda-2020.02
+module load python/anaconda-2021.05
 python scripts/convGRU.py
 
 

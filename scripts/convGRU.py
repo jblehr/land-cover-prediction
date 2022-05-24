@@ -514,7 +514,7 @@ def objective(trial):
 
 if __name__ == "__main__":
 
-    storage = 'sqlite:////home/npg/land-cover-prediction/output/peanut_optuna'
+    storage = 'sqlite:////home/npg/land-cover-prediction/output/peanut_optuna.db'
 
     study = optuna.create_study(
         direction="minimize",
