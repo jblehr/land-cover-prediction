@@ -1,0 +1,4 @@
+ERROR: Unable to locate a modulefile for 'python/anaconda-2021.05'
+[32m[I 2022-05-24 03:14:49,321][0m Using an existing study with name 'peanut' instead of creating a new one.[0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]/var/spool/slurmd/job51886/slurm_script: line 13: 914661 Killed                  python scripts/convGRU.py
+slurmstepd-gpu1: error: Detected 1 oom-kill event(s) in step 51886.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.

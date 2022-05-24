@@ -1,0 +1,4277 @@
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.761
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.868
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.790
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.755
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.690
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.670
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.608
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.550
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.542
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.517
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.510
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.531
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.573
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.607
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.460
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 1.615
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.537
+    test acc: 0.537
+    train loss: 1.649
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.574
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.645
+    test acc: 0.645
+    train loss: 1.499
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 1.449
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.673
+    test acc: 0.673
+    train loss: 1.442
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.680
+    test acc: 0.680
+    train loss: 1.403
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.623
+    test acc: 0.623
+    train loss: 1.432
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 1.393
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.542
+    test acc: 0.542
+    train loss: 1.348
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.534
+    test acc: 0.534
+    train loss: 1.336
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.519
+    test acc: 0.519
+    train loss: 1.296
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.488
+    test acc: 0.488
+    train loss: 1.275
+============== End of epoch 1 ============
+epoch+idx: 2
+After sub-epoch 29:
+ test acc: 0.444
+    test acc: 0.444
+    train loss: 0.987
+epoch+idx: 3
+After sub-epoch 30:
+ test acc: 0.450
+    test acc: 0.450
+    train loss: 1.547
+epoch+idx: 4
+After sub-epoch 31:
+ test acc: 0.488
+    test acc: 0.488
+    train loss: 1.589
+epoch+idx: 5
+After sub-epoch 32:
+ test acc: 0.517
+    test acc: 0.517
+    train loss: 1.467
+epoch+idx: 6
+After sub-epoch 33:
+ test acc: 0.532
+    test acc: 0.532
+    train loss: 1.376
+epoch+idx: 7
+After sub-epoch 34:
+ test acc: 0.539
+    test acc: 0.539
+    train loss: 1.454
+epoch+idx: 8
+After sub-epoch 35:
+ test acc: 0.543
+    test acc: 0.543
+    train loss: 1.344
+epoch+idx: 9
+After sub-epoch 36:
+ test acc: 0.546
+    test acc: 0.546
+    train loss: 1.260
+epoch+idx: 10
+After sub-epoch 37:
+ test acc: 0.552
+    test acc: 0.552
+    train loss: 1.268
+epoch+idx: 11
+After sub-epoch 38:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 1.284
+epoch+idx: 12
+After sub-epoch 39:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 1.251
+epoch+idx: 13
+After sub-epoch 40:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 1.250
+epoch+idx: 14
+After sub-epoch 41:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.216
+epoch+idx: 15
+After sub-epoch 42:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.245
+============== End of epoch 2 ============
+epoch+idx: 3
+After sub-epoch 43:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 0.692
+epoch+idx: 4
+After sub-epoch 44:
+ test acc: 0.561
+    test acc: 0.561
+    train loss: 0.763
+epoch+idx: 5
+After sub-epoch 45:
+ test acc: 0.561
+    test acc: 0.561
+    train loss: 0.913
+epoch+idx: 6
+After sub-epoch 46:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 1.082
+epoch+idx: 7
+After sub-epoch 47:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 1.143
+epoch+idx: 8
+After sub-epoch 48:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 1.104
+epoch+idx: 9
+After sub-epoch 49:
+ test acc: 0.542
+    test acc: 0.542
+    train loss: 1.067
+epoch+idx: 10
+After sub-epoch 50:
+ test acc: 0.538
+    test acc: 0.538
+    train loss: 1.030
+epoch+idx: 11
+After sub-epoch 51:
+ test acc: 0.534
+    test acc: 0.534
+    train loss: 1.011
+epoch+idx: 12
+After sub-epoch 52:
+ test acc: 0.540
+    test acc: 0.540
+    train loss: 1.053
+epoch+idx: 13
+After sub-epoch 53:
+ test acc: 0.543
+    test acc: 0.543
+    train loss: 1.092
+epoch+idx: 14
+After sub-epoch 54:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 1.063
+epoch+idx: 15
+After sub-epoch 55:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 1.073
+epoch+idx: 16
+After sub-epoch 56:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 1.082
+============== End of epoch 3 ============
+epoch+idx: 4
+After sub-epoch 57:
+ test acc: 0.545
+    test acc: 0.545
+    train loss: 1.195
+epoch+idx: 5
+After sub-epoch 58:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 0.977
+epoch+idx: 6
+After sub-epoch 59:
+ test acc: 0.546
+    test acc: 0.546
+    train loss: 0.917
+epoch+idx: 7
+After sub-epoch 60:
+ test acc: 0.545
+    test acc: 0.545
+    train loss: 0.898
+epoch+idx: 8
+After sub-epoch 61:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.882
+epoch+idx: 9
+After sub-epoch 62:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.840
+epoch+idx: 10
+After sub-epoch 63:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.834
+epoch+idx: 11
+After sub-epoch 64:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.880
+epoch+idx: 12
+After sub-epoch 65:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.875
+epoch+idx: 13
+After sub-epoch 66:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.891
+epoch+idx: 14
+After sub-epoch 67:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.906
+epoch+idx: 15
+After sub-epoch 68:
+ test acc: 0.550
+    test acc: 0.550
+    train loss: 0.960
+epoch+idx: 16
+After sub-epoch 69:
+ test acc: 0.552
+    test acc: 0.552
+    train loss: 0.987
+epoch+idx: 17
+After sub-epoch 70:
+ test acc: 0.637
+    test acc: 0.637
+    train loss: 0.987
+============== End of epoch 4 ============
+epoch+idx: 5
+After sub-epoch 71:
+ test acc: 0.619
+    test acc: 0.619
+    train loss: 0.743
+epoch+idx: 6
+After sub-epoch 72:
+ test acc: 0.620
+    test acc: 0.620
+    train loss: 0.721
+epoch+idx: 7
+After sub-epoch 73:
+ test acc: 0.620
+    test acc: 0.620
+    train loss: 0.782
+epoch+idx: 8
+After sub-epoch 74:
+ test acc: 0.613
+    test acc: 0.613
+    train loss: 0.824
+epoch+idx: 9
+After sub-epoch 75:
+ test acc: 0.622
+    test acc: 0.622
+    train loss: 0.889
+epoch+idx: 10
+After sub-epoch 76:
+ test acc: 0.622
+    test acc: 0.622
+    train loss: 0.866
+epoch+idx: 11
+After sub-epoch 77:
+ test acc: 0.620
+    test acc: 0.620
+    train loss: 0.902
+epoch+idx: 12
+After sub-epoch 78:
+ test acc: 0.618
+    test acc: 0.618
+    train loss: 0.971
+epoch+idx: 13
+After sub-epoch 79:
+ test acc: 0.612
+    test acc: 0.612
+    train loss: 0.997
+epoch+idx: 14
+After sub-epoch 80:
+ test acc: 0.610
+    test acc: 0.610
+    train loss: 0.994
+epoch+idx: 15
+After sub-epoch 81:
+ test acc: 0.612
+    test acc: 0.612
+    train loss: 0.972
+epoch+idx: 16
+After sub-epoch 82:
+ test acc: 0.625
+    test acc: 0.625
+    train loss: 0.952
+epoch+idx: 17
+After sub-epoch 83:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 0.934
+epoch+idx: 18
+After sub-epoch 84:
+ test acc: 0.551
+    test acc: 0.551
+    train loss: 0.946
+============== End of epoch 5 ============
+epoch+idx: 6
+After sub-epoch 85:
+ test acc: 0.550
+    test acc: 0.550
+    train loss: 1.367
+epoch+idx: 7
+After sub-epoch 86:
+ test acc: 0.550
+    test acc: 0.550
+    train loss: 1.152
+epoch+idx: 8
+After sub-epoch 87:
+ test acc: 0.548
+    test acc: 0.548
+    train loss: 0.996
+epoch+idx: 9
+After sub-epoch 88:
+ test acc: 0.546
+    test acc: 0.546
+    train loss: 0.882
+epoch+idx: 10
+After sub-epoch 89:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.854
+epoch+idx: 11
+After sub-epoch 90:
+ test acc: 0.542
+    test acc: 0.542
+    train loss: 0.802
+epoch+idx: 12
+After sub-epoch 91:
+ test acc: 0.539
+    test acc: 0.539
+    train loss: 0.848
+epoch+idx: 13
+After sub-epoch 92:
+ test acc: 0.544
+    test acc: 0.544
+    train loss: 0.872
+epoch+idx: 14
+After sub-epoch 93:
+ test acc: 0.548
+    test acc: 0.548
+    train loss: 0.860
+epoch+idx: 15
+After sub-epoch 94:
+ test acc: 0.552
+    test acc: 0.552
+    train loss: 0.925
+epoch+idx: 16
+After sub-epoch 95:
+ test acc: 0.555
+    test acc: 0.555
+    train loss: 0.908
+epoch+idx: 17
+After sub-epoch 96:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 0.915
+epoch+idx: 18
+After sub-epoch 97:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 0.903
+epoch+idx: 19
+After sub-epoch 98:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 0.923
+============== End of epoch 6 ============
+epoch+idx: 7
+After sub-epoch 99:
+ test acc: 0.561
+    test acc: 0.561
+    train loss: 0.958
+epoch+idx: 8
+After sub-epoch 100:
+ test acc: 0.652
+    test acc: 0.652
+    train loss: 0.754
+epoch+idx: 9
+After sub-epoch 101:
+ test acc: 0.662
+    test acc: 0.662
+    train loss: 0.887
+epoch+idx: 10
+After sub-epoch 102:
+ test acc: 0.670
+    test acc: 0.670
+    train loss: 0.833
+epoch+idx: 11
+After sub-epoch 103:
+ test acc: 0.662
+    test acc: 0.662
+    train loss: 0.905
+epoch+idx: 12
+After sub-epoch 104:
+ test acc: 0.656
+    test acc: 0.656
+    train loss: 0.864
+epoch+idx: 13
+After sub-epoch 105:
+ test acc: 0.651
+    test acc: 0.651
+    train loss: 0.842
+epoch+idx: 14
+After sub-epoch 106:
+ test acc: 0.647
+    test acc: 0.647
+    train loss: 0.868
+epoch+idx: 15
+After sub-epoch 107:
+ test acc: 0.644
+    test acc: 0.644
+    train loss: 0.854
+epoch+idx: 16
+After sub-epoch 108:
+ test acc: 0.650
+    test acc: 0.650
+    train loss: 0.878
+epoch+idx: 17
+After sub-epoch 109:
+ test acc: 0.650
+    test acc: 0.650
+    train loss: 0.855
+epoch+idx: 18
+After sub-epoch 110:
+ test acc: 0.649
+    test acc: 0.649
+    train loss: 0.843
+epoch+idx: 19
+After sub-epoch 111:
+ test acc: 0.619
+    test acc: 0.619
+    train loss: 0.832
+epoch+idx: 20
+After sub-epoch 112:
+ test acc: 0.620
+    test acc: 0.620
+    train loss: 0.873
+============== End of epoch 7 ============
+epoch+idx: 8
+After sub-epoch 113:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.708
+epoch+idx: 9
+After sub-epoch 114:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.705
+epoch+idx: 10
+After sub-epoch 115:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 0.784
+epoch+idx: 11
+After sub-epoch 116:
+ test acc: 0.564
+    test acc: 0.564
+    train loss: 0.755
+epoch+idx: 12
+After sub-epoch 117:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 0.723
+epoch+idx: 13
+After sub-epoch 118:
+ test acc: 0.558
+    test acc: 0.558
+    train loss: 0.746
+epoch+idx: 14
+After sub-epoch 119:
+ test acc: 0.556
+    test acc: 0.556
+    train loss: 0.739
+epoch+idx: 15
+After sub-epoch 120:
+ test acc: 0.555
+    test acc: 0.555
+    train loss: 0.759
+epoch+idx: 16
+After sub-epoch 121:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 0.749
+epoch+idx: 17
+After sub-epoch 122:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 0.823
+epoch+idx: 18
+After sub-epoch 123:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 0.861
+epoch+idx: 19
+After sub-epoch 124:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 0.904
+epoch+idx: 20
+After sub-epoch 125:
+ test acc: 0.555
+    test acc: 0.555
+    train loss: 0.886
+epoch+idx: 21
+After sub-epoch 126:
+ test acc: 0.556
+    test acc: 0.556
+    train loss: 0.898
+============== End of epoch 8 ============
+epoch+idx: 9
+After sub-epoch 127:
+ test acc: 0.610
+    test acc: 0.610
+    train loss: 0.630
+epoch+idx: 10
+After sub-epoch 128:
+ test acc: 0.568
+    test acc: 0.568
+    train loss: 0.749
+epoch+idx: 11
+After sub-epoch 129:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 0.738
+epoch+idx: 12
+After sub-epoch 130:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 0.826
+epoch+idx: 13
+After sub-epoch 131:
+ test acc: 0.561
+    test acc: 0.561
+    train loss: 0.800
+epoch+idx: 14
+After sub-epoch 132:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 0.804
+epoch+idx: 15
+After sub-epoch 133:
+ test acc: 0.566
+    test acc: 0.566
+    train loss: 0.791
+epoch+idx: 16
+After sub-epoch 134:
+ test acc: 0.574
+    test acc: 0.574
+    train loss: 0.792
+epoch+idx: 17
+After sub-epoch 135:
+ test acc: 0.606
+    test acc: 0.606
+    train loss: 0.836
+epoch+idx: 18
+After sub-epoch 136:
+ test acc: 0.635
+    test acc: 0.635
+    train loss: 0.821
+epoch+idx: 19
+After sub-epoch 137:
+ test acc: 0.647
+    test acc: 0.647
+    train loss: 0.813
+epoch+idx: 20
+After sub-epoch 138:
+ test acc: 0.653
+    test acc: 0.653
+    train loss: 0.815
+epoch+idx: 21
+After sub-epoch 139:
+ test acc: 0.662
+    test acc: 0.662
+    train loss: 0.853
+epoch+idx: 22
+After sub-epoch 140:
+ test acc: 0.668
+    test acc: 0.668
+    train loss: 0.838
+============== End of epoch 9 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.222
+    test acc: 0.222
+    train loss: 2.044
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.470
+    test acc: 0.470
+    train loss: 1.972
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.902
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.844
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.811
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.793
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.796
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.757
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.709
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.704
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.650
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.645
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.623
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.576
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.463
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.418
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.393
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.384
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.404
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.352
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.369
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.386
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.343
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.297
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.258
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.214
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.242
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.218
+============== End of epoch 1 ============
+epoch+idx: 2
+After sub-epoch 29:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.897
+epoch+idx: 3
+After sub-epoch 30:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.170
+epoch+idx: 4
+After sub-epoch 31:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.227
+epoch+idx: 5
+After sub-epoch 32:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.084
+epoch+idx: 6
+After sub-epoch 33:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.136
+epoch+idx: 7
+After sub-epoch 34:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.207
+epoch+idx: 8
+After sub-epoch 35:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.164
+epoch+idx: 9
+After sub-epoch 36:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.195
+epoch+idx: 10
+After sub-epoch 37:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.152
+epoch+idx: 11
+After sub-epoch 38:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.131
+epoch+idx: 12
+After sub-epoch 39:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.136
+epoch+idx: 13
+After sub-epoch 40:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.101
+epoch+idx: 14
+After sub-epoch 41:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.105
+epoch+idx: 15
+After sub-epoch 42:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.097
+============== End of epoch 2 ============
+epoch+idx: 3
+After sub-epoch 43:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.879
+epoch+idx: 4
+After sub-epoch 44:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.152
+epoch+idx: 5
+After sub-epoch 45:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.240
+epoch+idx: 6
+After sub-epoch 46:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.197
+epoch+idx: 7
+After sub-epoch 47:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.259
+epoch+idx: 8
+After sub-epoch 48:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.231
+epoch+idx: 9
+After sub-epoch 49:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.192
+epoch+idx: 10
+After sub-epoch 50:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.152
+epoch+idx: 11
+After sub-epoch 51:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.111
+epoch+idx: 12
+After sub-epoch 52:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.085
+epoch+idx: 13
+After sub-epoch 53:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.047
+epoch+idx: 14
+After sub-epoch 54:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.066
+epoch+idx: 15
+After sub-epoch 55:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.039
+epoch+idx: 16
+After sub-epoch 56:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.046
+============== End of epoch 3 ============
+epoch+idx: 4
+After sub-epoch 57:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.767
+epoch+idx: 5
+After sub-epoch 58:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.781
+epoch+idx: 6
+After sub-epoch 59:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.884
+epoch+idx: 7
+After sub-epoch 60:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.917
+epoch+idx: 8
+After sub-epoch 61:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.939
+epoch+idx: 9
+After sub-epoch 62:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.023
+epoch+idx: 10
+After sub-epoch 63:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.003
+epoch+idx: 11
+After sub-epoch 64:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.031
+epoch+idx: 12
+After sub-epoch 65:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.076
+epoch+idx: 13
+After sub-epoch 66:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.038
+epoch+idx: 14
+After sub-epoch 67:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.027
+epoch+idx: 15
+After sub-epoch 68:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.059
+epoch+idx: 16
+After sub-epoch 69:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.028
+epoch+idx: 17
+After sub-epoch 70:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.012
+============== End of epoch 4 ============
+epoch+idx: 5
+After sub-epoch 71:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.792
+epoch+idx: 6
+After sub-epoch 72:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.779
+epoch+idx: 7
+After sub-epoch 73:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.739
+epoch+idx: 8
+After sub-epoch 74:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.781
+epoch+idx: 9
+After sub-epoch 75:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.860
+epoch+idx: 10
+After sub-epoch 76:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.823
+epoch+idx: 11
+After sub-epoch 77:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.865
+epoch+idx: 12
+After sub-epoch 78:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.935
+epoch+idx: 13
+After sub-epoch 79:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.952
+epoch+idx: 14
+After sub-epoch 80:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.934
+epoch+idx: 15
+After sub-epoch 81:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.978
+epoch+idx: 16
+After sub-epoch 82:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.978
+epoch+idx: 17
+After sub-epoch 83:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.012
+epoch+idx: 18
+After sub-epoch 84:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.991
+============== End of epoch 5 ============
+epoch+idx: 6
+After sub-epoch 85:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.074
+epoch+idx: 7
+After sub-epoch 86:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.963
+epoch+idx: 8
+After sub-epoch 87:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.959
+epoch+idx: 9
+After sub-epoch 88:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.929
+epoch+idx: 10
+After sub-epoch 89:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.043
+epoch+idx: 11
+After sub-epoch 90:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.015
+epoch+idx: 12
+After sub-epoch 91:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.972
+epoch+idx: 13
+After sub-epoch 92:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.936
+epoch+idx: 14
+After sub-epoch 93:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.930
+epoch+idx: 15
+After sub-epoch 94:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.927
+epoch+idx: 16
+After sub-epoch 95:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.955
+epoch+idx: 17
+After sub-epoch 96:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.997
+epoch+idx: 18
+After sub-epoch 97:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.970
+epoch+idx: 19
+After sub-epoch 98:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.003
+============== End of epoch 6 ============
+epoch+idx: 7
+After sub-epoch 99:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.710
+epoch+idx: 8
+After sub-epoch 100:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.673
+epoch+idx: 9
+After sub-epoch 101:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.687
+epoch+idx: 10
+After sub-epoch 102:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.870
+epoch+idx: 11
+After sub-epoch 103:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.881
+epoch+idx: 12
+After sub-epoch 104:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.853
+epoch+idx: 13
+After sub-epoch 105:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.868
+epoch+idx: 14
+After sub-epoch 106:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.935
+epoch+idx: 15
+After sub-epoch 107:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.900
+epoch+idx: 16
+After sub-epoch 108:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.935
+epoch+idx: 17
+After sub-epoch 109:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.913
+epoch+idx: 18
+After sub-epoch 110:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.916
+epoch+idx: 19
+After sub-epoch 111:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.912
+epoch+idx: 20
+After sub-epoch 112:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.949
+============== End of epoch 7 ============
+epoch+idx: 8
+After sub-epoch 113:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.565
+epoch+idx: 9
+After sub-epoch 114:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.002
+epoch+idx: 10
+After sub-epoch 115:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.917
+epoch+idx: 11
+After sub-epoch 116:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.902
+epoch+idx: 12
+After sub-epoch 117:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.857
+epoch+idx: 13
+After sub-epoch 118:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.946
+epoch+idx: 14
+After sub-epoch 119:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.940
+epoch+idx: 15
+After sub-epoch 120:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.995
+epoch+idx: 16
+After sub-epoch 121:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.950
+epoch+idx: 17
+After sub-epoch 122:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.956
+epoch+idx: 18
+After sub-epoch 123:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.940
+epoch+idx: 19
+After sub-epoch 124:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.943
+epoch+idx: 20
+After sub-epoch 125:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.927
+epoch+idx: 21
+After sub-epoch 126:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.947
+============== End of epoch 8 ============
+epoch+idx: 9
+After sub-epoch 127:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.353
+epoch+idx: 10
+After sub-epoch 128:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.363
+epoch+idx: 11
+After sub-epoch 129:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.213
+epoch+idx: 12
+After sub-epoch 130:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.082
+epoch+idx: 13
+After sub-epoch 131:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.034
+epoch+idx: 14
+After sub-epoch 132:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.007
+epoch+idx: 15
+After sub-epoch 133:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 1.038
+epoch+idx: 16
+After sub-epoch 134:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.993
+epoch+idx: 17
+After sub-epoch 135:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.948
+epoch+idx: 18
+After sub-epoch 136:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.925
+epoch+idx: 19
+After sub-epoch 137:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.902
+epoch+idx: 20
+After sub-epoch 138:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.947
+epoch+idx: 21
+After sub-epoch 139:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.950
+epoch+idx: 22
+After sub-epoch 140:
+ test acc: 0.520
+    test acc: 0.520
+    train loss: 0.924
+============== End of epoch 9 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.974
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.989
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.931
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.938
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.929
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.930
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.948
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.931
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.923
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.313
+    test acc: 0.313
+    train loss: 1.920
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.490
+    test acc: 0.490
+    train loss: 1.907
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.484
+    test acc: 0.484
+    train loss: 1.893
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.475
+    test acc: 0.475
+    train loss: 1.880
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.523
+    test acc: 0.523
+    train loss: 1.860
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.138
+    test acc: 0.138
+    train loss: 1.901
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.138
+    test acc: 0.138
+    train loss: 1.873
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.138
+    test acc: 0.138
+    train loss: 1.882
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.138
+    test acc: 0.138
+    train loss: 1.862
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.210
+    test acc: 0.210
+    train loss: 1.841
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.336
+    test acc: 0.336
+    train loss: 1.839
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.429
+    test acc: 0.429
+    train loss: 1.819
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.455
+    test acc: 0.455
+    train loss: 1.798
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.478
+    test acc: 0.478
+    train loss: 1.786
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.502
+    test acc: 0.502
+    train loss: 1.771
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.519
+    test acc: 0.519
+    train loss: 1.749
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.523
+    test acc: 0.523
+    train loss: 1.749
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.521
+    test acc: 0.521
+    train loss: 1.755
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.518
+    test acc: 0.518
+    train loss: 1.751
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.011
+    test acc: 0.011
+    train loss: 1.966
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.110
+    test acc: 0.110
+    train loss: 1.885
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.123
+    test acc: 0.123
+    train loss: 1.900
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.912
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.898
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.888
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.893
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.873
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.857
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.844
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.852
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.844
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.833
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.125
+    test acc: 0.125
+    train loss: 1.811
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.420
+    test acc: 0.420
+    train loss: 2.319
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.369
+    test acc: 0.369
+    train loss: 1.872
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.403
+    test acc: 0.403
+    train loss: 1.696
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.372
+    test acc: 0.372
+    train loss: 1.787
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.556
+    test acc: 0.556
+    train loss: 1.744
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.651
+    test acc: 0.651
+    train loss: 1.713
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.669
+    test acc: 0.669
+    train loss: 1.686
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.668
+    test acc: 0.668
+    train loss: 1.658
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.650
+    test acc: 0.650
+    train loss: 1.638
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.629
+    test acc: 0.629
+    train loss: 1.611
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.513
+    test acc: 0.513
+    train loss: 1.603
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.507
+    test acc: 0.507
+    train loss: 1.583
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.539
+    test acc: 0.539
+    train loss: 1.566
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.494
+    test acc: 0.494
+    train loss: 1.569
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.489
+    test acc: 0.489
+    train loss: 1.392
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.555
+    test acc: 0.555
+    train loss: 1.358
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.594
+    test acc: 0.594
+    train loss: 1.375
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.616
+    test acc: 0.616
+    train loss: 1.403
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.629
+    test acc: 0.629
+    train loss: 1.396
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.636
+    test acc: 0.636
+    train loss: 1.376
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.641
+    test acc: 0.641
+    train loss: 1.356
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.646
+    test acc: 0.646
+    train loss: 1.383
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.649
+    test acc: 0.649
+    train loss: 1.370
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.651
+    test acc: 0.651
+    train loss: 1.370
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.653
+    test acc: 0.653
+    train loss: 1.397
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.654
+    test acc: 0.654
+    train loss: 1.379
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.656
+    test acc: 0.656
+    train loss: 1.368
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.657
+    test acc: 0.657
+    train loss: 1.352
+============== End of epoch 1 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.676
+    test acc: 0.676
+    train loss: 2.068
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 2.007
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.886
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.766
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.783
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.694
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.682
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.652
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.603
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.625
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.644
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.669
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.669
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.682
+    test acc: 0.682
+    train loss: 1.633
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.270
+    test acc: 0.270
+    train loss: 1.877
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.182
+    test acc: 0.182
+    train loss: 1.902
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.207
+    test acc: 0.207
+    train loss: 1.797
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.241
+    test acc: 0.241
+    train loss: 1.752
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.184
+    test acc: 0.184
+    train loss: 1.728
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.472
+    test acc: 0.472
+    train loss: 1.675
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 1.616
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.603
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.571
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.546
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.564
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.543
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 1.515
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.552
+    test acc: 0.552
+    train loss: 1.492
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.567
+    test acc: 0.567
+    train loss: 1.071
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.189
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.173
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.152
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.150
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.176
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.272
+    test acc: 0.272
+    train loss: 1.175
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.271
+    test acc: 0.271
+    train loss: 1.229
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.552
+    test acc: 0.552
+    train loss: 1.298
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.701
+    test acc: 0.701
+    train loss: 1.289
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.704
+    test acc: 0.704
+    train loss: 1.284
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.727
+    test acc: 0.727
+    train loss: 1.265
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.688
+    test acc: 0.688
+    train loss: 1.254
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.647
+    test acc: 0.647
+    train loss: 1.254
+============== End of epoch 1 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 2.064
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.976
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 1.899
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.572
+    test acc: 0.572
+    train loss: 1.828
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.575
+    test acc: 0.575
+    train loss: 1.743
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.575
+    test acc: 0.575
+    train loss: 1.711
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.577
+    test acc: 0.577
+    train loss: 1.667
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.579
+    test acc: 0.579
+    train loss: 1.602
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.596
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.515
+    test acc: 0.515
+    train loss: 1.605
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.576
+    test acc: 0.576
+    train loss: 1.590
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.579
+    test acc: 0.579
+    train loss: 1.605
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.580
+    test acc: 0.580
+    train loss: 1.572
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.580
+    test acc: 0.580
+    train loss: 1.568
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.580
+    test acc: 0.580
+    train loss: 0.956
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 1.157
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.755
+    test acc: 0.755
+    train loss: 1.141
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.711
+    test acc: 0.711
+    train loss: 1.111
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.751
+    test acc: 0.751
+    train loss: 1.096
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.764
+    test acc: 0.764
+    train loss: 1.118
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.740
+    test acc: 0.740
+    train loss: 1.129
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.779
+    test acc: 0.779
+    train loss: 1.105
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.774
+    test acc: 0.774
+    train loss: 1.137
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.778
+    test acc: 0.778
+    train loss: 1.119
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.778
+    test acc: 0.778
+    train loss: 1.170
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 1.165
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.768
+    test acc: 0.768
+    train loss: 1.165
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.703
+    test acc: 0.703
+    train loss: 1.184
+============== End of epoch 1 ============
+epoch+idx: 2
+After sub-epoch 29:
+ test acc: 0.712
+    test acc: 0.712
+    train loss: 1.366
+epoch+idx: 3
+After sub-epoch 30:
+ test acc: 0.761
+    test acc: 0.761
+    train loss: 1.080
+epoch+idx: 4
+After sub-epoch 31:
+ test acc: 0.757
+    test acc: 0.757
+    train loss: 1.058
+epoch+idx: 5
+After sub-epoch 32:
+ test acc: 0.754
+    test acc: 0.754
+    train loss: 1.016
+epoch+idx: 6
+After sub-epoch 33:
+ test acc: 0.750
+    test acc: 0.750
+    train loss: 1.118
+epoch+idx: 7
+After sub-epoch 34:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 1.143
+epoch+idx: 8
+After sub-epoch 35:
+ test acc: 0.743
+    test acc: 0.743
+    train loss: 1.179
+epoch+idx: 9
+After sub-epoch 36:
+ test acc: 0.742
+    test acc: 0.742
+    train loss: 1.141
+epoch+idx: 10
+After sub-epoch 37:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 1.114
+epoch+idx: 11
+After sub-epoch 38:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 1.076
+epoch+idx: 12
+After sub-epoch 39:
+ test acc: 0.740
+    test acc: 0.740
+    train loss: 1.076
+epoch+idx: 13
+After sub-epoch 40:
+ test acc: 0.743
+    test acc: 0.743
+    train loss: 1.069
+epoch+idx: 14
+After sub-epoch 41:
+ test acc: 0.749
+    test acc: 0.749
+    train loss: 1.051
+epoch+idx: 15
+After sub-epoch 42:
+ test acc: 0.756
+    test acc: 0.756
+    train loss: 1.055
+============== End of epoch 2 ============
+epoch+idx: 3
+After sub-epoch 43:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 0.888
+epoch+idx: 4
+After sub-epoch 44:
+ test acc: 0.743
+    test acc: 0.743
+    train loss: 0.832
+epoch+idx: 5
+After sub-epoch 45:
+ test acc: 0.740
+    test acc: 0.740
+    train loss: 1.009
+epoch+idx: 6
+After sub-epoch 46:
+ test acc: 0.765
+    test acc: 0.765
+    train loss: 1.051
+epoch+idx: 7
+After sub-epoch 47:
+ test acc: 0.773
+    test acc: 0.773
+    train loss: 1.008
+epoch+idx: 8
+After sub-epoch 48:
+ test acc: 0.779
+    test acc: 0.779
+    train loss: 0.999
+epoch+idx: 9
+After sub-epoch 49:
+ test acc: 0.773
+    test acc: 0.773
+    train loss: 0.961
+epoch+idx: 10
+After sub-epoch 50:
+ test acc: 0.765
+    test acc: 0.765
+    train loss: 1.041
+epoch+idx: 11
+After sub-epoch 51:
+ test acc: 0.764
+    test acc: 0.764
+    train loss: 1.015
+epoch+idx: 12
+After sub-epoch 52:
+ test acc: 0.763
+    test acc: 0.763
+    train loss: 0.992
+epoch+idx: 13
+After sub-epoch 53:
+ test acc: 0.765
+    test acc: 0.765
+    train loss: 1.003
+epoch+idx: 14
+After sub-epoch 54:
+ test acc: 0.768
+    test acc: 0.768
+    train loss: 0.989
+epoch+idx: 15
+After sub-epoch 55:
+ test acc: 0.772
+    test acc: 0.772
+    train loss: 1.016
+epoch+idx: 16
+After sub-epoch 56:
+ test acc: 0.771
+    test acc: 0.771
+    train loss: 1.000
+============== End of epoch 3 ============
+epoch+idx: 4
+After sub-epoch 57:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 1.166
+epoch+idx: 5
+After sub-epoch 58:
+ test acc: 0.734
+    test acc: 0.734
+    train loss: 0.934
+epoch+idx: 6
+After sub-epoch 59:
+ test acc: 0.731
+    test acc: 0.731
+    train loss: 0.869
+epoch+idx: 7
+After sub-epoch 60:
+ test acc: 0.727
+    test acc: 0.727
+    train loss: 0.871
+epoch+idx: 8
+After sub-epoch 61:
+ test acc: 0.725
+    test acc: 0.725
+    train loss: 0.834
+epoch+idx: 9
+After sub-epoch 62:
+ test acc: 0.734
+    test acc: 0.734
+    train loss: 0.874
+epoch+idx: 10
+After sub-epoch 63:
+ test acc: 0.750
+    test acc: 0.750
+    train loss: 0.850
+epoch+idx: 11
+After sub-epoch 64:
+ test acc: 0.761
+    test acc: 0.761
+    train loss: 0.925
+epoch+idx: 12
+After sub-epoch 65:
+ test acc: 0.765
+    test acc: 0.765
+    train loss: 0.909
+epoch+idx: 13
+After sub-epoch 66:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.978
+epoch+idx: 14
+After sub-epoch 67:
+ test acc: 0.732
+    test acc: 0.732
+    train loss: 0.965
+epoch+idx: 15
+After sub-epoch 68:
+ test acc: 0.713
+    test acc: 0.713
+    train loss: 0.951
+epoch+idx: 16
+After sub-epoch 69:
+ test acc: 0.671
+    test acc: 0.671
+    train loss: 0.985
+epoch+idx: 17
+After sub-epoch 70:
+ test acc: 0.638
+    test acc: 0.638
+    train loss: 0.989
+============== End of epoch 4 ============
+epoch+idx: 5
+After sub-epoch 71:
+ test acc: 0.623
+    test acc: 0.623
+    train loss: 0.685
+epoch+idx: 6
+After sub-epoch 72:
+ test acc: 0.601
+    test acc: 0.601
+    train loss: 0.701
+epoch+idx: 7
+After sub-epoch 73:
+ test acc: 0.592
+    test acc: 0.592
+    train loss: 0.730
+epoch+idx: 8
+After sub-epoch 74:
+ test acc: 0.602
+    test acc: 0.602
+    train loss: 0.767
+epoch+idx: 9
+After sub-epoch 75:
+ test acc: 0.625
+    test acc: 0.625
+    train loss: 0.764
+epoch+idx: 10
+After sub-epoch 76:
+ test acc: 0.666
+    test acc: 0.666
+    train loss: 0.847
+epoch+idx: 11
+After sub-epoch 77:
+ test acc: 0.612
+    test acc: 0.612
+    train loss: 0.942
+epoch+idx: 12
+After sub-epoch 78:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.917
+epoch+idx: 13
+After sub-epoch 79:
+ test acc: 0.692
+    test acc: 0.692
+    train loss: 0.924
+epoch+idx: 14
+After sub-epoch 80:
+ test acc: 0.688
+    test acc: 0.688
+    train loss: 0.958
+epoch+idx: 15
+After sub-epoch 81:
+ test acc: 0.696
+    test acc: 0.696
+    train loss: 0.937
+epoch+idx: 16
+After sub-epoch 82:
+ test acc: 0.717
+    test acc: 0.717
+    train loss: 0.923
+epoch+idx: 17
+After sub-epoch 83:
+ test acc: 0.730
+    test acc: 0.730
+    train loss: 0.955
+epoch+idx: 18
+After sub-epoch 84:
+ test acc: 0.723
+    test acc: 0.723
+    train loss: 0.944
+============== End of epoch 5 ============
+epoch+idx: 6
+After sub-epoch 85:
+ test acc: 0.707
+    test acc: 0.707
+    train loss: 0.595
+epoch+idx: 7
+After sub-epoch 86:
+ test acc: 0.708
+    test acc: 0.708
+    train loss: 0.725
+epoch+idx: 8
+After sub-epoch 87:
+ test acc: 0.715
+    test acc: 0.715
+    train loss: 0.834
+epoch+idx: 9
+After sub-epoch 88:
+ test acc: 0.727
+    test acc: 0.727
+    train loss: 1.016
+epoch+idx: 10
+After sub-epoch 89:
+ test acc: 0.738
+    test acc: 0.738
+    train loss: 0.961
+epoch+idx: 11
+After sub-epoch 90:
+ test acc: 0.748
+    test acc: 0.748
+    train loss: 1.014
+epoch+idx: 12
+After sub-epoch 91:
+ test acc: 0.753
+    test acc: 0.753
+    train loss: 0.961
+epoch+idx: 13
+After sub-epoch 92:
+ test acc: 0.757
+    test acc: 0.757
+    train loss: 1.064
+epoch+idx: 14
+After sub-epoch 93:
+ test acc: 0.758
+    test acc: 0.758
+    train loss: 1.021
+epoch+idx: 15
+After sub-epoch 94:
+ test acc: 0.757
+    test acc: 0.757
+    train loss: 1.002
+epoch+idx: 16
+After sub-epoch 95:
+ test acc: 0.756
+    test acc: 0.756
+    train loss: 0.972
+epoch+idx: 17
+After sub-epoch 96:
+ test acc: 0.755
+    test acc: 0.755
+    train loss: 1.006
+epoch+idx: 18
+After sub-epoch 97:
+ test acc: 0.757
+    test acc: 0.757
+    train loss: 0.981
+epoch+idx: 19
+After sub-epoch 98:
+ test acc: 0.759
+    test acc: 0.759
+    train loss: 0.959
+============== End of epoch 6 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.449
+    test acc: 0.449
+    train loss: 1.975
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.462
+    test acc: 0.462
+    train loss: 1.994
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.963
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.946
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.938
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.926
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.918
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.483
+    test acc: 0.483
+    train loss: 1.908
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.640
+    test acc: 0.640
+    train loss: 1.900
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.770
+    test acc: 0.770
+    train loss: 1.883
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.796
+    test acc: 0.796
+    train loss: 1.873
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.678
+    test acc: 0.678
+    train loss: 1.877
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.678
+    test acc: 0.678
+    train loss: 1.864
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.426
+    test acc: 0.426
+    train loss: 1.856
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.275
+    test acc: 0.275
+    train loss: 2.035
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.268
+    test acc: 0.268
+    train loss: 1.989
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.542
+    test acc: 0.542
+    train loss: 1.938
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.862
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.802
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.783
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.768
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.784
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.742
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.762
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.728
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.752
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.728
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.570
+    test acc: 0.570
+    train loss: 1.714
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.006
+    test acc: 0.006
+    train loss: 2.045
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.006
+    test acc: 0.006
+    train loss: 2.074
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.006
+    test acc: 0.006
+    train loss: 2.023
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.006
+    test acc: 0.006
+    train loss: 1.994
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.006
+    test acc: 0.006
+    train loss: 1.991
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.007
+    test acc: 0.007
+    train loss: 1.981
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.214
+    test acc: 0.214
+    train loss: 1.972
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.383
+    test acc: 0.383
+    train loss: 1.963
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.413
+    test acc: 0.413
+    train loss: 1.954
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.456
+    test acc: 0.456
+    train loss: 1.949
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.514
+    test acc: 0.514
+    train loss: 1.942
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 1.930
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.577
+    test acc: 0.577
+    train loss: 1.929
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.595
+    test acc: 0.595
+    train loss: 1.920
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.884
+    test acc: 0.884
+    train loss: 1.843
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.893
+    test acc: 0.893
+    train loss: 1.843
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.895
+    test acc: 0.895
+    train loss: 1.889
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.894
+    test acc: 0.894
+    train loss: 1.852
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.893
+    test acc: 0.893
+    train loss: 1.852
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.811
+    test acc: 0.811
+    train loss: 1.871
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.723
+    test acc: 0.723
+    train loss: 1.846
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.686
+    test acc: 0.686
+    train loss: 1.830
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.656
+    test acc: 0.656
+    train loss: 1.834
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.630
+    test acc: 0.630
+    train loss: 1.815
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.603
+    test acc: 0.603
+    train loss: 1.815
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.595
+    test acc: 0.595
+    train loss: 1.807
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.588
+    test acc: 0.588
+    train loss: 1.813
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.580
+    test acc: 0.580
+    train loss: 1.811
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.511
+    test acc: 0.511
+    train loss: 1.972
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 2.019
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.550
+    test acc: 0.550
+    train loss: 2.024
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.554
+    test acc: 0.554
+    train loss: 1.958
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 1.928
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.895
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.870
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.559
+    test acc: 0.559
+    train loss: 1.859
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 1.865
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.561
+    test acc: 0.561
+    train loss: 1.843
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 1.832
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 1.834
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 1.839
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 1.826
+============== End of epoch 0 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.289
+    test acc: 0.289
+    train loss: 2.067
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.283
+    test acc: 0.283
+    train loss: 1.950
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.831
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.704
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.661
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.722
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.664
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.686
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.664
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.574
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.529
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.528
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.488
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.441
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.284
+    test acc: 0.284
+    train loss: 1.497
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.363
+    test acc: 0.363
+    train loss: 1.501
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.377
+    test acc: 0.377
+    train loss: 1.482
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.385
+    test acc: 0.385
+    train loss: 1.345
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.214
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.150
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.103
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.138
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.385
+    test acc: 0.385
+    train loss: 1.152
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.385
+    test acc: 0.385
+    train loss: 1.156
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.388
+    test acc: 0.388
+    train loss: 1.167
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.390
+    test acc: 0.390
+    train loss: 1.116
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.729
+    test acc: 0.729
+    train loss: 1.092
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.728
+    test acc: 0.728
+    train loss: 1.063
+============== End of epoch 1 ============
+epoch+idx: 2
+After sub-epoch 29:
+ test acc: 0.730
+    test acc: 0.730
+    train loss: 0.505
+epoch+idx: 3
+After sub-epoch 30:
+ test acc: 0.729
+    test acc: 0.729
+    train loss: 0.609
+epoch+idx: 4
+After sub-epoch 31:
+ test acc: 0.732
+    test acc: 0.732
+    train loss: 0.819
+epoch+idx: 5
+After sub-epoch 32:
+ test acc: 0.735
+    test acc: 0.735
+    train loss: 0.870
+epoch+idx: 6
+After sub-epoch 33:
+ test acc: 0.735
+    test acc: 0.735
+    train loss: 0.851
+epoch+idx: 7
+After sub-epoch 34:
+ test acc: 0.737
+    test acc: 0.737
+    train loss: 0.835
+epoch+idx: 8
+After sub-epoch 35:
+ test acc: 0.736
+    test acc: 0.736
+    train loss: 0.838
+epoch+idx: 9
+After sub-epoch 36:
+ test acc: 0.736
+    test acc: 0.736
+    train loss: 0.823
+epoch+idx: 10
+After sub-epoch 37:
+ test acc: 0.736
+    test acc: 0.736
+    train loss: 0.888
+epoch+idx: 11
+After sub-epoch 38:
+ test acc: 0.406
+    test acc: 0.406
+    train loss: 0.854
+epoch+idx: 12
+After sub-epoch 39:
+ test acc: 0.455
+    test acc: 0.455
+    train loss: 0.912
+epoch+idx: 13
+After sub-epoch 40:
+ test acc: 0.384
+    test acc: 0.384
+    train loss: 0.919
+epoch+idx: 14
+After sub-epoch 41:
+ test acc: 0.383
+    test acc: 0.383
+    train loss: 0.898
+epoch+idx: 15
+After sub-epoch 42:
+ test acc: 0.384
+    test acc: 0.384
+    train loss: 0.930
+============== End of epoch 2 ============
+epoch+idx: 3
+After sub-epoch 43:
+ test acc: 0.385
+    test acc: 0.385
+    train loss: 1.349
+epoch+idx: 4
+After sub-epoch 44:
+ test acc: 0.386
+    test acc: 0.386
+    train loss: 1.372
+epoch+idx: 5
+After sub-epoch 45:
+ test acc: 0.386
+    test acc: 0.386
+    train loss: 1.147
+epoch+idx: 6
+After sub-epoch 46:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.213
+epoch+idx: 7
+After sub-epoch 47:
+ test acc: 0.387
+    test acc: 0.387
+    train loss: 1.240
+epoch+idx: 8
+After sub-epoch 48:
+ test acc: 0.751
+    test acc: 0.751
+    train loss: 1.157
+epoch+idx: 9
+After sub-epoch 49:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 1.079
+epoch+idx: 10
+After sub-epoch 50:
+ test acc: 0.736
+    test acc: 0.736
+    train loss: 1.015
+epoch+idx: 11
+After sub-epoch 51:
+ test acc: 0.735
+    test acc: 0.735
+    train loss: 0.994
+epoch+idx: 12
+After sub-epoch 52:
+ test acc: 0.754
+    test acc: 0.754
+    train loss: 1.003
+epoch+idx: 13
+After sub-epoch 53:
+ test acc: 0.758
+    test acc: 0.758
+    train loss: 0.964
+epoch+idx: 14
+After sub-epoch 54:
+ test acc: 0.761
+    test acc: 0.761
+    train loss: 0.932
+epoch+idx: 15
+After sub-epoch 55:
+ test acc: 0.760
+    test acc: 0.760
+    train loss: 0.904
+epoch+idx: 16
+After sub-epoch 56:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.889
+============== End of epoch 3 ============
+epoch+idx: 4
+After sub-epoch 57:
+ test acc: 0.732
+    test acc: 0.732
+    train loss: 0.591
+epoch+idx: 5
+After sub-epoch 58:
+ test acc: 0.470
+    test acc: 0.470
+    train loss: 0.869
+epoch+idx: 6
+After sub-epoch 59:
+ test acc: 0.418
+    test acc: 0.418
+    train loss: 1.030
+epoch+idx: 7
+After sub-epoch 60:
+ test acc: 0.389
+    test acc: 0.389
+    train loss: 1.111
+epoch+idx: 8
+After sub-epoch 61:
+ test acc: 0.390
+    test acc: 0.390
+    train loss: 1.058
+epoch+idx: 9
+After sub-epoch 62:
+ test acc: 0.390
+    test acc: 0.390
+    train loss: 0.953
+epoch+idx: 10
+After sub-epoch 63:
+ test acc: 0.390
+    test acc: 0.390
+    train loss: 0.975
+epoch+idx: 11
+After sub-epoch 64:
+ test acc: 0.390
+    test acc: 0.390
+    train loss: 0.942
+epoch+idx: 12
+After sub-epoch 65:
+ test acc: 0.421
+    test acc: 0.421
+    train loss: 0.999
+epoch+idx: 13
+After sub-epoch 66:
+ test acc: 0.438
+    test acc: 0.438
+    train loss: 0.943
+epoch+idx: 14
+After sub-epoch 67:
+ test acc: 0.414
+    test acc: 0.414
+    train loss: 0.919
+epoch+idx: 15
+After sub-epoch 68:
+ test acc: 0.398
+    test acc: 0.398
+    train loss: 0.892
+epoch+idx: 16
+After sub-epoch 69:
+ test acc: 0.396
+    test acc: 0.396
+    train loss: 0.891
+epoch+idx: 17
+After sub-epoch 70:
+ test acc: 0.401
+    test acc: 0.401
+    train loss: 0.869
+============== End of epoch 4 ============
+epoch+idx: 5
+After sub-epoch 71:
+ test acc: 0.423
+    test acc: 0.423
+    train loss: 1.270
+epoch+idx: 6
+After sub-epoch 72:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 1.226
+epoch+idx: 7
+After sub-epoch 73:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 0.986
+epoch+idx: 8
+After sub-epoch 74:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 0.897
+epoch+idx: 9
+After sub-epoch 75:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 0.828
+epoch+idx: 10
+After sub-epoch 76:
+ test acc: 0.745
+    test acc: 0.745
+    train loss: 0.800
+epoch+idx: 11
+After sub-epoch 77:
+ test acc: 0.745
+    test acc: 0.745
+    train loss: 0.774
+epoch+idx: 12
+After sub-epoch 78:
+ test acc: 0.740
+    test acc: 0.740
+    train loss: 0.745
+epoch+idx: 13
+After sub-epoch 79:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 0.729
+epoch+idx: 14
+After sub-epoch 80:
+ test acc: 0.743
+    test acc: 0.743
+    train loss: 0.740
+epoch+idx: 15
+After sub-epoch 81:
+ test acc: 0.744
+    test acc: 0.744
+    train loss: 0.799
+epoch+idx: 16
+After sub-epoch 82:
+ test acc: 0.744
+    test acc: 0.744
+    train loss: 0.817
+epoch+idx: 17
+After sub-epoch 83:
+ test acc: 0.743
+    test acc: 0.743
+    train loss: 0.860
+epoch+idx: 18
+After sub-epoch 84:
+ test acc: 0.742
+    test acc: 0.742
+    train loss: 0.846
+============== End of epoch 5 ============
+epoch+idx: 6
+After sub-epoch 85:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 0.757
+epoch+idx: 7
+After sub-epoch 86:
+ test acc: 0.740
+    test acc: 0.740
+    train loss: 0.956
+epoch+idx: 8
+After sub-epoch 87:
+ test acc: 0.739
+    test acc: 0.739
+    train loss: 1.067
+epoch+idx: 9
+After sub-epoch 88:
+ test acc: 0.739
+    test acc: 0.739
+    train loss: 0.942
+epoch+idx: 10
+After sub-epoch 89:
+ test acc: 0.742
+    test acc: 0.742
+    train loss: 0.879
+epoch+idx: 11
+After sub-epoch 90:
+ test acc: 0.741
+    test acc: 0.741
+    train loss: 0.808
+epoch+idx: 12
+After sub-epoch 91:
+ test acc: 0.742
+    test acc: 0.742
+    train loss: 0.782
+epoch+idx: 13
+After sub-epoch 92:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 0.757
+epoch+idx: 14
+After sub-epoch 93:
+ test acc: 0.746
+    test acc: 0.746
+    train loss: 0.833
+epoch+idx: 15
+After sub-epoch 94:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.791
+epoch+idx: 16
+After sub-epoch 95:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.775
+epoch+idx: 17
+After sub-epoch 96:
+ test acc: 0.744
+    test acc: 0.744
+    train loss: 0.827
+epoch+idx: 18
+After sub-epoch 97:
+ test acc: 0.744
+    test acc: 0.744
+    train loss: 0.805
+epoch+idx: 19
+After sub-epoch 98:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.822
+============== End of epoch 6 ============
+epoch+idx: 7
+After sub-epoch 99:
+ test acc: 0.749
+    test acc: 0.749
+    train loss: 0.666
+epoch+idx: 8
+After sub-epoch 100:
+ test acc: 0.748
+    test acc: 0.748
+    train loss: 1.036
+epoch+idx: 9
+After sub-epoch 101:
+ test acc: 0.748
+    test acc: 0.748
+    train loss: 0.874
+epoch+idx: 10
+After sub-epoch 102:
+ test acc: 0.749
+    test acc: 0.749
+    train loss: 0.799
+epoch+idx: 11
+After sub-epoch 103:
+ test acc: 0.750
+    test acc: 0.750
+    train loss: 0.887
+epoch+idx: 12
+After sub-epoch 104:
+ test acc: 0.752
+    test acc: 0.752
+    train loss: 0.828
+epoch+idx: 13
+After sub-epoch 105:
+ test acc: 0.753
+    test acc: 0.753
+    train loss: 0.886
+epoch+idx: 14
+After sub-epoch 106:
+ test acc: 0.756
+    test acc: 0.756
+    train loss: 0.848
+epoch+idx: 15
+After sub-epoch 107:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.831
+epoch+idx: 16
+After sub-epoch 108:
+ test acc: 0.739
+    test acc: 0.739
+    train loss: 0.888
+epoch+idx: 17
+After sub-epoch 109:
+ test acc: 0.738
+    test acc: 0.738
+    train loss: 0.860
+epoch+idx: 18
+After sub-epoch 110:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.870
+epoch+idx: 19
+After sub-epoch 111:
+ test acc: 0.389
+    test acc: 0.389
+    train loss: 0.837
+epoch+idx: 20
+After sub-epoch 112:
+ test acc: 0.386
+    test acc: 0.386
+    train loss: 0.817
+============== End of epoch 7 ============
+epoch+idx: 8
+After sub-epoch 113:
+ test acc: 0.384
+    test acc: 0.384
+    train loss: 0.432
+epoch+idx: 9
+After sub-epoch 114:
+ test acc: 0.383
+    test acc: 0.383
+    train loss: 0.879
+epoch+idx: 10
+After sub-epoch 115:
+ test acc: 0.381
+    test acc: 0.381
+    train loss: 1.031
+epoch+idx: 11
+After sub-epoch 116:
+ test acc: 0.381
+    test acc: 0.381
+    train loss: 0.938
+epoch+idx: 12
+After sub-epoch 117:
+ test acc: 0.382
+    test acc: 0.382
+    train loss: 1.049
+epoch+idx: 13
+After sub-epoch 118:
+ test acc: 0.383
+    test acc: 0.383
+    train loss: 0.983
+epoch+idx: 14
+After sub-epoch 119:
+ test acc: 0.384
+    test acc: 0.384
+    train loss: 1.021
+epoch+idx: 15
+After sub-epoch 120:
+ test acc: 0.385
+    test acc: 0.385
+    train loss: 1.006
+epoch+idx: 16
+After sub-epoch 121:
+ test acc: 0.386
+    test acc: 0.386
+    train loss: 0.951
+epoch+idx: 17
+After sub-epoch 122:
+ test acc: 0.388
+    test acc: 0.388
+    train loss: 0.916
+epoch+idx: 18
+After sub-epoch 123:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.887
+epoch+idx: 19
+After sub-epoch 124:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.846
+epoch+idx: 20
+After sub-epoch 125:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.825
+epoch+idx: 21
+After sub-epoch 126:
+ test acc: 0.747
+    test acc: 0.747
+    train loss: 0.817
+============== End of epoch 8 ============
+epoch+idx: 9
+After sub-epoch 127:
+ test acc: 0.745
+    test acc: 0.745
+    train loss: 0.555
+epoch+idx: 10
+After sub-epoch 128:
+ test acc: 0.737
+    test acc: 0.737
+    train loss: 0.552
+epoch+idx: 11
+After sub-epoch 129:
+ test acc: 0.722
+    test acc: 0.722
+    train loss: 0.534
+epoch+idx: 12
+After sub-epoch 130:
+ test acc: 0.706
+    test acc: 0.706
+    train loss: 0.588
+epoch+idx: 13
+After sub-epoch 131:
+ test acc: 0.696
+    test acc: 0.696
+    train loss: 0.554
+epoch+idx: 14
+After sub-epoch 132:
+ test acc: 0.687
+    test acc: 0.687
+    train loss: 0.542
+epoch+idx: 15
+After sub-epoch 133:
+ test acc: 0.681
+    test acc: 0.681
+    train loss: 0.667
+epoch+idx: 16
+After sub-epoch 134:
+ test acc: 0.677
+    test acc: 0.677
+    train loss: 0.660
+epoch+idx: 17
+After sub-epoch 135:
+ test acc: 0.703
+    test acc: 0.703
+    train loss: 0.726
+epoch+idx: 18
+After sub-epoch 136:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 0.754
+epoch+idx: 19
+After sub-epoch 137:
+ test acc: 0.485
+    test acc: 0.485
+    train loss: 0.749
+epoch+idx: 20
+After sub-epoch 138:
+ test acc: 0.496
+    test acc: 0.496
+    train loss: 0.803
+epoch+idx: 21
+After sub-epoch 139:
+ test acc: 0.715
+    test acc: 0.715
+    train loss: 0.791
+epoch+idx: 22
+After sub-epoch 140:
+ test acc: 0.659
+    test acc: 0.659
+    train loss: 0.842
+============== End of epoch 9 ============
+using CPU backend.
+epoch+idx: 0
+After sub-epoch 1:
+ test acc: 0.253
+    test acc: 0.253
+    train loss: 1.901
+epoch+idx: 1
+After sub-epoch 2:
+ test acc: 0.377
+    test acc: 0.377
+    train loss: 1.839
+epoch+idx: 2
+After sub-epoch 3:
+ test acc: 0.340
+    test acc: 0.340
+    train loss: 1.739
+epoch+idx: 3
+After sub-epoch 4:
+ test acc: 0.429
+    test acc: 0.429
+    train loss: 1.727
+epoch+idx: 4
+After sub-epoch 5:
+ test acc: 0.439
+    test acc: 0.439
+    train loss: 1.697
+epoch+idx: 5
+After sub-epoch 6:
+ test acc: 0.497
+    test acc: 0.497
+    train loss: 1.654
+epoch+idx: 6
+After sub-epoch 7:
+ test acc: 0.566
+    test acc: 0.566
+    train loss: 1.584
+epoch+idx: 7
+After sub-epoch 8:
+ test acc: 0.528
+    test acc: 0.528
+    train loss: 1.549
+epoch+idx: 8
+After sub-epoch 9:
+ test acc: 0.564
+    test acc: 0.564
+    train loss: 1.488
+epoch+idx: 9
+After sub-epoch 10:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 1.444
+epoch+idx: 10
+After sub-epoch 11:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 1.416
+epoch+idx: 11
+After sub-epoch 12:
+ test acc: 0.563
+    test acc: 0.563
+    train loss: 1.376
+epoch+idx: 12
+After sub-epoch 13:
+ test acc: 0.567
+    test acc: 0.567
+    train loss: 1.317
+epoch+idx: 13
+After sub-epoch 14:
+ test acc: 0.556
+    test acc: 0.556
+    train loss: 1.320
+============== End of epoch 0 ============
+epoch+idx: 1
+After sub-epoch 15:
+ test acc: 0.589
+    test acc: 0.589
+    train loss: 1.243
+epoch+idx: 2
+After sub-epoch 16:
+ test acc: 0.599
+    test acc: 0.599
+    train loss: 1.217
+epoch+idx: 3
+After sub-epoch 17:
+ test acc: 0.482
+    test acc: 0.482
+    train loss: 1.032
+epoch+idx: 4
+After sub-epoch 18:
+ test acc: 0.435
+    test acc: 0.435
+    train loss: 0.950
+epoch+idx: 5
+After sub-epoch 19:
+ test acc: 0.407
+    test acc: 0.407
+    train loss: 0.972
+epoch+idx: 6
+After sub-epoch 20:
+ test acc: 0.413
+    test acc: 0.413
+    train loss: 0.929
+epoch+idx: 7
+After sub-epoch 21:
+ test acc: 0.416
+    test acc: 0.416
+    train loss: 0.905
+epoch+idx: 8
+After sub-epoch 22:
+ test acc: 0.428
+    test acc: 0.428
+    train loss: 0.973
+epoch+idx: 9
+After sub-epoch 23:
+ test acc: 0.522
+    test acc: 0.522
+    train loss: 0.952
+epoch+idx: 10
+After sub-epoch 24:
+ test acc: 0.651
+    test acc: 0.651
+    train loss: 1.020
+epoch+idx: 11
+After sub-epoch 25:
+ test acc: 0.565
+    test acc: 0.565
+    train loss: 1.016
+epoch+idx: 12
+After sub-epoch 26:
+ test acc: 0.608
+    test acc: 0.608
+    train loss: 1.008
+epoch+idx: 13
+After sub-epoch 27:
+ test acc: 0.597
+    test acc: 0.597
+    train loss: 0.984
+epoch+idx: 14
+After sub-epoch 28:
+ test acc: 0.555
+    test acc: 0.555
+    train loss: 0.957
+============== End of epoch 1 ============
+epoch+idx: 2
+After sub-epoch 29:
+ test acc: 0.542
+    test acc: 0.542
+    train loss: 0.597
+epoch+idx: 3
+After sub-epoch 30:
+ test acc: 0.558
+    test acc: 0.558
+    train loss: 0.914
+epoch+idx: 4
+After sub-epoch 31:
+ test acc: 0.565
+    test acc: 0.565
+    train loss: 0.913
+epoch+idx: 5
+After sub-epoch 32:
+ test acc: 0.565
+    test acc: 0.565
+    train loss: 0.946
+epoch+idx: 6
+After sub-epoch 33:
+ test acc: 0.565
+    test acc: 0.565
+    train loss: 1.007
+epoch+idx: 7
+After sub-epoch 34:
+ test acc: 0.560
+    test acc: 0.560
+    train loss: 1.103
+epoch+idx: 8
+After sub-epoch 35:
+ test acc: 0.528
+    test acc: 0.528
+    train loss: 1.050
+epoch+idx: 9
+After sub-epoch 36:
+ test acc: 0.526
+    test acc: 0.526
+    train loss: 0.998
+epoch+idx: 10
+After sub-epoch 37:
+ test acc: 0.566
+    test acc: 0.566
+    train loss: 0.942
+epoch+idx: 11
+After sub-epoch 38:
+ test acc: 0.624
+    test acc: 0.624
+    train loss: 0.934
+epoch+idx: 12
+After sub-epoch 39:
+ test acc: 0.644
+    test acc: 0.644
+    train loss: 0.922
+epoch+idx: 13
+After sub-epoch 40:
+ test acc: 0.631
+    test acc: 0.631
+    train loss: 0.901
+epoch+idx: 14
+After sub-epoch 41:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.884
+epoch+idx: 15
+After sub-epoch 42:
+ test acc: 0.606
+    test acc: 0.606
+    train loss: 0.902
+============== End of epoch 2 ============
+epoch+idx: 3
+After sub-epoch 43:
+ test acc: 0.581
+    test acc: 0.581
+    train loss: 1.139
+epoch+idx: 4
+After sub-epoch 44:
+ test acc: 0.605
+    test acc: 0.605
+    train loss: 0.978
+epoch+idx: 5
+After sub-epoch 45:
+ test acc: 0.604
+    test acc: 0.604
+    train loss: 0.922
+epoch+idx: 6
+After sub-epoch 46:
+ test acc: 0.592
+    test acc: 0.592
+    train loss: 0.929
+epoch+idx: 7
+After sub-epoch 47:
+ test acc: 0.584
+    test acc: 0.584
+    train loss: 0.856
+epoch+idx: 8
+After sub-epoch 48:
+ test acc: 0.578
+    test acc: 0.578
+    train loss: 0.836
+epoch+idx: 9
+After sub-epoch 49:
+ test acc: 0.569
+    test acc: 0.569
+    train loss: 0.821
+epoch+idx: 10
+After sub-epoch 50:
+ test acc: 0.556
+    test acc: 0.556
+    train loss: 0.794
+epoch+idx: 11
+After sub-epoch 51:
+ test acc: 0.553
+    test acc: 0.553
+    train loss: 0.780
+epoch+idx: 12
+After sub-epoch 52:
+ test acc: 0.548
+    test acc: 0.548
+    train loss: 0.772
+epoch+idx: 13
+After sub-epoch 53:
+ test acc: 0.549
+    test acc: 0.549
+    train loss: 0.843
+epoch+idx: 14
+After sub-epoch 54:
+ test acc: 0.547
+    test acc: 0.547
+    train loss: 0.832
+epoch+idx: 15
+After sub-epoch 55:
+ test acc: 0.551
+    test acc: 0.551
+    train loss: 0.811
+epoch+idx: 16
+After sub-epoch 56:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 0.793
+============== End of epoch 3 ============
+epoch+idx: 4
+After sub-epoch 57:
+ test acc: 0.566
+    test acc: 0.566
+    train loss: 0.673
+epoch+idx: 5
+After sub-epoch 58:
+ test acc: 0.575
+    test acc: 0.575
+    train loss: 0.674
+epoch+idx: 6
+After sub-epoch 59:
+ test acc: 0.581
+    test acc: 0.581
+    train loss: 0.845
+epoch+idx: 7
+After sub-epoch 60:
+ test acc: 0.606
+    test acc: 0.606
+    train loss: 0.996
+epoch+idx: 8
+After sub-epoch 61:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.953
+epoch+idx: 9
+After sub-epoch 62:
+ test acc: 0.656
+    test acc: 0.656
+    train loss: 0.866
+epoch+idx: 10
+After sub-epoch 63:
+ test acc: 0.643
+    test acc: 0.643
+    train loss: 0.820
+epoch+idx: 11
+After sub-epoch 64:
+ test acc: 0.608
+    test acc: 0.608
+    train loss: 0.797
+epoch+idx: 12
+After sub-epoch 65:
+ test acc: 0.622
+    test acc: 0.622
+    train loss: 0.824
+epoch+idx: 13
+After sub-epoch 66:
+ test acc: 0.609
+    test acc: 0.609
+    train loss: 0.798
+epoch+idx: 14
+After sub-epoch 67:
+ test acc: 0.615
+    test acc: 0.615
+    train loss: 0.805
+epoch+idx: 15
+After sub-epoch 68:
+ test acc: 0.616
+    test acc: 0.616
+    train loss: 0.781
+epoch+idx: 16
+After sub-epoch 69:
+ test acc: 0.626
+    test acc: 0.626
+    train loss: 0.761
+epoch+idx: 17
+After sub-epoch 70:
+ test acc: 0.621
+    test acc: 0.621
+    train loss: 0.768
+============== End of epoch 4 ============
+epoch+idx: 5
+After sub-epoch 71:
+ test acc: 0.609
+    test acc: 0.609
+    train loss: 0.809
+epoch+idx: 6
+After sub-epoch 72:
+ test acc: 0.601
+    test acc: 0.601
+    train loss: 0.720
+epoch+idx: 7
+After sub-epoch 73:
+ test acc: 0.592
+    test acc: 0.592
+    train loss: 0.823
+epoch+idx: 8
+After sub-epoch 74:
+ test acc: 0.582
+    test acc: 0.582
+    train loss: 0.784
+epoch+idx: 9
+After sub-epoch 75:
+ test acc: 0.590
+    test acc: 0.590
+    train loss: 0.791
+epoch+idx: 10
+After sub-epoch 76:
+ test acc: 0.591
+    test acc: 0.591
+    train loss: 0.771
+epoch+idx: 11
+After sub-epoch 77:
+ test acc: 0.608
+    test acc: 0.608
+    train loss: 0.864
+epoch+idx: 12
+After sub-epoch 78:
+ test acc: 0.641
+    test acc: 0.641
+    train loss: 0.826
+epoch+idx: 13
+After sub-epoch 79:
+ test acc: 0.635
+    test acc: 0.635
+    train loss: 0.806
+epoch+idx: 14
+After sub-epoch 80:
+ test acc: 0.619
+    test acc: 0.619
+    train loss: 0.800
+epoch+idx: 15
+After sub-epoch 81:
+ test acc: 0.601
+    test acc: 0.601
+    train loss: 0.785
+epoch+idx: 16
+After sub-epoch 82:
+ test acc: 0.592
+    test acc: 0.592
+    train loss: 0.786
+epoch+idx: 17
+After sub-epoch 83:
+ test acc: 0.565
+    test acc: 0.565
+    train loss: 0.756
+epoch+idx: 18
+After sub-epoch 84:
+ test acc: 0.557
+    test acc: 0.557
+    train loss: 0.743
+============== End of epoch 5 ============
+epoch+idx: 6
+After sub-epoch 85:
+ test acc: 0.569
+    test acc: 0.569
+    train loss: 0.534
+epoch+idx: 7
+After sub-epoch 86:
+ test acc: 0.614
+    test acc: 0.614
+    train loss: 0.785
+epoch+idx: 8
+After sub-epoch 87:
+ test acc: 0.604
+    test acc: 0.604
+    train loss: 0.736
+epoch+idx: 9
+After sub-epoch 88:
+ test acc: 0.602
+    test acc: 0.602
+    train loss: 0.710
+epoch+idx: 10
+After sub-epoch 89:
+ test acc: 0.614
+    test acc: 0.614
+    train loss: 0.844
+epoch+idx: 11
+After sub-epoch 90:
+ test acc: 0.633
+    test acc: 0.633
+    train loss: 0.821
+epoch+idx: 12
+After sub-epoch 91:
+ test acc: 0.648
+    test acc: 0.648
+    train loss: 0.865
+epoch+idx: 13
+After sub-epoch 92:
+ test acc: 0.644
+    test acc: 0.644
+    train loss: 0.831
+epoch+idx: 14
+After sub-epoch 93:
+ test acc: 0.615
+    test acc: 0.615
+    train loss: 0.804
+epoch+idx: 15
+After sub-epoch 94:
+ test acc: 0.569
+    test acc: 0.569
+    train loss: 0.775
+epoch+idx: 16
+After sub-epoch 95:
+ test acc: 0.562
+    test acc: 0.562
+    train loss: 0.760
+epoch+idx: 17
+After sub-epoch 96:
+ test acc: 0.583
+    test acc: 0.583
+    train loss: 0.747
+epoch+idx: 18
+After sub-epoch 97:
+ test acc: 0.601
+    test acc: 0.601
+    train loss: 0.725
+epoch+idx: 19
+After sub-epoch 98:
+ test acc: 0.629
+    test acc: 0.629
+    train loss: 0.716
+============== End of epoch 6 ============
+epoch+idx: 7
+After sub-epoch 99:
+ test acc: 0.642
+    test acc: 0.642
+    train loss: 0.454
+epoch+idx: 8
+After sub-epoch 100:
+ test acc: 0.646
+    test acc: 0.646
+    train loss: 0.474
+epoch+idx: 9
+After sub-epoch 101:
+ test acc: 0.649
+    test acc: 0.649
+    train loss: 0.508
+epoch+idx: 10
+After sub-epoch 102:
+ test acc: 0.645
+    test acc: 0.645
+    train loss: 0.530
+epoch+idx: 11
+After sub-epoch 103:
+ test acc: 0.643
+    test acc: 0.643
+    train loss: 0.691
+epoch+idx: 12
+After sub-epoch 104:
+ test acc: 0.653
+    test acc: 0.653
+    train loss: 0.710
+epoch+idx: 13
+After sub-epoch 105:
+ test acc: 0.652
+    test acc: 0.652
+    train loss: 0.709
+epoch+idx: 14
+After sub-epoch 106:
+ test acc: 0.636
+    test acc: 0.636
+    train loss: 0.681
+epoch+idx: 15
+After sub-epoch 107:
+ test acc: 0.622
+    test acc: 0.622
+    train loss: 0.668
+epoch+idx: 16
+After sub-epoch 108:
+ test acc: 0.618
+    test acc: 0.618
+    train loss: 0.717
+epoch+idx: 17
+After sub-epoch 109:
+ test acc: 0.606
+    test acc: 0.606
+    train loss: 0.699
+epoch+idx: 18
+After sub-epoch 110:
+ test acc: 0.584
+    test acc: 0.584
+    train loss: 0.687
+epoch+idx: 19
+After sub-epoch 111:
+ test acc: 0.568
+    test acc: 0.568
+    train loss: 0.685
+epoch+idx: 20
+After sub-epoch 112:
+ test acc: 0.550
+    test acc: 0.550
+    train loss: 0.676
+============== End of epoch 7 ============
+epoch+idx: 8
+After sub-epoch 113:
+ test acc: 0.538
+    test acc: 0.538
+    train loss: 0.410
+epoch+idx: 9
+After sub-epoch 114:
+ test acc: 0.529
+    test acc: 0.529
+    train loss: 0.459
+epoch+idx: 10
+After sub-epoch 115:
+ test acc: 0.524
+    test acc: 0.524
+    train loss: 0.474
+epoch+idx: 11
+After sub-epoch 116:
+ test acc: 0.479
+    test acc: 0.479
+    train loss: 0.492
+epoch+idx: 12
+After sub-epoch 117:
+ test acc: 0.493
+    test acc: 0.493
+    train loss: 0.497
+epoch+idx: 13
+After sub-epoch 118:
+ test acc: 0.508
+    test acc: 0.508
+    train loss: 0.654
+epoch+idx: 14
+After sub-epoch 119:
+ test acc: 0.516
+    test acc: 0.516
+    train loss: 0.652
+epoch+idx: 15
+After sub-epoch 120:
+ test acc: 0.522
+    test acc: 0.522
+    train loss: 0.645
+epoch+idx: 16
+After sub-epoch 121:
+ test acc: 0.525
+    test acc: 0.525
+    train loss: 0.631
+epoch+idx: 17
+After sub-epoch 122:
+ test acc: 0.526
+    test acc: 0.526
+    train loss: 0.685
+epoch+idx: 18
+After sub-epoch 123:
+ test acc: 0.526
+    test acc: 0.526
+    train loss: 0.674
+epoch+idx: 19
+After sub-epoch 124:
+ test acc: 0.529
+    test acc: 0.529
+    train loss: 0.660
+epoch+idx: 20
+After sub-epoch 125:
+ test acc: 0.569
+    test acc: 0.569
+    train loss: 0.646
+epoch+idx: 21
+After sub-epoch 126:
+ test acc: 0.611
+    test acc: 0.611
+    train loss: 0.659
+============== End of epoch 8 ============
+epoch+idx: 9
+After sub-epoch 127:
+ test acc: 0.644
+    test acc: 0.644
+    train loss: 0.714
+epoch+idx: 10
+After sub-epoch 128:
+ test acc: 0.651
+    test acc: 0.651
+    train loss: 0.592
+epoch+idx: 11
+After sub-epoch 129:
+ test acc: 0.620
+    test acc: 0.620
+    train loss: 0.818
+epoch+idx: 12
+After sub-epoch 130:
+ test acc: 0.608
+    test acc: 0.608
+    train loss: 0.824
+epoch+idx: 13
+After sub-epoch 131:
+ test acc: 0.604
+    test acc: 0.604
+    train loss: 0.926
+epoch+idx: 14
+After sub-epoch 132:
+ test acc: 0.597
+    test acc: 0.597
+    train loss: 0.864
+epoch+idx: 15
+After sub-epoch 133:
+ test acc: 0.611
+    test acc: 0.611
+    train loss: 0.817
+epoch+idx: 16
+After sub-epoch 134:
+ test acc: 0.623
+    test acc: 0.623
+    train loss: 0.784
+epoch+idx: 17
+After sub-epoch 135:
+ test acc: 0.630
+    test acc: 0.630
+    train loss: 0.771
+epoch+idx: 18
+After sub-epoch 136:
+ test acc: 0.641
+    test acc: 0.641
+    train loss: 0.749
+epoch+idx: 19
+After sub-epoch 137:
+ test acc: 0.652
+    test acc: 0.652
+    train loss: 0.732
+epoch+idx: 20
+After sub-epoch 138:
+ test acc: 0.648
+    test acc: 0.648
+    train loss: 0.775
+epoch+idx: 21
+After sub-epoch 139:
+ test acc: 0.640
+    test acc: 0.640
+    train loss: 0.744
+epoch+idx: 22
+After sub-epoch 140:
+ test acc: 0.629
+    test acc: 0.629
+    train loss: 0.728
+============== End of epoch 9 ============
+using CPU backend.
