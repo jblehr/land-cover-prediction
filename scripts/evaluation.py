@@ -32,7 +32,7 @@ def get_accuracy(model, dataloader, changed_only=False):
 
                     assert targets.size() == predicted.size()
                     if model.cuda_:
-                        predicted = predicted.to('cpu')
+                        predicted = predicted.to('cuda')
                     n_correct += int(np.equal(targets, predicted).sum())
                     n_eval += targets.numel()
 
@@ -59,7 +59,7 @@ def get_loss(model, dataloader, criterion, cuda_):
 
                 outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
                 targets_flat = targets.reshape(flat_dim)
-                if cuda_:
+                if model.cuda_:
                     targets_flat = targets_flat.to('cuda')
                     outputs_flat = targets_flat.to('cuda')
 

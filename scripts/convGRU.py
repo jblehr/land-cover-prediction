@@ -11,7 +11,8 @@ import numpy as np
 import os
 import optuna
 from optuna.trial import TrialState
-
+import argparse
+import json
 
 class ConvGRUCell(nn.Module):
     def __init__(
@@ -44,6 +45,7 @@ class ConvGRUCell(nn.Module):
         self.hidden_channels = hidden_channels
         self.bias = bias
         self.cuda_ = cuda_
+        self.train_report = {}
 
         if cuda_:
             self.dtype = torch.cuda.FloatTensor  # computation in GPU
@@ -247,10 +249,11 @@ class ConvGRU(nn.Module):
         optim,
         lr,
         momentum,
-        trial,
+        trial=None,
         bptt_len=3,
         epochs=50,
         max_norm=False,
+        final_train=False
     ):
 
         if optim == "adam":
@@ -260,8 +263,11 @@ class ConvGRU(nn.Module):
 
         self.train()
         criterion = torch.nn.CrossEntropyLoss()
-        aim_epoch = 0
-
+        min_test_loss = None
+        train_losses = []
+        test_losses = []
+        train_accs = []
+        test_accs = []
         for epoch in tqdm(range(epochs), desc="Training Epochs"):
             losses = []
             for idx, (batch_x, batch_y) in enumerate(train_loader):
@@ -300,25 +306,49 @@ class ConvGRU(nn.Module):
 
                     losses.append(float(loss))
 
-                train_loss = np.mean(losses)
-                # train_acc = evaluation.get_accuracy(self, train_loader)
-                test_acc = evaluation.get_accuracy(self, test_loader)
-                # test_loss = evaluation.get_loss(self, test_loader, criterion, cuda_)
+            train_loss = np.mean(losses)
+            train_losses.append(train_loss)
 
-                print("epoch+idx: " + str(epoch + idx))
-                aim_epoch += 1
-                print(f"After sub-epoch {aim_epoch}:\n test acc: {test_acc:.3f}")
-                print(f"    test acc: {test_acc:.3f}")
-                print(f"    train loss: {train_loss:.3f}")
-                # print(f"    train loss: {test_loss:.3f}")
+            train_acc = evaluation.get_accuracy(self, train_loader)
+            train_accs.append(train_acc)
+
+            test_loss = evaluation.get_loss(self, test_loader, criterion, self.cuda_)
+            test_losses.append(test_loss)
+
+            test_acc = evaluation.get_accuracy(self, test_loader)
+            test_accs.append(test_acc)
+
+            if not min_test_loss or test_loss < min_test_loss:
+                min_test_loss = test_loss
+                if final_train:
+                    torch.save({
+                    'epoch': epoch,
+                    'model_state_dict': self.state_dict(),
+                    'optimizer_state_dict': optimizer.state_dict(),
+                    'loss': test_loss,
+                    }, 'output/best_model.pt')
+
+            print(f"  -- epoch: {epoch}")
+            print(f"  -- test acc: {test_acc:.3f}")
+            print(f"  -- test loss: {test_loss:.3f}")
+            print(f"  -- train acc: {train_acc:.3f}")
+            print(f"  -- train loss: {train_loss:.3f}")
 
             print(f"============== End of epoch {epoch} ============")
 
-            trial.report(train_loss, epoch)
+            if trial:
+                trial.report(train_loss, epoch)
 
-            if trial.should_prune():
-                raise optuna.exceptions.TrialPruned()
+                if trial.should_prune():
+                    raise optuna.exceptions.TrialPruned()
 
+        self.train_report = {
+            'train_losses': train_losses,
+            'test_losses' : test_losses,
+            'train_accs' : train_accs,
+            'test_accs' : test_accs
+        }
+        print(self.train_report)
         return train_loss
 
     def _init_hidden(self, batch_size):
@@ -352,66 +382,125 @@ def objective(trial):
         print('using GPU backend!')
     else:
         print('using CPU backend.')
+    
+    if not trial:
+        epochs = 15
+        # found using the best options from pre-presentation overnight optuna
+        cell_width_pct = 0.125
+        clip_max_norm = 1.184316464877487
+        conv_kernel_size = 3
+        downsample = True
+        downsample_dim = 64
+        guassian_blur = False
+        # hidden_channels = [32,32]
+        hidden_channels = [8,8]
+        lr = 0.0005326639774392545
+        momentum = 0.7679114313544549
+        num_layers = 2
+        optim = 'adam'
+        final_train = True
+        bias = True
+    else:
+        epochs=10
 
-    guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
+        guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
+        if guassian_blur:
+            guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
+
+        downsample = trial.suggest_categorical("downsample", [True, False])
+        if downsample:
+            downsample_dim = trial.suggest_categorical(
+                "downsample_dim", [64, 128, 256, 512]
+            )
+
+        optim = trial.suggest_categorical("optim", ["sgd", "adam"])
+        clip_max_norm = trial.suggest_float("clip_max_norm", 0.5, 1.5)
+
+        cell_width_pct = trial.suggest_categorical(
+            "cell_width_pct", [1, 1 / 2, 1 / 4, 1 / 8]
+        )
+
+        lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
+        momentum = trial.suggest_float("momentum", 0.0, 1.0)
+        conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
+        bias = True
+
+        num_layers = trial.suggest_int("num_layers", 1, 5)
+        hidden_channels = []
+        for layer_idx in range(num_layers):
+            # hidden_channels_idx = trial.suggest_categorical(
+            #     f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
+            # )
+            hidden_channels_idx = trial.suggest_categorical(
+                f"layer_{layer_idx}", [4, 8, 16, 32]
+            )
+            hidden_channels.append(hidden_channels_idx)
+
+    # Set transform value according to hyperpar choices
+    transform = None
+
     if guassian_blur:
-        guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
         guassian_kernel = int(guassian_sigma * 3 + 1)
         guassian_kernel = guassian_kernel - int(guassian_kernel % 2 != 1)
-
         blur_transform = torchvision.transforms.GaussianBlur(
             guassian_kernel, guassian_sigma
         )
+        transform = blur_transform
 
-    downsample = trial.suggest_categorical("downsample", [True, False])
     if downsample:
-        downsample_dim = trial.suggest_categorical(
-            "downsample_dim", [64, 128, 256, 512]
-        )
         downsample_transform = torchvision.transforms.Resize(
             size=(downsample_dim, downsample_dim)
         )
+        transform = downsample_transform
 
     if guassian_blur and downsample:
         transform = torchvision.transforms.Compose(
             [downsample_transform, blur_transform]
         )
-    elif guassian_blur:
-        transform = blur_transform
-    elif downsample:
-        transform = downsample_transform
-    else:
-        transform = None
 
-    # poi_list = os.listdir('../data/processed/npz/planet')
-    poi_list = [
+    train_poi_list = [
         "1311_3077_13_10N",
-        "1700_3100_13_13N",
-        "2235_3403_13_17N",
-        "2697_3715_13_20N",
-        "4421_3800_13_33N",
-        "4780_3377_13_36N",
-        "1417_3281_13_11N",
-        "2006_3280_13_15N",
-        "2415_3082_13_18N",
-        "3002_4273_13_22S",
-        "4426_3835_13_33N",
-        "4791_3920_13_36N",
-        "1487_3335_13_11N",
-        "2029_3764_13_15N",
-        "2624_4314_13_20S",
-        "4397_4302_13_33S",
-        "4622_3159_13_34N",
-        "4806_3588_13_36N"
+        "1700_3100_13_13N"
     ]
 
-    cell_width_pct = trial.suggest_categorical(
-        "cell_width_pct", [1, 1 / 2, 1 / 4, 1 / 8]
-    )
-    STData = dataloaders.SpatiotemporalDataset(
-        "/scratch/npg/data/processed/npz",
+    test_poi_list = [
+        "2235_3403_13_17N"
+    ]
+
+    # train_poi_list = [
+    #     "1311_3077_13_10N",
+    #     "1700_3100_13_13N",
+    #     "2235_3403_13_17N",
+    #     "2697_3715_13_20N",
+    #     "4421_3800_13_33N",
+    #     "4780_3377_13_36N",
+    #     "1417_3281_13_11N",
+    #     "2006_3280_13_15N",
+    #     "2415_3082_13_18N",
+    #     "3002_4273_13_22S",
+    #     "4426_3835_13_33N",
+    #     "4791_3920_13_36N",
+    #     "1487_3335_13_11N",
+    #     "2029_3764_13_15N",
+    #     "2624_4314_13_20S",
+    #     "4397_4302_13_33S",
+    #     "4622_3159_13_34N",
+    #     "4806_3588_13_36N"
+    # ]
+
+    # test_poi_list = [
+    #     "2065_3647_13_16N",
+    #     "4768_4131_13_35S",
+    #     "4838_3506_13_36N",
+    #     "4856_4087_13_36N",
+    #     "4881_3344_13_36N"
+    # ]
+
+    train_dataloader = dataloaders.SpatiotemporalDataset(
+        # "/scratch/npg/data/processed/npz",
+        "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
-        poi_list=poi_list,
+        poi_list=train_poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
         cell_width_pct=cell_width_pct,
         labs_as_features=False,
@@ -420,56 +509,53 @@ def objective(trial):
         in_memory=True,
     )
 
+    test_dataloader = dataloaders.SpatiotemporalDataset(
+        # "/scratch/npg/data/processed/npz",
+        "data/processed/npz",
+        dims=(1024, 1024),  # Original dims, not post-transformation
+        poi_list=test_poi_list,
+        n_steps=2,  # start with one prediction (effectively flat CNN)
+        cell_width_pct=cell_width_pct,
+        labs_as_features=False,
+        transform=transform,
+        download=False,
+        in_memory=True,
+    )
+
+    # set up dims properly for convGRU, according to our downsample/cell-width choices
     if downsample:
         in_xDim = in_yDim = int(downsample_dim * cell_width_pct)
         out_xDim = out_yDim = int(1024 * cell_width_pct)
     else:
         in_xDim = in_yDim = out_xDim = out_yDim = int(1024 * cell_width_pct)
 
-    n_train = int(len(STData) * .8)
-    n_test = len(STData) - n_train
+    # n_train = int(len(STData) * .8)
+    # n_test = len(STData) - n_train
 
-    # n_train = n_test = 1
+    # # n_train = n_test = 1
 
-    train_dataset, test_dataset = torch.utils.data.random_split(
-        STData, [n_train, n_test]
-    )
+    # train_dataset, test_dataset = torch.utils.data.random_split(
+    #     STData, [n_train, n_test]
+    # )
 
-    train_dataloader = torch.utils.data.DataLoader(
-        train_dataset,
-        # batch_size=batch_size,
-        batch_size=None,  # batches determined by cell width
-        shuffle=True,
-    )
+    # train_dataloader = torch.utils.data.DataLoader(
+    #     train_dataset,
+    #     # batch_size=batch_size,
+    #     batch_size=None,  # batches determined by cell width
+    #     shuffle=True,
+    # )
 
-    test_dataloader = torch.utils.data.DataLoader(
-        test_dataset,
-        # batch_size=batch_size,
-        batch_size=None,  # batches determined by cell width
-        shuffle=True,
-    )
+    # test_dataloader = torch.utils.data.DataLoader(
+    #     test_dataset,
+    #     # batch_size=batch_size,
+    #     batch_size=None,  # batches determined by cell width
+    #     shuffle=True,
+    # )
 
-    lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
-    momentum = trial.suggest_float("momentum", 0.0, 1.0)
-    conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
-    # bias = trial.suggest_categorical("bias", [True, False])
-    bias = True
-
-    num_layers = trial.suggest_int("num_layers", 1, 5)
-    hidden_channels = []
-    for layer_idx in range(num_layers):
-        # hidden_channels_idx = trial.suggest_categorical(
-        #     f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
-        # )
-        hidden_channels_idx = trial.suggest_categorical(
-            f"layer_{layer_idx}", [4, 8, 16, 32]
-        )
-        hidden_channels.append(hidden_channels_idx)
-
-    if STData.labs_as_features:
-        input_channels = 7
-    else:
-        input_channels = 4
+    # if STData.labs_as_features:
+    #     input_channels = 7
+    # else:
+    input_channels = 4
     n_output_classes = 7
 
     convGRU_mod = ConvGRU(
@@ -489,9 +575,7 @@ def objective(trial):
     if cuda_:
         convGRU_mod = convGRU_mod.to("cuda")
 
-    optim = trial.suggest_categorical("optim", ["sgd", "adam"])
-    clip_max_norm = trial.suggest_float("clip_max_norm", 0.5, 1.5)
-    epochs = 10
+
     train_loss = convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
@@ -500,42 +584,53 @@ def objective(trial):
         momentum=momentum,
         epochs=epochs,
         max_norm=clip_max_norm,
-        trial=trial
+        trial=trial,
+        final_train=final_train
         # cuda_=cuda_
     )
-
+    if final_train:
+        with open('train_report.json', 'w') as fp:
+            json.dump(convGRU_mod.train_report, fp)
+    
     return train_loss
 
 
 if __name__ == "__main__":
 
-    storage = 'sqlite:////home/npg/land-cover-prediction/output/peanut_optuna.db'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--optuna', action='store_true', default=False)
+    parser.add_argument('--optuna_path', default='sqlite:////home/npg/land-cover-prediction/output/peanut_optuna.db')
+    parsed = parser.parse_args()
 
-    study = optuna.create_study(
-        direction="minimize",
-        study_name='peanut',
-        storage=storage,
-        load_if_exists=True
-    )
+    if parsed.optuna:
 
-    study.optimize(objective)
+        study = optuna.create_study(
+            direction="minimize",
+            study_name='peanut',
+            storage=parsed.optuna_path,
+            load_if_exists=True
+        )
 
-    pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
-    complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
+        study.optimize(objective)
 
-    print("Study statistics: ")
-    print("  Number of finished trials: ", len(study.trials))
-    print("  Number of pruned trials: ", len(pruned_trials))
-    print("  Number of complete trials: ", len(complete_trials))
+        pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
+        complete_trials = study.get_trials(deepcopy=False, states=[TrialState.COMPLETE])
 
-    print("Best trial:")
-    trial = study.best_trial
+        print("Study statistics: ")
+        print("  Number of finished trials: ", len(study.trials))
+        print("  Number of pruned trials: ", len(pruned_trials))
+        print("  Number of complete trials: ", len(complete_trials))
 
-    print("  Value: ", trial.value)
+        print("Best trial:")
+        trial = study.best_trial
 
-    print("  Params: ")
-    for key, value in trial.params.items():
-        print("    {}: {}".format(key, value))
+        print("  Value: ", trial.value)
 
+        print("  Params: ")
+        for key, value in trial.params.items():
+            print("    {}: {}".format(key, value))
+    else:
+        out = objective(trial=False)
+        out
     # fig = optuna.visualization.plot_param_importances(study)
     # fig.show()
