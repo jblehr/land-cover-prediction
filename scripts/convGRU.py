@@ -13,9 +13,17 @@ import os
 import optuna
 from optuna.trial import TrialState
 
+
 class ConvGRUCell(nn.Module):
     def __init__(
-        self, input_dim, input_channels, hidden_channels, kernel_size, bias, conv_padding_mode, cuda_=False
+        self,
+        input_dim,
+        input_channels,
+        hidden_channels,
+        kernel_size,
+        bias,
+        conv_padding_mode,
+        cuda_=False,
     ):
         """
         Initialize a single ConvGRU cell
@@ -32,7 +40,7 @@ class ConvGRUCell(nn.Module):
         super(ConvGRUCell, self).__init__()
         self.x_dim, self.y_dim = input_dim
         # self.padding = [kernel_size[0] // 2 + 1, kernel_size[1] // 2]
-        self.padding='same'
+        self.padding = "same"
         self.padding_mode = conv_padding_mode
         self.hidden_channels = hidden_channels
         self.bias = bias
@@ -45,16 +53,17 @@ class ConvGRUCell(nn.Module):
 
         self.conv_gates = nn.Conv2d(
             in_channels=input_channels + hidden_channels,
-            out_channels=2*self.hidden_channels,  # for update_gate,reset_gate respectively
+            out_channels=2
+            * self.hidden_channels,  # for update_gate,reset_gate respectively
             kernel_size=kernel_size,
             padding=self.padding,
             stride=1,
             padding_mode=conv_padding_mode,
             bias=self.bias,
-        )   
+        )
 
         if cuda_:
-            self.conv_gates.to('cuda')
+            self.conv_gates.to("cuda")
 
         self.conv_can = nn.Conv2d(
             in_channels=input_channels + hidden_channels,
@@ -66,9 +75,8 @@ class ConvGRUCell(nn.Module):
             bias=self.bias,
         )
         if cuda_:
-            self.conv_gates.to('cuda')
-            self.conv_can.to('cuda')
-
+            self.conv_gates.to("cuda")
+            self.conv_can.to("cuda")
 
     def init_hidden(self, batch_size):
         return Variable(
@@ -88,7 +96,7 @@ class ConvGRUCell(nn.Module):
             hidden_next: 4-d tensor as above of next hidden state
         """
         if self.cuda_:
-            input_current = input_current.to('cuda')
+            input_current = input_current.to("cuda")
 
         combined = torch.cat([input_current, hidden_current], dim=1)
         combined_conv = self.conv_gates(combined)
@@ -172,7 +180,7 @@ class ConvGRU(nn.Module):
                     kernel_size=self.kernel_size[i],
                     bias=self.bias,
                     conv_padding_mode=conv_padding_mode,
-                    cuda_=cuda_
+                    cuda_=cuda_,
                 )
             )
 
@@ -182,7 +190,9 @@ class ConvGRU(nn.Module):
             in_features=self.hidden_channels[-1], out_features=n_output_classes
         )
         if not (self.in_xDim == self.out_xDim and self.in_yDim == self.out_yDim):
-            self.upsampler = torchvision.transforms.Resize((self.out_xDim, self.out_yDim))
+            self.upsampler = torchvision.transforms.Resize(
+                (self.out_xDim, self.out_yDim)
+            )
 
     def forward(self, input_current):
         """
@@ -231,31 +241,42 @@ class ConvGRU(nn.Module):
 
         return class_val
 
-    def fit(self, train_loader, test_loader, optim, lr, momentum, trial, bptt_len=3, epochs = 50, max_norm=False):
+    def fit(
+        self,
+        train_loader,
+        test_loader,
+        optim,
+        lr,
+        momentum,
+        trial,
+        bptt_len=3,
+        epochs=50,
+        max_norm=False,
+    ):
 
-        if optim == 'adam':
+        if optim == "adam":
             optimizer = torch.optim.Adam(self.parameters(), lr=lr)
         else:
             optimizer = torch.optim.SGD(self.parameters(), lr=lr, momentum=momentum)
 
         self.train()
-        criterion=torch.nn.CrossEntropyLoss()
-        aim_epoch=0
+        criterion = torch.nn.CrossEntropyLoss()
+        aim_epoch = 0
 
         for epoch in tqdm(range(epochs), desc="Training Epochs"):
-            losses=[]
+            losses = []
             for idx, (batch_x, batch_y) in enumerate(train_loader):
 
                 for timestep in range(batch_x.shape[1] - 1):
 
-                    min_step = max(0, timestep-bptt_len)
+                    min_step = max(0, timestep - bptt_len)
 
                     # For each BPTT step, get all timesteps (t-bptt_len):t, model them
-                    inputs = batch_x[:,min_step:timestep+1,:,:]
+                    inputs = batch_x[:, min_step : timestep + 1, :, :]
                     outputs = self(inputs)
 
                     # Then, choose next timestep target to predict
-                    targets = batch_y[:,timestep+1,:,:]
+                    targets = batch_y[:, timestep + 1, :, :]
 
                     # For compatibility with CrossEntropyLoss, reshape to ignore
                     # spatial dims and batches for loss - doesn't matter in this
@@ -265,14 +286,12 @@ class ConvGRU(nn.Module):
                     outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
                     targets_flat = targets.reshape(flat_dim)
                     if self.cuda_:
-                        targets_flat = targets_flat.to('cuda')
+                        targets_flat = targets_flat.to("cuda")
 
                     loss = criterion(outputs_flat, targets_flat)
                     if max_norm:
                         nn.utils.clip_grad_norm_(
-                            self.parameters(),
-                            max_norm=max_norm,
-                            norm_type=2
+                            self.parameters(), max_norm=max_norm, norm_type=2
                         )
 
                     loss.backward()
@@ -287,7 +306,7 @@ class ConvGRU(nn.Module):
                 test_acc = evaluation.get_accuracy(self, test_loader)
                 # test_loss = evaluation.get_loss(self, test_loader, criterion, cuda_)
 
-                print('epoch+idx: ' + str(epoch+idx))
+                print("epoch+idx: " + str(epoch + idx))
                 aim_epoch += 1
                 print(f"After sub-epoch {aim_epoch}:\n test acc: {test_acc:.3f}")
                 print(f"    test acc: {test_acc:.3f}")
@@ -326,6 +345,7 @@ class ConvGRU(nn.Module):
             param = [param] * num_layers
         return param
 
+
 def objective(trial):
 
     cuda_ = torch.cuda.is_available()
@@ -335,13 +355,19 @@ def objective(trial):
         guassian_kernel = int(guassian_sigma * 3 + 1)
         guassian_kernel = guassian_kernel - int(guassian_kernel % 2 != 1)
 
-        blur_transform = torchvision.transforms.GaussianBlur(guassian_kernel, guassian_sigma)
-    
+        blur_transform = torchvision.transforms.GaussianBlur(
+            guassian_kernel, guassian_sigma
+        )
+
     downsample = trial.suggest_categorical("downsample", [True, False])
     if downsample:
-        downsample_dim = trial.suggest_categorical("downsample_dim", [64, 128, 256, 512])
-        downsample_transform = torchvision.transforms.Resize(size=(downsample_dim, downsample_dim))
-    
+        downsample_dim = trial.suggest_categorical(
+            "downsample_dim", [64, 128, 256, 512]
+        )
+        downsample_transform = torchvision.transforms.Resize(
+            size=(downsample_dim, downsample_dim)
+        )
+
     if guassian_blur and downsample:
         transform = torchvision.transforms.Compose(
             [downsample_transform, blur_transform]
@@ -353,48 +379,87 @@ def objective(trial):
     else:
         transform = None
 
-    poi_list = os.listdir('../data/processed/npz/planet')
-    cell_width_pct = trial.suggest_categorical('cell_width_pct', [1, 1/2, 1/4, 1/8, 1/16])
+    # poi_list = os.listdir('../data/processed/npz/planet')
+    poi_list = [
+        "1311_3077_13_10N",
+        "2065_3647_13_16N",
+        "4397_4302_13_33S",
+        "4791_3920_13_36N",
+        "5125_4049_13_38N",
+        "1417_3281_13_11N",
+        "2235_3403_13_17N",
+        "4421_3800_13_33N",
+        "4806_3588_13_36N",
+        "5863_3800_13_43N",
+        "1487_3335_13_11N",
+        "2415_3082_13_18N",
+        "4426_3835_13_33N",
+        "4838_3506_13_36N",
+        "5926_3715_13_44N",
+        "1700_3100_13_13N",
+        "2624_4314_13_20S",
+        "4622_3159_13_34N",
+        "4856_4087_13_36N",
+        "5989_3554_13_44N",
+        "2006_3280_13_15N",
+        "2697_3715_13_20N",
+        "4768_4131_13_35S",
+        "4881_3344_13_36N",
+        "2029_3764_13_15N",
+        "3002_4273_13_22S",
+        "4780_3377_13_36N",
+        "5111_4560_13_38S",
+    ]
+
+    cell_width_pct = trial.suggest_categorical(
+        "cell_width_pct", [1, 1 / 2, 1 / 4, 1 / 8]
+    )
     STData = dataloaders.SpatiotemporalDataset(
         "../data/processed/npz",
-        dims = (1024, 1024), #Original dims, not post-transformation
+        dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=poi_list,
-        n_steps=12, # start with one year
+        n_steps=2,  # start with one prediction (effectively flat CNN)
         cell_width_pct=cell_width_pct,
         labs_as_features=False,
-        transform=transform
+        transform=transform,
+        download=False,
+        in_memory=True,
     )
 
     if downsample:
         in_xDim = in_yDim = int(downsample_dim * cell_width_pct)
         out_xDim = out_yDim = int(1024 * cell_width_pct)
     else:
-        in_xDim = in_yDim = out_xDim = out_yDim= int(1024 * cell_width_pct)
+        in_xDim = in_yDim = out_xDim = out_yDim = int(1024 * cell_width_pct)
 
     n_train = int(len(STData) * .8)
     n_test = len(STData) - n_train
 
-    train_dataset, test_dataset = \
-        torch.utils.data.random_split(STData, [n_train, n_test])
+    # n_train = n_test = 1
+
+    train_dataset, test_dataset = torch.utils.data.random_split(
+        STData, [n_train, n_test]
+    )
 
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
         # batch_size=batch_size,
-        batch_size=None, #batches determined by cell width
-        shuffle=True
+        batch_size=None,  # batches determined by cell width
+        shuffle=True,
     )
 
     test_dataloader = torch.utils.data.DataLoader(
         test_dataset,
         # batch_size=batch_size,
-        batch_size=None, #batches determined by cell width
-        shuffle=True
+        batch_size=None,  # batches determined by cell width
+        shuffle=True,
     )
 
     lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
     momentum = trial.suggest_float("momentum", 0.0, 1.0)
     conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
-    bias = trial.suggest_categorical("bias", [True, False])
+    # bias = trial.suggest_categorical("bias", [True, False])
+    bias = True
 
     num_layers = trial.suggest_int("num_layers", 1, 5)
     hidden_channels = []
@@ -414,7 +479,7 @@ def objective(trial):
     n_output_classes = 7
 
     convGRU_mod = ConvGRU(
-        input_dim=(in_xDim,in_yDim),
+        input_dim=(in_xDim, in_yDim),
         output_dim=(out_xDim, out_yDim),
         num_layers=num_layers,
         input_channels=input_channels,
@@ -422,22 +487,18 @@ def objective(trial):
         n_output_classes=n_output_classes,
         kernel_size=conv_kernel_size,
         batch_first=True,
-        conv_padding_mode='replicate',
+        conv_padding_mode="replicate",
         bias=bias,
-        cuda_=cuda_
+        cuda_=cuda_,
     )
 
     if cuda_:
-        convGRU_mod = convGRU_mod.to('cuda')
-    
-    # criterion=torch.nn.CrossEntropyLoss()
-    # loss = evaluation.get_loss(convGRU_mod, test_dataloader, criterion, cuda_)
-    # print('Initial test loss: ' + str(loss))
-    
-    optim = trial.suggest_categorical('optim', ['sgd', 'adam'])
-    clip_max_norm = trial.suggest_float('clip_max_norm', .5, 1.5)
+        convGRU_mod = convGRU_mod.to("cuda")
+
+    optim = trial.suggest_categorical("optim", ["sgd", "adam"])
+    clip_max_norm = trial.suggest_float("clip_max_norm", 0.5, 1.5)
     epochs = 10
-    convGRU_mod.fit(
+    train_loss = convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
         optim=optim,
@@ -449,31 +510,10 @@ def objective(trial):
         # cuda_=cuda_
     )
 
-if __name__ == "__main__":
+    return train_loss
 
-    # param_dict = {
-    #     'experiment_desc' : 'Vanilla proof of colab concept run',
-    #     'input_channels' : 4,
-    #     'hidden_channels' : [2, 4, 8],
-    #     'n_output_classes' : 7,
-    #     'kernel_size' : (3,3),  # kernel size for stacked hidden layer
-    #     'num_layers' : 3,  # number of stacked hidden layers
-    #     'n_steps' : 2, # only take 2 steps
-    #     'train_pct' : .8,
-    #     'cell_width_pct' : 1/4,
-    #     'lr' : .1,
-    #     'momentum' : .001,
-    #     'bias' : True,
-    #     'optim' : 'adam',
-    #     'epochs' : 10,
-    #     'conv_padding_mode' : 'replicate',
-    #     'guassian_blur' : True,
-    #     'guassian_sigma': 3.0,
-    #     'guassian_kernel': 19,
-    #     'downsample':True,
-    #     'downsample_dim': 256,
-    #     'clip_max_norm' : .10
-    # }
+
+if __name__ == "__main__":
 
     study = optuna.create_study(direction="minimize")
     study.optimize(objective, n_trials=100)
