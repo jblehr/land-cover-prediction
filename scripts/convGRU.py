@@ -384,7 +384,7 @@ def objective(trial):
         print('using CPU backend.')
     
     if not trial:
-        epochs = 15
+        epochs = 50
         # found using the best options from pre-presentation overnight optuna
         cell_width_pct = 0.125
         clip_max_norm = 1.184316464877487
@@ -460,45 +460,36 @@ def objective(trial):
 
     train_poi_list = [
         "1311_3077_13_10N",
-        "1700_3100_13_13N"
+        "1700_3100_13_13N",
+        "2235_3403_13_17N",
+        "2697_3715_13_20N",
+        "4421_3800_13_33N",
+        "4780_3377_13_36N",
+        "1417_3281_13_11N",
+        "2006_3280_13_15N",
+        "2415_3082_13_18N",
+        "3002_4273_13_22S",
+        "4426_3835_13_33N",
+        "4791_3920_13_36N",
+        "1487_3335_13_11N",
+        "2029_3764_13_15N",
+        "2624_4314_13_20S",
+        "4397_4302_13_33S",
+        "4622_3159_13_34N",
+        "4806_3588_13_36N"
     ]
 
     test_poi_list = [
-        "2235_3403_13_17N"
+        "2065_3647_13_16N",
+        "4768_4131_13_35S",
+        "4838_3506_13_36N",
+        "4856_4087_13_36N",
+        "4881_3344_13_36N"
     ]
 
-    # train_poi_list = [
-    #     "1311_3077_13_10N",
-    #     "1700_3100_13_13N",
-    #     "2235_3403_13_17N",
-    #     "2697_3715_13_20N",
-    #     "4421_3800_13_33N",
-    #     "4780_3377_13_36N",
-    #     "1417_3281_13_11N",
-    #     "2006_3280_13_15N",
-    #     "2415_3082_13_18N",
-    #     "3002_4273_13_22S",
-    #     "4426_3835_13_33N",
-    #     "4791_3920_13_36N",
-    #     "1487_3335_13_11N",
-    #     "2029_3764_13_15N",
-    #     "2624_4314_13_20S",
-    #     "4397_4302_13_33S",
-    #     "4622_3159_13_34N",
-    #     "4806_3588_13_36N"
-    # ]
-
-    # test_poi_list = [
-    #     "2065_3647_13_16N",
-    #     "4768_4131_13_35S",
-    #     "4838_3506_13_36N",
-    #     "4856_4087_13_36N",
-    #     "4881_3344_13_36N"
-    # ]
-
     train_dataloader = dataloaders.SpatiotemporalDataset(
-        # "/scratch/npg/data/processed/npz",
-        "data/processed/npz",
+        "/scratch/npg/data/processed/npz",
+        # "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
@@ -510,8 +501,8 @@ def objective(trial):
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
-        # "/scratch/npg/data/processed/npz",
-        "data/processed/npz",
+        "/scratch/npg/data/processed/npz",
+        # "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
@@ -630,7 +621,7 @@ if __name__ == "__main__":
         for key, value in trial.params.items():
             print("    {}: {}".format(key, value))
     else:
-        out = objective(trial=False)
-        out
+        objective(trial=False)
+        print('fitting complete.')
     # fig = optuna.visualization.plot_param_importances(study)
     # fig.show()
