@@ -515,7 +515,15 @@ def objective(trial):
 
 if __name__ == "__main__":
 
-    study = optuna.create_study(direction="minimize")
+    storage = 'sqlite:////home/npg/land-cover-prediction/output/peanut_optuna'
+
+    study = optuna.create_study(
+        direction="minimize",
+        study_name='peanut',
+        storage=storage,
+        load_if_exists=True
+    )
+
     study.optimize(objective, n_trials=100)
 
     pruned_trials = study.get_trials(deepcopy=False, states=[TrialState.PRUNED])
@@ -535,5 +543,5 @@ if __name__ == "__main__":
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
 
-    fig = optuna.visualization.plot_param_importances(study)
-    fig.show()
+    # fig = optuna.visualization.plot_param_importances(study)
+    # fig.show()
