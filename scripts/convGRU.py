@@ -348,6 +348,11 @@ class ConvGRU(nn.Module):
 def objective(trial):
 
     cuda_ = torch.cuda.is_available()
+    if cuda_:
+        print('using GPU backend!)
+    else:
+        print('using CPU backend.')
+
     guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
     if guassian_blur:
         guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
