@@ -6,7 +6,7 @@ import os
 import datetime
 from torchvision import transforms
 # import cv2
-import s3_util
+# import s3_util
 
 class FullyIndependentDataset(Dataset):
     def __init__(self, img_path, label_path):
