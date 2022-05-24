@@ -415,7 +415,7 @@ def objective(trial):
         "cell_width_pct", [1, 1 / 2, 1 / 4, 1 / 8]
     )
     STData = dataloaders.SpatiotemporalDataset(
-        "../data/processed/npz",
+        "/scratch/npg/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
