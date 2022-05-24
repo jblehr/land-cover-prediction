@@ -7,6 +7,7 @@ import os
 import datetime
 from torchvision import transforms
 import cv2
+import s3_util
 
 class FullyIndependentDataset(Dataset):
     def __init__(self, img_path, label_path):
@@ -61,8 +62,20 @@ class SpatiotemporalDataset(Dataset):
         cell_width_pct,
         transform=None,
         labs_as_features=False,
-        normalize=False
+        normalize=False,
+        download=False,
+        decompress_first=False,
+        in_memory=False
     ):
+        if download:
+            print('Downloading data from S3...')
+            s3_util.download_npz_dir(
+                'capp-advml-land-use-prediction-small',
+                poi_list,
+                'data/processed'
+            )
+            print('Download complete!')
+        self.hypercubes = {}
         self.poi_list = poi_list
         self.cell_width_pct = cell_width_pct
         self.data_dir = data_dir
@@ -71,9 +84,14 @@ class SpatiotemporalDataset(Dataset):
         self.labs_as_features = labs_as_features
         self.n_ambigious = 0
         self.x_dim, self.y_dim = dims
+        self.in_memory = in_memory
+
+        if in_memory:
+            for poi in poi_list:
+                datX, datY = self.read_hypercube(poi)
+                self.hypercubes[poi] = (datX, datY)
 
     def read_hypercube(self, poi_name):
-
         rgb_dir = os.path.join(self.data_dir, "planet", poi_name)
         rgb_files = sorted(os.listdir(rgb_dir))
 
@@ -144,8 +162,11 @@ class SpatiotemporalDataset(Dataset):
 
     def __getitem__(self, idx):
 
-        cube_path = self.poi_list[idx]
-        datX, datY = self.read_hypercube(poi_name=cube_path)
+        poi = self.poi_list[idx]
+        if not self.in_memory:
+            datX, datY = self.read_hypercube(poi_name=poi)
+        else:
+            datX, datY = self.hypercubes[poi]
 
         transformed_cell_width = int(datX.shape[2] * self.cell_width_pct)
         original_cell_width = int(self.x_dim * self.cell_width_pct)
@@ -200,3 +221,17 @@ class SpatiotemporalDataset(Dataset):
             torch.tensor(out_tensor_X.astype(np.float32)),
             torch.tensor(out_tensor_Y).long()
         )
+
+if __name__ == '__main__':
+    STData = SpatiotemporalDataset(
+        "data/processed/npz",
+        dims = (1024, 1024), #Original dims, not post-transformation
+        poi_list=['2697_3715_13_20N', '5989_3554_13_44N'],
+        n_steps=2, # start with one year
+        cell_width_pct=.5,
+        labs_as_features=False,
+        transform=None,
+        download=True,
+        in_memory=True
+    )
+    STData.__getitem__(0)
