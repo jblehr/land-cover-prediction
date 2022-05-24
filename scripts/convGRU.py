@@ -392,8 +392,8 @@ def objective(trial):
         downsample = True
         downsample_dim = 64
         guassian_blur = False
-        # hidden_channels = [32,32]
-        hidden_channels = [8,8]
+        hidden_channels = [32,32]
+        # hidden_channels = [8,8]
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 2
