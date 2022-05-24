@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=job_%a
-#SBATCH --ntasks=8
+#SBATCH --ntasks=3
 #SBATCH --output=logs/job_%a.out
 #SBATCH --array=1,2,3
 #SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/job_%a.out
