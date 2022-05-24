@@ -7,7 +7,7 @@
 #SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/job_%a.out
 #SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/job_%a.err
 #SBATCH --chdir=/home/npg/land-cover-prediction
-#SBATCH --partition=debug
+#SBATCH --partition=quadro
 #SBATCH --exclusive
 
 module load python/anaconda-2021.05
