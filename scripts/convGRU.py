@@ -349,7 +349,7 @@ def objective(trial):
 
     cuda_ = torch.cuda.is_available()
     if cuda_:
-        print('using GPU backend!)
+        print('using GPU backend!')
     else:
         print('using CPU backend.')
 
