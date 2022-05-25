@@ -450,14 +450,14 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         guassian_blur = False
         cell_width_pct = 1
         bias = True
-
+        bptt_len = trial.suggest_int("bptt_len", 2, 12)
         conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
 
-        num_layers = trial.suggest_int("num_layers", 1, 5)
+        num_layers = trial.suggest_int("num_layers", 1, 3)
         hidden_channels = []
         for layer_idx in range(num_layers):
             hidden_channels_idx = trial.suggest_categorical(
-                f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
+                f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256, 512]
             )
             hidden_channels.append(hidden_channels_idx)
 
@@ -543,6 +543,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
     test_loss = convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
+        bptt_len=bptt_len,
         optim=optim,
         lr=lr,
         momentum=momentum,
@@ -620,7 +621,7 @@ if __name__ == "__main__":
         # "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=2,  # start with one prediction (effectively flat CNN)
+        n_steps=12,  # start with one prediction (effectively flat CNN)
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -633,7 +634,7 @@ if __name__ == "__main__":
         # "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=2,  # start with one prediction (effectively flat CNN)
+        n_steps=12,  # start with one prediction (effectively flat CNN)
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -657,7 +658,7 @@ if __name__ == "__main__":
 
         study = optuna.create_study(
             direction="minimize",
-            study_name="midway_loss",
+            study_name="midway_loss_withTime",
             storage=parsed.optuna_path,
             load_if_exists=True,
         )
