@@ -61,15 +61,12 @@ def get_loss(model, dataloader, criterion, cuda_):
 
                 outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
                 targets_flat = targets.reshape(flat_dim)
+
                 if model.cuda_:
                     targets_flat = targets_flat.to('cuda')
-                    outputs_flat = targets_flat.to('cuda')
-                logging.error('targets')
-                logging.error(targets_flat)
-                logging.error('output')
-                logging.error(outputs_flat)
+                    outputs_flat = outputs_flat.to('cuda')
 
-                loss = criterion(outputs_flat, targets_flat.long())
+                loss = criterion(outputs_flat, targets_flat)
                 losses.append(float(loss))
 
     return np.mean(losses)
