@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=train
+#SBATCH --job-name=mtrain
 #SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/quad_train.out
 #SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/quad_train.err
 #SBATCH --chdir=/home/npg/land-cover-prediction
