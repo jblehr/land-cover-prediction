@@ -11,6 +11,7 @@
 
 module load cuda/6.5
 module load python/anaconda-2021.05
+module load torch/7.0
 
 python3 scripts/convGRU.py --optuna
 
