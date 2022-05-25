@@ -63,7 +63,10 @@ def get_loss(model, dataloader, criterion, cuda_):
                 if model.cuda_:
                     targets_flat = targets_flat.to('cuda')
                     outputs_flat = targets_flat.to('cuda')
-
+                print('targets')
+                print(targets_flat)
+                print('output')
+                print(outputs_flat)
 
                 loss = criterion(outputs_flat, targets_flat)
                 losses.append(float(loss))
