@@ -337,7 +337,7 @@ class ConvGRU(nn.Module):
             print(f"============== End of epoch {epoch} ============")
 
             if trial:
-                trial.report(train_loss, epoch)
+                trial.report(test_loss, epoch)
 
                 if trial.should_prune():
                     raise optuna.exceptions.TrialPruned()
@@ -348,8 +348,7 @@ class ConvGRU(nn.Module):
             'train_accs' : train_accs,
             'test_accs' : test_accs
         }
-        print(self.train_report)
-        return train_loss
+        return test_loss
 
     def _init_hidden(self, batch_size):
         init_states = []
@@ -392,8 +391,8 @@ def objective(trial):
         downsample = True
         downsample_dim = 64
         guassian_blur = False
-        hidden_channels = [32,32]
-        # hidden_channels = [8,8]
+        # hidden_channels = [32,32]
+        hidden_channels = [2,2]
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 2
@@ -401,8 +400,8 @@ def objective(trial):
         final_train = True
         bias = True
     else:
-        epochs=10
-
+        final_train=False
+        epochs=20
         guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
         if guassian_blur:
             guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
@@ -425,14 +424,14 @@ def objective(trial):
         conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
         bias = True
 
-        num_layers = trial.suggest_int("num_layers", 1, 5)
+        num_layers = trial.suggest_int("num_layers", 1, 4)
         hidden_channels = []
         for layer_idx in range(num_layers):
             # hidden_channels_idx = trial.suggest_categorical(
             #     f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
             # )
             hidden_channels_idx = trial.suggest_categorical(
-                f"layer_{layer_idx}", [4, 8, 16, 32]
+                f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
             )
             hidden_channels.append(hidden_channels_idx)
 
@@ -458,36 +457,44 @@ def objective(trial):
             [downsample_transform, blur_transform]
         )
 
+    # train_poi_list = [
+    #     "1311_3077_13_10N",
+    #     "1700_3100_13_13N",
+    #     "2235_3403_13_17N",
+    #     "2697_3715_13_20N",
+    #     "4421_3800_13_33N",
+    #     "4780_3377_13_36N",
+    #     "2006_3280_13_15N",
+    #     "4791_3920_13_36N",
+    #     "1487_3335_13_11N",
+    #     "2029_3764_13_15N",
+    #     "2624_4314_13_20S",
+    #     "4397_4302_13_33S",
+    #     "4622_3159_13_34N",
+    #     "4806_3588_13_36N",
+    #     "4838_3506_13_36N",
+    #     "4856_4087_13_36N",
+    #     "4881_3344_13_36N"
+    # ]
+
+    # test_poi_list = [
+    #     "2415_3082_13_18N",
+    #     "3002_4273_13_22S",
+    #     "4426_3835_13_33N",
+    #     "1417_3281_13_11N"
+    # ]
+
     train_poi_list = [
         "1311_3077_13_10N",
-        "1700_3100_13_13N",
-        "2235_3403_13_17N",
-        "2697_3715_13_20N",
-        "4421_3800_13_33N",
-        "4780_3377_13_36N",
-        "1417_3281_13_11N",
-        "2006_3280_13_15N",
-        "2415_3082_13_18N",
-        "3002_4273_13_22S",
-        "4426_3835_13_33N",
-        "4791_3920_13_36N",
-        "1487_3335_13_11N",
-        "2029_3764_13_15N",
-        "2624_4314_13_20S",
-        "4397_4302_13_33S",
-        "4622_3159_13_34N",
-        "4806_3588_13_36N"
+        "1700_3100_13_13N"
     ]
-
-    test_poi_list = [
-        "4838_3506_13_36N",
-        "4856_4087_13_36N",
-        "4881_3344_13_36N"
+    test_poi_list= [
+        "2235_3403_13_17N"
     ]
 
     train_dataloader = dataloaders.SpatiotemporalDataset(
-        "/scratch/npg/data/processed/npz",
-        # "data/processed/npz",
+        # "/scratch/npg/data/processed/npz",
+        "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
@@ -499,8 +506,8 @@ def objective(trial):
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
-        "/scratch/npg/data/processed/npz",
-        # "data/processed/npz",
+        # "/scratch/npg/data/processed/npz",
+        "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
         n_steps=2,  # start with one prediction (effectively flat CNN)
@@ -564,8 +571,7 @@ def objective(trial):
     if cuda_:
         convGRU_mod = convGRU_mod.to("cuda")
 
-
-    train_loss = convGRU_mod.fit(
+    test_loss = convGRU_mod.fit(
         train_loader=train_dataloader,
         test_loader=test_dataloader,
         optim=optim,
@@ -577,11 +583,13 @@ def objective(trial):
         final_train=final_train
         # cuda_=cuda_
     )
+    if not final_train:
+        print('Training with layers {hidden_channels}.')
     if final_train:
-        with open('train_report.json', 'w') as fp:
+        with open('output/train_report.json', 'w') as fp:
             json.dump(convGRU_mod.train_report, fp)
     
-    return train_loss
+    return test_loss
 
 
 if __name__ == "__main__":
@@ -593,12 +601,27 @@ if __name__ == "__main__":
 
     if parsed.optuna:
 
+        fixed_params = {
+            "downsample_dim": 128,
+            "downsample": True,
+            "conv_kernel_size":6,
+            "clip_max_norm" : 1.18,
+            "optim" : 'adam',
+            "lr": .0005,
+            "momentum": .76,
+            "gauassian_blur" : False,
+            "cell_pct_width" : 1
+            }
+
         study = optuna.create_study(
             direction="minimize",
-            study_name='peanut',
+            study_name='peanut_loss',
             storage=parsed.optuna_path,
             load_if_exists=True
         )
+
+        partial_sampler = optuna.samplers.PartialFixedSampler(fixed_params, study.sampler)
+        study.sampler = partial_sampler
 
         study.optimize(objective)
 
