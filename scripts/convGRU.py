@@ -631,7 +631,7 @@ if __name__ == "__main__":
         transform=transform,
         download=False,
         # in_memory=True,
-        in_memory=False
+        in_memory=True
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
@@ -645,7 +645,7 @@ if __name__ == "__main__":
         transform=transform,
         download=False,
         # in_memory=True,
-        in_memory=False
+        in_memory=True
     )
 
     if parsed.optuna:
