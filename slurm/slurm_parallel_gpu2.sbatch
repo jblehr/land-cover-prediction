@@ -11,6 +11,7 @@
 
 module load cuda/6.5
 module load python/anaconda-2020.02
+pip install optuna
 
 python3 scripts/convGRU.py --optuna
 
