@@ -450,7 +450,8 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         guassian_blur = False
         cell_width_pct = 1
         bias = True
-        bptt_len = trial.suggest_int("bptt_len", 2, 12)
+
+        bptt_len = trial.suggest_int("bptt_len", 2, 11)
         conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
 
         num_layers = trial.suggest_int("num_layers", 1, 3)
@@ -629,7 +630,8 @@ if __name__ == "__main__":
         labs_as_features=False,
         transform=transform,
         download=False,
-        in_memory=True,
+        # in_memory=True,
+        in_memory=False
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
@@ -642,7 +644,8 @@ if __name__ == "__main__":
         labs_as_features=False,
         transform=transform,
         download=False,
-        in_memory=True,
+        # in_memory=True,
+        in_memory=False
     )
 
     if parsed.optuna:
