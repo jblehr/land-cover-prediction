@@ -10,7 +10,7 @@
 #SBATCH --nodes=1           # 1 GPU node
 
 module load cuda/6.5
-module load python/anaconda-2020.02
+module load python/anaconda-2021.05
 
 python3 scripts/convGRU.py --optuna
 
