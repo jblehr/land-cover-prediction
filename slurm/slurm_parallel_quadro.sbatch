@@ -8,7 +8,7 @@
 #SBATCH --partition=quadro
 #SBATCH --exclusive
 
-module load python/anaconda-2021.05
+module load cuda/10.0
 python scripts/convGRU.py --optuna
 
 
