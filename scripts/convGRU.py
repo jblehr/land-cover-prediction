@@ -655,7 +655,7 @@ if __name__ == "__main__":
 
         study = optuna.create_study(
             direction="minimize",
-            study_name="peanut_loss",
+            study_name="midway_loss",
             storage=parsed.optuna_path,
             load_if_exists=True,
         )
