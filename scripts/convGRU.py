@@ -438,18 +438,20 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
             hidden_channels.append(hidden_channels_idx)
     else:
         # if fixed, fix the 'unimportant' hyperpars according to first pass
-        epochs = 30
+        epochs = 50
         final_train = False
         downsample_dim = 128
         downsample = True
-        conv_kernel_size = 6
+        # conv_kernel_size = 6
         clip_max_norm = 1.18
         optim = "adam"
         lr = 0.0005
-        momentum = 0.76
+        momentum = 0.76 # don't think this does anything with adam
         guassian_blur = False
         cell_width_pct = 1
         bias = True
+
+        conv_kernel_size = trial.suggest_int("conv_kernel_size", 2, 7)
 
         num_layers = trial.suggest_int("num_layers", 1, 5)
         hidden_channels = []
