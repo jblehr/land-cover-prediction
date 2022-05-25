@@ -15,6 +15,7 @@ import argparse
 import json
 import logging
 
+
 class ConvGRUCell(nn.Module):
     def __init__(
         self,
@@ -254,7 +255,7 @@ class ConvGRU(nn.Module):
         bptt_len=3,
         epochs=50,
         max_norm=False,
-        final_train=False
+        final_train=False,
     ):
 
         if optim == "adam":
@@ -322,12 +323,15 @@ class ConvGRU(nn.Module):
             if not min_test_loss or test_loss < min_test_loss:
                 min_test_loss = test_loss
                 if final_train:
-                    torch.save({
-                    'epoch': epoch,
-                    'model_state_dict': self.state_dict(),
-                    'optimizer_state_dict': optimizer.state_dict(),
-                    'loss': test_loss,
-                    }, 'output/best_model.pt')
+                    torch.save(
+                        {
+                            "epoch": epoch,
+                            "model_state_dict": self.state_dict(),
+                            "optimizer_state_dict": optimizer.state_dict(),
+                            "loss": test_loss,
+                        },
+                        "output/best_model.pt",
+                    )
 
             logging.info(f"  -- epoch: {epoch}")
             logging.info(f"  -- test acc: {test_acc:.3f}")
@@ -344,10 +348,10 @@ class ConvGRU(nn.Module):
                     raise optuna.exceptions.TrialPruned()
 
         self.train_report = {
-            'train_losses': train_losses,
-            'test_losses' : test_losses,
-            'train_accs' : train_accs,
-            'test_accs' : test_accs
+            "train_losses": train_losses,
+            "test_losses": test_losses,
+            "train_accs": train_accs,
+            "test_accs": test_accs,
         }
         return test_loss
 
@@ -379,10 +383,10 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
 
     cuda_ = torch.cuda.is_available()
     if cuda_:
-        print('using GPU backend!')
+        print("using GPU backend!")
     else:
-        print('using CPU backend.')
-    
+        print("using CPU backend.")
+
     if not trial:
         epochs = 50
         # found using the best options from pre-presentation overnight optuna
@@ -393,16 +397,16 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 64
         guassian_blur = False
         # hidden_channels = [32,32]
-        hidden_channels = [2,2]
+        hidden_channels = [2, 2]
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 2
-        optim = 'adam'
+        optim = "adam"
         final_train = True
         bias = True
     elif not fixed:
-        final_train=False
-        epochs=2
+        final_train = False
+        epochs = 2
         guassian_blur = trial.suggest_categorical("guassian_blur", [True, False])
         if guassian_blur:
             guassian_sigma = trial.suggest_float("guassian_sigma", 1.0, 5.0)
@@ -434,15 +438,15 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
             hidden_channels.append(hidden_channels_idx)
     else:
         # if fixed, fix the 'unimportant' hyperpars according to first pass
-        epochs=30
-        final_train=False
+        epochs = 30
+        final_train = False
         downsample_dim = 128
         downsample = True
         conv_kernel_size = 6
         clip_max_norm = 1.18
-        optim = 'adam'
-        lr = .0005
-        momentum = .76
+        optim = "adam"
+        lr = 0.0005
+        momentum = 0.76
         guassian_blur = False
         cell_width_pct = 1
         bias = True
@@ -543,55 +547,59 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         epochs=epochs,
         max_norm=clip_max_norm,
         trial=trial,
-        final_train=final_train
+        final_train=final_train,
     )
 
     if not final_train:
-        logging.info('Training with layers {hidden_channels}.')
+        logging.info("Training with layers {hidden_channels}.")
     if final_train:
-        with open('output/train_report.json', 'w') as fp:
+        with open("output/train_report.json", "w") as fp:
             json.dump(convGRU_mod.train_report, fp)
-    
+
     return test_loss
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--optuna', action='store_true', default=False)
-    parser.add_argument('--optuna_path', default='sqlite:////home/npg/land-cover-prediction/output/midway_optuna.db')
+    parser.add_argument("--optuna", action="store_true", default=False)
+    parser.add_argument(
+        "--optuna_path",
+        default="sqlite:////home/npg/land-cover-prediction/output/midway_optuna.db",
+    )
     parsed = parser.parse_args()
 
     test_poi_list = [
-        "2415_3082_13_18N",
-        "3002_4273_13_22S",
+        "1700_3100_13_13N",
+        "2029_3764_13_15N",
         "4426_3835_13_33N",
-        "1417_3281_13_11N",
-        "5125_4049_13_38N"
+        "4397_4302_13_33S",
+        "5125_4049_13_38N",
     ]
 
     train_poi_list = [
         "1311_3077_13_10N",
-        "1700_3100_13_13N",
+        "2065_3647_13_16N",
+        "2624_4314_13_20S",
+        "4622_3159_13_34N",
+        "4806_3588_13_36N",
+        "3002_4273_13_22S",
+        "4881_3344_13_36N",
+        "5863_3800_13_43N",
+        "1417_3281_13_11N",
+        "2006_3280_13_15N",
         "2235_3403_13_17N",
         "2697_3715_13_20N",
         "4421_3800_13_33N",
-        "4780_3377_13_36N",
-        "2006_3280_13_15N",
-        "4791_3920_13_36N",
-        "1487_3335_13_11N",
-        "2029_3764_13_15N",
-        "2624_4314_13_20S",
-        "4397_4302_13_33S",
-        "4622_3159_13_34N",
-        "4806_3588_13_36N",
+        "4768_4131_13_35S",
         "4838_3506_13_36N",
-        "4856_4087_13_36N",
-        "4881_3344_13_36N", 
         "5111_4560_13_38S",
-        "5125_4049_13_38N",
-        "5125_4049_13_38N",
-        "5125_4049_13_38N"
+        "5926_3715_13_44N",
+        "1487_3335_13_11N",
+        "2415_3082_13_18N",
+        "4791_3920_13_36N",
+        "4856_4087_13_36N",
+        "5989_3554_13_44N",
     ]
 
     # test_poi_list = [
@@ -603,9 +611,7 @@ if __name__ == "__main__":
     #     "1311_3077_13_10N"
     # ]
 
-    transform = torchvision.transforms.Resize(
-        size=(128, 128)
-    )
+    transform = torchvision.transforms.Resize(size=(128, 128))
 
     train_dataloader = dataloaders.SpatiotemporalDataset(
         # "/scratch/npg/data/processed/npz",
@@ -631,7 +637,7 @@ if __name__ == "__main__":
         transform=transform,
         download=False,
         in_memory=True,
-        )
+    )
 
     if parsed.optuna:
 
@@ -649,14 +655,16 @@ if __name__ == "__main__":
 
         study = optuna.create_study(
             direction="minimize",
-            study_name='peanut_loss',
+            study_name="peanut_loss",
             storage=parsed.optuna_path,
-            load_if_exists=True
+            load_if_exists=True,
         )
 
         # Wrap the objective inside a lambda and call objective inside it
         # courtesy of https://www.kaggle.com/general/261870
-        objective_preloaded = lambda trial: objective(trial, train_dataloader, test_dataloader, fixed=True)
+        objective_preloaded = lambda trial: objective(
+            trial, train_dataloader, test_dataloader, fixed=True
+        )
 
         # partial_sampler = optuna.samplers.PartialFixedSampler(fixed_params, study.sampler)
         # study.sampler = partial_sampler
@@ -681,6 +689,6 @@ if __name__ == "__main__":
             logging.info("    {}: {}".format(key, value))
     else:
         objective(False, train_dataloader, test_dataloader)
-        logging.info('fitting complete.')
+        logging.info("fitting complete.")
     # fig = optuna.visualization.plot_param_importances(study)
     # fig.show()
