@@ -456,8 +456,11 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         num_layers = trial.suggest_int("num_layers", 1, 3)
         hidden_channels = []
         for layer_idx in range(num_layers):
-            hidden_channels_idx = trial.suggest_categorical(
-                f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256, 512]
+            hidden_channels_idx = trial.suggest_int(
+                f"layer_{layer_idx}",
+                low = 50,
+                high = 500,
+                step = 50
             )
             hidden_channels.append(hidden_channels_idx)
 
