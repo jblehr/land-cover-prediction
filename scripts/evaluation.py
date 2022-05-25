@@ -33,7 +33,7 @@ def get_accuracy(model, dataloader, changed_only=False):
                     assert targets.size() == predicted.size()
                     if model.cuda_:
                         predicted = predicted.to('cuda')
-                    n_correct += int(np.equal(targets, predicted).sum())
+                    n_correct += int(torch.eq(targets, predicted).sum())
                     n_eval += targets.numel()
 
     return n_correct / n_eval
