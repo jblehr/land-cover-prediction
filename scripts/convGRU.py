@@ -1,7 +1,5 @@
 # Code based on https://github.com/happyjin/ConvGRU-pytorch/blob/9e932822e11db19b78e3761cb71018850a1247ff/convGRU.py
 
-from cv2 import GaussianBlur
-from sklearn import gaussian_process
 import torch
 from torch import nn
 from torch.autograd import Variable
