@@ -8,11 +8,9 @@
 #SBATCH --exclusive
 #SBATCH --gres=gpu:1
 
-cuda_version=9.2
+cuda_version=11.1
 export CUDA_HOME=/usr/local/cuda-${cuda_version}
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CUDA_HOME/lib64
 export PATH=$PATH:/usr/local/cuda/bin
 
 python scripts/convGRU.py
-
-
