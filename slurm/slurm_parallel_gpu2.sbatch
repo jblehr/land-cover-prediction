@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#SBATCH --job-name=m_cnn
-#SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/midway_train_cnn.out
-#SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/midway_train_cnn.err
+#SBATCH --job-name=convgru
+#SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/midway_train_convgru.out
+#SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/midway_train_convgru.err
 #SBATCH --chdir=/home/npg/land-cover-prediction
 #SBATCH --partition=gpu2
 #SBATCH --gres=gpu:1        # Request 1 GPU

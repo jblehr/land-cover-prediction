@@ -275,7 +275,7 @@ class ConvGRU(nn.Module):
             losses = []
             for idx, (batch_x, batch_y) in enumerate(train_loader):
 
-                for timestep in range(batch_x.shape[1] - 1):
+                for timestep in range(bptt_len, batch_x.shape[1] - 1):
 
                     min_step = max(0, timestep - bptt_len)
 
@@ -389,7 +389,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         print("using CPU backend.")
 
     if not trial:
-        epochs = 50
+        epochs = 10
         cell_width_pct = 1
         clip_max_norm = 1.184316464877487
         conv_kernel_size = 7
@@ -404,7 +404,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/CNN_8step.pt'
+        model_out = 'output/models/ConvGRU_4bptt_8step.pt'
 
     elif not fixed:
         final_train = False
@@ -440,7 +440,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
             hidden_channels.append(hidden_channels_idx)
     else:
         # if fixed, fix the 'unimportant' hyperpars according to first pass
-        epochs = 10
+        epochs = 15
         final_train = False
         downsample_dim = 128
         downsample = True
