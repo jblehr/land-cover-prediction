@@ -5,16 +5,17 @@ import os
 import convGRU
 import logging
 
-def get_accuracy(model, dataloader, changed_only=False):
+def get_accuracy(model, dataloader, bptt_len, changed_only=False):
     model.eval()
     n_correct = 0
     n_eval = 0
     with torch.no_grad():
         for batch_x, batch_y in dataloader:
-            for timestep in range(batch_x.shape[1] - 1):
+            for timestep in range(bptt_len, batch_x.shape[1] - 1):
 
+                min_step = max(0, timestep - bptt_len)
                 # For each BPTT step, get all timesteps up until now, model them
-                inputs = batch_x[:,0:timestep+1,:,:]
+                inputs = batch_x[:,min_step:timestep+1,:,:]
                 outputs = model(inputs)
 
                 # Then, choose next timestep target to predict
@@ -40,15 +41,16 @@ def get_accuracy(model, dataloader, changed_only=False):
 
     return n_correct / n_eval
 
-def get_loss(model, dataloader, criterion, cuda_):
+def get_loss(model, dataloader, criterion, bptt_len, cuda_):
     model.eval()
     losses=[]
     with torch.no_grad():
         for batch_x, batch_y in dataloader:
-            for timestep in range(batch_x.shape[1] - 1):
+            for timestep in range(bptt_len, batch_x.shape[1] - 1):
 
+                min_step = max(0, timestep - bptt_len)
                 # For each BPTT step, get all timesteps up until now, model them
-                inputs = batch_x[:,0:timestep+1,:,:]
+                inputs = batch_x[:,min_step:timestep+1,:,:]
                 outputs = model(inputs)
 
                 # Then, choose next timestep target to predict
