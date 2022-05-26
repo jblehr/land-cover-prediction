@@ -654,7 +654,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=2, 
+        n_steps=12, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -667,7 +667,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=2,  
+        n_steps=12,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
