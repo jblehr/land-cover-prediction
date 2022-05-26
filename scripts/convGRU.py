@@ -312,13 +312,13 @@ class ConvGRU(nn.Module):
             train_loss = np.mean(losses)
             train_losses.append(train_loss)
 
-            train_acc = evaluation.get_accuracy(self, train_loader)
+            train_acc = evaluation.get_accuracy(self, train_loader, bptt_len)
             train_accs.append(train_acc)
 
-            test_loss = evaluation.get_loss(self, test_loader, criterion, self.cuda_)
+            test_loss = evaluation.get_loss(self, test_loader, criterion, bptt_len, self.cuda_)
             test_losses.append(test_loss)
 
-            test_acc = evaluation.get_accuracy(self, test_loader)
+            test_acc = evaluation.get_accuracy(self, test_loader, bptt_len)
             test_accs.append(test_acc)
 
             if not min_test_loss or test_loss < min_test_loss:
