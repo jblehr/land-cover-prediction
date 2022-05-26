@@ -397,14 +397,14 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 128
         guassian_blur = False
         hidden_channels = [512]
-        bptt_len = 2
+        bptt_len = 7
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 1
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/ConvGRU_4bptt_8step.pt'
+        model_out = 'output/models/ConvGRU_7bptt_12step.pt'
 
     elif not fixed:
         final_train = False
@@ -650,8 +650,8 @@ if __name__ == "__main__":
     transform = torchvision.transforms.Resize(size=(128, 128))
 
     train_dataloader = dataloaders.SpatiotemporalDataset(
-        # "/scratch/npg/data/processed/npz",
-        "/home/npg/land-cover-prediction/data/processed/npz",
+        "/scratch/npg/data/processed/npz",
+        # "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
         n_steps=8, 
@@ -663,11 +663,11 @@ if __name__ == "__main__":
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
-        # "/scratch/npg/data/processed/npz",
-        "/home/npg/land-cover-prediction/data/processed/npz",
+        "/scratch/npg/data/processed/npz",
+        # "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=8,  
+        n_steps=12,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
