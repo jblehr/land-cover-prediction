@@ -397,7 +397,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 128
         guassian_blur = False
         hidden_channels = [512]
-        bptt_len = 2
+        bptt_len = 4
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 1
@@ -654,7 +654,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=2, 
+        n_steps=8, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -667,7 +667,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=2,  
+        n_steps=8,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
