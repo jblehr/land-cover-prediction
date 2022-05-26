@@ -397,14 +397,14 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 128
         guassian_blur = False
         hidden_channels = [512]
-        bptt_len = 4
+        bptt_len = 2
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 1
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/CNN_2step.pt'
+        model_out = 'output/models/CNN_8step.pt'
 
     elif not fixed:
         final_train = False
