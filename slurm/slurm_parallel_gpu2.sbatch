@@ -7,7 +7,7 @@
 #SBATCH --partition=gpu2
 #SBATCH --gres=gpu:1        # Request 1 GPU
 #SBATCH --nodes=1           # 1 GPU node
-#SBATCH --array=1,2,3
+#SBATCH --array=1,2
 
 module load cuda/6.5
 module load python/anaconda-2021.05
