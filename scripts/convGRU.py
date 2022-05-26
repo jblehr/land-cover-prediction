@@ -650,8 +650,8 @@ if __name__ == "__main__":
     transform = torchvision.transforms.Resize(size=(128, 128))
 
     train_dataloader = dataloaders.SpatiotemporalDataset(
-        "/scratch/npg/data/processed/npz",
-        # "/home/npg/land-cover-prediction/data/processed/npz",
+        # "/scratch/npg/data/processed/npz",
+        "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
         n_steps=8, 
@@ -663,8 +663,8 @@ if __name__ == "__main__":
     )
 
     test_dataloader = dataloaders.SpatiotemporalDataset(
-        "/scratch/npg/data/processed/npz",
-        # "/home/npg/land-cover-prediction/data/processed/npz",
+        # "/scratch/npg/data/processed/npz",
+        "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
         n_steps=12,  
