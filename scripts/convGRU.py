@@ -389,7 +389,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         print("using CPU backend.")
 
     if not trial:
-        epochs = 30
+        epochs = 50
         cell_width_pct = 1
         clip_max_norm = 1.184316464877487
         conv_kernel_size = 7
@@ -404,7 +404,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/CNN.pt'
+        model_out = 'output/models/CNN_2step.pt'
 
     elif not fixed:
         final_train = False
@@ -609,6 +609,7 @@ if __name__ == "__main__":
         "4426_3835_13_33N",
         "4397_4302_13_33S",
         "5125_4049_13_38N",
+        "4768_4131_13_35S"
     ]
 
     train_poi_list = [
@@ -625,7 +626,6 @@ if __name__ == "__main__":
         "2235_3403_13_17N",
         "2697_3715_13_20N",
         "4421_3800_13_33N",
-        "4768_4131_13_35S",
         "4838_3506_13_36N",
         "5111_4560_13_38S",
         "5926_3715_13_44N",
@@ -654,7 +654,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=12, 
+        n_steps=2, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -667,7 +667,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=12,  
+        n_steps=2,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
