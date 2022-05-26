@@ -25,7 +25,7 @@ class ConvGRUCell(nn.Module):
         kernel_size,
         bias,
         conv_padding_mode,
-        cuda_=False,
+        cuda_=False
     ):
         """
         Initialize a single ConvGRU cell
@@ -397,7 +397,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 128
         guassian_blur = False
         hidden_channels = [512]
-        bptt_len = 7
+        bptt_len = 4
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 1
