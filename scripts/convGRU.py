@@ -256,6 +256,7 @@ class ConvGRU(nn.Module):
         epochs=50,
         max_norm=False,
         final_train=False,
+        model_out=None
     ):
 
         if optim == "adam":
@@ -330,7 +331,7 @@ class ConvGRU(nn.Module):
                             "optimizer_state_dict": optimizer.state_dict(),
                             "loss": test_loss,
                         },
-                        "output/best_model.pt",
+                        model_out,
                     )
 
             logging.info(f"  -- epoch: {epoch}")
@@ -388,22 +389,23 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         print("using CPU backend.")
 
     if not trial:
-        epochs = 50
-        # found using the best options from pre-presentation overnight optuna
-        cell_width_pct = 0.125
+        epochs = 30
+        cell_width_pct = 1
         clip_max_norm = 1.184316464877487
-        conv_kernel_size = 3
+        conv_kernel_size = 7
         downsample = True
-        downsample_dim = 64
+        downsample_dim = 128
         guassian_blur = False
-        # hidden_channels = [32,32]
-        hidden_channels = [2, 2]
+        hidden_channels = [512]
+        bptt_len = 2
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
-        num_layers = 2
+        num_layers = 1
         optim = "adam"
-        final_train = True
         bias = True
+        final_train = True
+        model_out = 'output/models/CNN.pt'
+
     elif not fixed:
         final_train = False
         epochs = 2
@@ -555,12 +557,14 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         max_norm=clip_max_norm,
         trial=trial,
         final_train=final_train,
+        model_out=model_out
     )
 
     if not final_train:
         logging.info("Training with layers {hidden_channels}.")
     if final_train:
-        with open("output/train_report.json", "w") as fp:
+        train_report_path = model_out.replace('.pt', '.json')
+        with open(train_report_path, "w") as fp:
             json.dump(convGRU_mod.train_report, fp)
 
     return test_loss
@@ -578,59 +582,59 @@ if __name__ == "__main__":
 
     ## FOR FULL TEMPORAL
 
-    test_poi_list = [
-        "1700_3100_13_13N",
-        "2029_3764_13_15N",
-        "4426_3835_13_33N",
-        "4397_4302_13_33S",
-        "5125_4049_13_38N",
-        "4768_4131_13_35S"
-    ]
-
-    train_poi_list = [
-        "1311_3077_13_10N",
-        "2624_4314_13_20S",
-        "4622_3159_13_34N",
-        "4806_3588_13_36N",
-        "2697_3715_13_20N",
-        "4791_3920_13_36N",
-        "1417_3281_13_11N"
-    ]
-
-    ## FOR FLAT CNN
-
     # test_poi_list = [
     #     "1700_3100_13_13N",
     #     "2029_3764_13_15N",
     #     "4426_3835_13_33N",
     #     "4397_4302_13_33S",
     #     "5125_4049_13_38N",
+    #     "4768_4131_13_35S"
     # ]
 
     # train_poi_list = [
     #     "1311_3077_13_10N",
-    #     "2065_3647_13_16N",
     #     "2624_4314_13_20S",
     #     "4622_3159_13_34N",
     #     "4806_3588_13_36N",
-    #     "3002_4273_13_22S",
-    #     "4881_3344_13_36N",
-    #     "5863_3800_13_43N",
-    #     "1417_3281_13_11N",
-    #     "2006_3280_13_15N",
-    #     "2235_3403_13_17N",
     #     "2697_3715_13_20N",
-    #     "4421_3800_13_33N",
-    #     "4768_4131_13_35S",
-    #     "4838_3506_13_36N",
-    #     "5111_4560_13_38S",
-    #     "5926_3715_13_44N",
-    #     "1487_3335_13_11N",
-    #     "2415_3082_13_18N",
     #     "4791_3920_13_36N",
-    #     "4856_4087_13_36N",
-    #     "5989_3554_13_44N",
+    #     "1417_3281_13_11N"
     # ]
+
+    # FOR FLAT CNN
+
+    test_poi_list = [
+        "1700_3100_13_13N",
+        "2029_3764_13_15N",
+        "4426_3835_13_33N",
+        "4397_4302_13_33S",
+        "5125_4049_13_38N",
+    ]
+
+    train_poi_list = [
+        "1311_3077_13_10N",
+        "2065_3647_13_16N",
+        "2624_4314_13_20S",
+        "4622_3159_13_34N",
+        "4806_3588_13_36N",
+        "3002_4273_13_22S",
+        "4881_3344_13_36N",
+        "5863_3800_13_43N",
+        "1417_3281_13_11N",
+        "2006_3280_13_15N",
+        "2235_3403_13_17N",
+        "2697_3715_13_20N",
+        "4421_3800_13_33N",
+        "4768_4131_13_35S",
+        "4838_3506_13_36N",
+        "5111_4560_13_38S",
+        "5926_3715_13_44N",
+        "1487_3335_13_11N",
+        "2415_3082_13_18N",
+        "4791_3920_13_36N",
+        "4856_4087_13_36N",
+        "5989_3554_13_44N",
+    ]
 
     ## FOR LOCAL TEST
 
@@ -650,12 +654,11 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=12, 
+        n_steps=2, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
         download=False,
-        # in_memory=True,
         in_memory=True
     )
 
@@ -664,12 +667,11 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=12,  
+        n_steps=2,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
         download=False,
-        # in_memory=True,
         in_memory=True
     )
 
