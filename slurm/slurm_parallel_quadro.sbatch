@@ -6,6 +6,7 @@
 #SBATCH --chdir=/home/npg/land-cover-prediction
 #SBATCH --partition=quadro
 #SBATCH --exclusive
+#SBATCH --gres=gpu:1
 
 cuda_version=9.2
 export CUDA_HOME=/usr/local/cuda-${cuda_version}
