@@ -438,7 +438,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
             hidden_channels.append(hidden_channels_idx)
     else:
         # if fixed, fix the 'unimportant' hyperpars according to first pass
-        epochs = 50
+        epochs = 10
         final_train = False
         downsample_dim = 128
         downsample = True
@@ -576,7 +576,7 @@ if __name__ == "__main__":
     )
     parsed = parser.parse_args()
 
-    ## FOR FLAT CNN
+    ## FOR FULL TEMPORAL
 
     test_poi_list = [
         "1700_3100_13_13N",
