@@ -4,6 +4,7 @@ import dataloaders
 import os
 import convGRU
 import logging
+from sklearn.metrics import confusion_matrix
 
 def get_accuracy(model, dataloader, bptt_len, changed_only=False):
     """Calculates accuracy of model on certain dataset.
@@ -23,7 +24,7 @@ def get_accuracy(model, dataloader, bptt_len, changed_only=False):
     n_eval = 0
     with torch.no_grad():
         for batch_x, batch_y in dataloader:
-
+            print(batch_x.shape)
             for timestep in range(bptt_len, batch_x.shape[1] - 1):
 
                 min_step = max(0, timestep - bptt_len)
@@ -93,6 +94,53 @@ def get_loss(model, dataloader, criterion, bptt_len):
                 losses.append(float(loss))
 
     return np.mean(losses)
+
+def get_confusion(model, dataloader, bptt_len):
+    """Calculates confusion on a given dataset.
+
+    Args:
+        model (torch model): model to evaluate.
+        dataloader (torch dataloader): set to evaluate
+        bptt_len (int): amount of temporal data to pass the model. 
+        changed_only (bool, optional): if positive, only consider pixels that have
+            changed. Hasn't been tested thoroughly as many steps have no changes.
+
+    Returns:
+        float of accuracy on dataloader set
+    """
+    model.eval()
+    confusion = torch.zeros((7,7)) # 7 land use classes
+    denom = torch.zeros(7)
+    with torch.no_grad():
+        for batch_x, batch_y in dataloader:
+            for timestep in range(bptt_len, batch_x.shape[1] - 1):
+                min_step = max(0, timestep - bptt_len)
+                # For each BPTT step, get all timesteps up until now, model them
+                inputs = batch_x[:,min_step:timestep+1,:,:]
+                outputs = model(inputs)
+
+                # Then, choose next timestep target to predict
+                targets = batch_y[:,timestep+1,:,:]
+
+                flat_dim = outputs.shape[0] * outputs.shape[1] * outputs.shape[2]
+                
+                outputs_flat = outputs.reshape(flat_dim, outputs.shape[3])
+                outputs_class = outputs_flat.softmax(1).argmax(1)
+                targets_flat = targets.reshape(flat_dim)
+
+                if model.cuda_:
+                    targets_flat = targets_flat.to('cuda')
+                    outputs_flat = outputs_flat.to('cuda')
+
+                confusion_batch = torch.tensor(confusion_matrix(
+                    outputs_class,
+                    targets_flat,
+                    labels=np.arange(0,7)
+                ))
+
+                confusion = confusion.add(confusion_batch)
+
+    return (confusion / (confusion.sum(dim = 1).unsqueeze(1))) * 100
 
 if __name__ == '__main__':
     poi_list = os.listdir('data/processed/npz/planet')
