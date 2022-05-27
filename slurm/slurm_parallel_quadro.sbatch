@@ -4,7 +4,7 @@
 #SBATCH --output=/home/npg/land-cover-prediction/slurm/logs/quad_train.out
 #SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/quad_train.err
 #SBATCH --chdir=/home/npg/land-cover-prediction
-#SBATCH --partition=titan
+#SBATCH --partition=quadro
 #SBATCH --exclusive
 
 cuda_version=11.1
