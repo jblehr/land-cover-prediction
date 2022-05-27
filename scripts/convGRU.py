@@ -451,7 +451,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         optim = "adam"
         bias = True
         final_train = True
-        model_out = '/scratch/npg/ConvGRU_4bptt_8step.pt'
+        model_out = '/scratch/npg/ConvGRU_6bptt_12step.pt'
 
     elif not fixed:
         final_train = False
