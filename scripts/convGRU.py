@@ -436,7 +436,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         print("using CPU backend.")
 
     if not trial:
-        epochs = 5
+        epochs = 10
         cell_width_pct = 1
         clip_max_norm = 1.184316464877487
         conv_kernel_size = 7
