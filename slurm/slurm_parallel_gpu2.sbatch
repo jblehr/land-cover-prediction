@@ -5,8 +5,7 @@
 #SBATCH --error=/home/npg/land-cover-prediction/slurm/logs/midway_train_convgru.err
 #SBATCH --chdir=/home/npg/land-cover-prediction
 #SBATCH --partition=gpu2
-#SBATCH --exclusive
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:3
 
 module load cuda/6.5
 module load python/anaconda-2021.05
