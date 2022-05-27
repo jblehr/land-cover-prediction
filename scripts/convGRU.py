@@ -436,7 +436,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         print("using CPU backend.")
 
     if not trial:
-        epochs = 10
+        epochs = 5
         cell_width_pct = 1
         clip_max_norm = 1.184316464877487
         conv_kernel_size = 7
@@ -451,7 +451,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/ConvGRU_4bptt_8step.pt'
+        model_out = '/scratch/npg/ConvGRU_4bptt_8step.pt'
 
     elif not fixed:
         final_train = False
@@ -539,7 +539,8 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
     if isinstance(train_dataloader, list):
 
         train_dataloader = dataloaders.SpatiotemporalDataset(
-            "/home/npg/land-cover-prediction/data/processed/npz",
+            # "/home/npg/land-cover-prediction/data/processed/npz",
+            "/scratch/npg/data/processed/npz"
             # "data/processed/npz",
             dims=(1024, 1024),  # Original dims, not post-transformation
             poi_list=train_poi_list,
@@ -554,7 +555,8 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
     if isinstance(test_dataloader, list):
 
         test_dataloader = dataloaders.SpatiotemporalDataset(
-            "/home/npg/land-cover-prediction/data/processed/npz",
+            # "/home/npg/land-cover-prediction/data/processed/npz",
+            "/scratch/npg/data/processed/npz"
             # "data/processed/npz",
             dims=(1024, 1024),  # Original dims, not post-transformation
             poi_list=test_poi_list,
