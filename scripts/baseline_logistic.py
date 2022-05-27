@@ -128,7 +128,7 @@ def train_logstic(
         train_acc = evaluation.get_accuracy(model, train_loader, bptt_len=0)
         train_accs.append(train_acc)
 
-        test_loss = evaluation.get_loss(model, test_loader, criterion, bptt_len=0, cuda_=cuda_)
+        test_loss = evaluation.get_loss(model, test_loader, criterion, bptt_len=0)
         test_losses.append(test_loss)
 
         test_acc = evaluation.get_accuracy(model, test_loader, bptt_len=0)
@@ -215,7 +215,7 @@ if __name__ == "__main__":
         "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=3, 
+        n_steps=8, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -229,7 +229,7 @@ if __name__ == "__main__":
         "data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=3,  
+        n_steps=8,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     train_logstic(
         train_dataloader,
         test_dataloader,
-        lr = 0.0005326639774392545,
+        lr = 0.0001,
         momentum = 0.76,
         cuda_=cuda_,
         model_out='output/models/LReg_8step.pt'
