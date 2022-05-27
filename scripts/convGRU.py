@@ -397,14 +397,14 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
         downsample_dim = 128
         guassian_blur = False
         hidden_channels = [512]
-        bptt_len = 7
+        bptt_len = 4
         lr = 0.0005326639774392545
         momentum = 0.7679114313544549
         num_layers = 1
         optim = "adam"
         bias = True
         final_train = True
-        model_out = 'output/models/ConvGRU_7bptt_12step.pt'
+        model_out = 'output/models/ConvGRU_4bptt_8step.pt'
 
     elif not fixed:
         final_train = False
@@ -580,28 +580,7 @@ if __name__ == "__main__":
     )
     parsed = parser.parse_args()
 
-    ## FOR FULL TEMPORAL
-
-    test_poi_list = [
-        "1700_3100_13_13N",
-        "2029_3764_13_15N",
-        "4426_3835_13_33N",
-        "4397_4302_13_33S",
-        "5125_4049_13_38N",
-        "4768_4131_13_35S"
-    ]
-
-    train_poi_list = [
-        "1311_3077_13_10N",
-        "2624_4314_13_20S",
-        "4622_3159_13_34N",
-        "4806_3588_13_36N",
-        "2697_3715_13_20N",
-        "4791_3920_13_36N",
-        "1417_3281_13_11N"
-    ]
-
-    # # FOR FLAT CNN
+    # # FOR PEANUT / MIDWAY
 
     # test_poi_list = [
     #     "1700_3100_13_13N",
@@ -636,6 +615,27 @@ if __name__ == "__main__":
     #     "5989_3554_13_44N",
     # ]
 
+    # FOR SMALLER CONVGRU (Memory Issues)
+
+    test_poi_list = [
+        "1700_3100_13_13N",
+        "2029_3764_13_15N",
+        "4426_3835_13_33N",
+        "4397_4302_13_33S",
+        "5125_4049_13_38N",
+        "4768_4131_13_35S"
+    ]
+
+    train_poi_list = [
+        "1311_3077_13_10N",
+        "2624_4314_13_20S",
+        "4622_3159_13_34N",
+        "3002_4273_13_22S",
+        "4881_3344_13_36N",
+        "5863_3800_13_43N",
+    ]
+
+
     ## FOR LOCAL TEST
 
     # test_poi_list = [
@@ -654,7 +654,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=train_poi_list,
-        n_steps=12, 
+        n_steps=8, 
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,
@@ -667,7 +667,7 @@ if __name__ == "__main__":
         "/home/npg/land-cover-prediction/data/processed/npz",
         dims=(1024, 1024),  # Original dims, not post-transformation
         poi_list=test_poi_list,
-        n_steps=12,  
+        n_steps=8,  
         cell_width_pct=1,
         labs_as_features=False,
         transform=transform,

@@ -11,6 +11,7 @@ def get_accuracy(model, dataloader, bptt_len, changed_only=False):
     n_eval = 0
     with torch.no_grad():
         for batch_x, batch_y in dataloader:
+
             for timestep in range(bptt_len, batch_x.shape[1] - 1):
 
                 min_step = max(0, timestep - bptt_len)
@@ -27,9 +28,6 @@ def get_accuracy(model, dataloader, bptt_len, changed_only=False):
                     targets = targets[changed]
                     outputs = outputs[changed]
                 if not changed_only or (changed_only and len(outputs) > 0):
-                    if changed_only:
-                        pass
-                        changed_only
                     predicted = outputs.softmax(3).argmax(3)
 
                     assert targets.size() == predicted.size()
