@@ -10,7 +10,15 @@ import logging
 import json
 
 class LogisticRegression(torch.nn.Module):
-
+    """
+    Basic logistic regression that treats each pixel independently. Due to my
+    implementation of evaluation for convGRU model, needed to do some trickery
+    in the forward pass (basically, for eval, class probs need to be last dim,
+    but for upsampler, but for upsampler, x,y needs to be last. Also needed to
+    squeeze out the first batch dim so this will NOT work with cell_width_pct
+    < 1. Not sure why, but torchvision's Resize does not work with 5 dims, 
+    despite the docs saying it only cares that the last two are x,y).
+    """
     def __init__(self, input_dim, output_dim, upsample_dim, cuda_):
         super(LogisticRegression, self).__init__()
         self.upsample_dim = upsample_dim
@@ -27,22 +35,9 @@ class LogisticRegression(torch.nn.Module):
         # Bug in torchvision? Docs say to pass with arbitrary leading dims
         # with x, y as final two, but with batch, it is taking in the last three
         # and considering 3d rather than 2d
-        # upsampled_out = torch.zeros((
-        #     outputs.shape[0], #batch
-        #     outputs.shape[1], #time
-        #     self.upsample_dim, #xdim
-        #     self.upsample_dim, #ydim
-        #     outputs.shape[2] #class
-        # ))
 
         assert x.shape[0] == 1
         x = x.squeeze(0)
-
-        # for batch_idx in range(outputs.shape[0]):
-        #     # last, shift classes to last for compat with existing convGRU eval code
-        #     upsampled = self.upsampler(outputs[batch_idx]).permute(0,2,3,1)
-        #     upsampled_out[batch_idx] = upsampled
-        # # x = x.permute(0,2,3,1) #shift channels to last for nn.Linear
 
         outputs = self.linear(x).permute(0,3,1,2) # return x, y to last dim for upsampler
         upsampled_out = self.upsampler(outputs).permute(0,2,3,1)
@@ -62,7 +57,23 @@ def train_logstic(
     cuda_=False,
     final_train = True
     ):
+    """Train the logistic regression to the train dataset.
 
+    Args:
+        train_loader (DataLoader): Train dataloader
+        test_loader (DataLoader): Test dataloader
+        input_dim (int, optional): number of input channels
+        output_dim (int, optional): number of output classes
+        upsample_dim (int, optional): size to eventually upsample to. No effect
+            if there's no downsampling in Dataloader transform.
+        epochs (int, optional): number of epochs. Defaults to 50.
+        lr (float): learning rate
+        momentum (float): momentum, only relevant for 'sgd' optimizaer
+        criterion (torch criterion): criterion to optimize. Defaults to torch.nn.CrossEntropyLoss().
+        cuda_ (bool, optional): whether to use cuda. Defaults to False.
+        final_train (bool, optional): If true, save best model and results.json
+        model_out (str, optional): Path to save best model if final_train. 
+    """
     model = LogisticRegression(
         input_dim,
         output_dim,

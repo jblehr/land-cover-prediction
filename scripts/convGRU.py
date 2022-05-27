@@ -202,8 +202,7 @@ class ConvGRU(nn.Module):
         Fit the ConvGRU on the current input data and past states
 
         Inputs:
-            input_tensor: tensor with dims (batch, time, input_channels, x_dim, y_dim)
-            hidden_state: tensor with dims (batch, time, hidden_channels, x_dim, y_dim)
+            input_tensor: tensor with dims (batch, time, input_channels + hidden_channels, x_dim, y_dim)
 
         Outputs:
             layer_output_list, last_state_list
@@ -258,7 +257,37 @@ class ConvGRU(nn.Module):
         final_train=False,
         model_out=None
     ):
+        """Fit the convGRU model to the train dataset.
 
+        Args:
+            train_loader (DataLoader): Train dataloader
+            test_loader (DataLoader): Test dataloader
+            optim (str): 'adam' or 'sgd'
+            lr (float): learning rate
+            momentum (float): momentum, only relevant for 'sgd' optimizaer
+            trial (optuna trial, optional): Optuna trial, which is passed by 
+                optuna.Study.optimize (not directly by user). During hyperparam
+                optimization, it suggests and tracks hyperpars in optimize function
+                then reports mid-trial accuracy to determine if trial should be 
+                pruned and new hyperpars tried. 
+            bptt_len (int, optional): Backprop through time length. Effectively,
+                how far back in time the model will be able to learn past
+                representations to make future predictions. If 2, just making
+                one prediction forward so effectively CNN.
+            epochs (int, optional): Number of epochs. Defaults to 50.
+            max_norm (float, optional): Max gradient norm for gradient clipping.
+            final_train (bool, optional): If true, save best model and results.json
+            model_out (str, optional): Path to save best model if final_train. 
+
+        Raises:
+            optuna.exceptions.TrialPruned: TrialPruned shouldn't be seen by the 
+                user - during optuna hyperpar optimization, it indicates that
+                the trial is not promising and should be skipped for the next. 
+
+        Returns:
+            test_loss: float for the final test loss. Optuna uses this to
+                determine overall performance of trial and optimize next trial. 
+        """
         if optim == "adam":
             optimizer = torch.optim.Adam(self.parameters(), lr=lr)
         else:
@@ -381,7 +410,25 @@ class ConvGRU(nn.Module):
 
 
 def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False):
+    """Objective function for optuna to maximize. If not using optuna, just fits
+        the model defined in first if block. 
 
+    Args:
+        train_dataloader (DataLoader): Train dataloader
+        test_dataloader (DataLoader): Test dataloader
+        trial (optuna trial, optional): Optuna trial, which is passed by 
+            optuna.Study.optimize (not directly by user). During hyperparam
+            optimization, it suggests and tracks hyperpars in optimize function
+            then reports mid-trial accuracy to determine if trial should be 
+            pruned and new hyperpars tried. If false, just fit once as normal.
+        fixed (bool, optional): Bool to fix certain hyperpars. If false, all
+            hyperpars are considered. If true, third if block shows which
+            are fixed and which are determined by optuna
+
+    Returns:
+        test_loss: float for the final test loss. Optuna uses this to
+            determine overall performance of trial and optimize next trial. 
+    """
     cuda_ = torch.cuda.is_available()
     if cuda_:
         print("using GPU backend!")
@@ -571,7 +618,6 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--optuna", action="store_true", default=False)
     parser.add_argument(
@@ -677,18 +723,6 @@ if __name__ == "__main__":
 
     if parsed.optuna:
 
-        # fixed_params = {
-        #     "downsample_dim": 128,
-        #     "downsample": True,
-        #     "conv_kernel_size": 6,
-        #     "clip_max_norm" : 1.18,
-        #     "optim" : 'adam',
-        #     "lr": .0005,
-        #     "momentum": .76,
-        #     "gauassian_blur" : False,
-        #     "cell_pct_width" : 1
-        #     }
-
         study = optuna.create_study(
             direction="minimize",
             study_name="midway_loss_withTime",
@@ -701,9 +735,6 @@ if __name__ == "__main__":
         objective_preloaded = lambda trial: objective(
             trial, train_dataloader, test_dataloader, fixed=True
         )
-
-        # partial_sampler = optuna.samplers.PartialFixedSampler(fixed_params, study.sampler)
-        # study.sampler = partial_sampler
 
         study.optimize(objective_preloaded)
 

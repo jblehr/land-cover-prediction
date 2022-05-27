@@ -9,6 +9,11 @@ from torchvision import transforms
 # import s3_util
 
 class FullyIndependentDataset(Dataset):
+    """
+    Custom torch Dataset class that considers each pixel independently. Originally
+    used in first iteration of Logistic Regression, but now depreciated (LReg
+    uses same workflow as the convGRU).
+    """
     def __init__(self, img_path, label_path):
 
         # Grouping variable names
@@ -61,10 +66,33 @@ class SpatiotemporalDataset(Dataset):
         cell_width_pct,
         transform=None,
         labs_as_features=False,
-        normalize=False,
         download=False,
         in_memory=False
     ):
+        """A dataloader that maintains the Spatiotemporal structure of the data.
+        Organized as (Batch, Time, Channels, XDim, YDim).
+
+        Args:
+            data_dir (str): dir to load data from
+            poi_list (list of str): which POIs to load
+            n_steps (int): number of steps to load. When this is 2, there is no
+                time component to modelling (since each batch predicts the next Y)
+            dims (dims): original dims of the input data (should be 1024)
+            cell_width_pct (float): percent of input image to split into individ
+                obs. For eg if input dim is 1024 and cell_width_pct is .5, split
+                will be 4 obs of 512x512. If == 1, no splitting. 
+            transform (torchvision transforms, optional): torchvision transforms
+                to apply.
+            labs_as_features (bool, optional): if true, instead of passing input
+                channels, pass previous class labels as features. Makes classifying
+                trivial as most don't change, so good proof of concept.
+            download (bool, optional): if True, download data from S3. Doesn't 
+                work on UChicago servers.
+            in_memory (bool, optional): if True, load all data in memory during
+                training. If the node doesn't blow up, greatly reduces time spent
+                between train steps. 
+        """
+
         if download:
             print('Downloading data from S3...')
             s3_util.download_npz_dir(
@@ -113,9 +141,6 @@ class SpatiotemporalDataset(Dataset):
 
         if not self.labs_as_features:
             rgb_cubes = [np.load(rgb_file)["arr_0"] for rgb_file in rgb_files]
-            
-            # if normalize:
-            #     rgb_cubes = [normalize(cube) for cube in rgb_cubes]
 
             # rgb needs no preprocessing, so just stack
             rgb_st = np.stack(rgb_cubes)

@@ -6,6 +6,18 @@ import convGRU
 import logging
 
 def get_accuracy(model, dataloader, bptt_len, changed_only=False):
+    """Calculates accuracy of model on certain dataset.
+
+    Args:
+        model (torch model): model to evaluate.
+        dataloader (torch dataloader): set to evaluate
+        bptt_len (int): amount of temporal data to pass the model. 
+        changed_only (bool, optional): if positive, only consider pixels that have
+            changed. Hasn't been tested thoroughly as many steps have no changes.
+
+    Returns:
+        float of accuracy on dataloader set
+    """
     model.eval()
     n_correct = 0
     n_eval = 0
@@ -39,7 +51,18 @@ def get_accuracy(model, dataloader, bptt_len, changed_only=False):
 
     return n_correct / n_eval
 
-def get_loss(model, dataloader, criterion, bptt_len, cuda_):
+def get_loss(model, dataloader, criterion, bptt_len):
+    """Calculates loss of model on certain dataset.
+
+    Args:
+        model (torch model): model to evaluate.
+        dataloader (torch dataloader): set to evaluate
+        criterion (torch loss calculator): criterion to evaluate loss
+        bptt_len (int): amount of temporal data to pass the model. 
+
+    Returns:
+        float of mean loss on dataloader set
+    """
     model.eval()
     losses=[]
     with torch.no_grad():
