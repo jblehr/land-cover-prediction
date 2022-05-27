@@ -540,7 +540,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
 
         train_dataloader = dataloaders.SpatiotemporalDataset(
             # "/home/npg/land-cover-prediction/data/processed/npz",
-            "/scratch/npg/data/processed/npz"
+            "/scratch/npg/data/processed/npz",
             # "data/processed/npz",
             dims=(1024, 1024),  # Original dims, not post-transformation
             poi_list=train_poi_list,
@@ -556,7 +556,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
 
         test_dataloader = dataloaders.SpatiotemporalDataset(
             # "/home/npg/land-cover-prediction/data/processed/npz",
-            "/scratch/npg/data/processed/npz"
+            "/scratch/npg/data/processed/npz",
             # "data/processed/npz",
             dims=(1024, 1024),  # Original dims, not post-transformation
             poi_list=test_poi_list,
