@@ -344,7 +344,7 @@ class ConvGRU(nn.Module):
             train_acc = evaluation.get_accuracy(self, train_loader, bptt_len)
             train_accs.append(train_acc)
 
-            test_loss = evaluation.get_loss(self, test_loader, criterion, bptt_len, self.cuda_)
+            test_loss = evaluation.get_loss(self, test_loader, criterion, bptt_len)
             test_losses.append(test_loss)
 
             test_acc = evaluation.get_accuracy(self, test_loader, bptt_len)
