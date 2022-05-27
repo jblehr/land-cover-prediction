@@ -6,6 +6,7 @@
 #SBATCH --chdir=/home/npg/land-cover-prediction
 #SBATCH --partition=gpu2
 #SBATCH --exclusive
+#SBATCH --gres=gpu:2
 
 module load cuda/6.5
 module load python/anaconda-2021.05
