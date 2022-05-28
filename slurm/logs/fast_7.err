@@ -1,0 +1,39 @@
+ERROR: Unable to locate a modulefile for 'python/anaconda-2021.05'
+[32m[I 2022-05-23 23:14:30,856][0m Using an existing study with name 'peanut' instead of creating a new one.[0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [05:28<49:17, 328.57s/it]Training Epochs:  20%|██        | 2/10 [10:36<42:10, 316.34s/it]Training Epochs:  30%|███       | 3/10 [15:52<36:54, 316.32s/it]Training Epochs:  40%|████      | 4/10 [21:08<31:35, 316.00s/it]Training Epochs:  50%|█████     | 5/10 [26:21<26:14, 314.88s/it]Training Epochs:  60%|██████    | 6/10 [31:33<20:56, 314.11s/it]Training Epochs:  70%|███████   | 7/10 [36:47<15:42, 314.01s/it]Training Epochs:  80%|████████  | 8/10 [42:02<10:28, 314.28s/it]Training Epochs:  90%|█████████ | 9/10 [47:12<05:13, 313.09s/it]Training Epochs: 100%|██████████| 10/10 [52:21<00:00, 311.65s/it]Training Epochs: 100%|██████████| 10/10 [52:21<00:00, 314.12s/it]
+[32m[I 2022-05-24 00:11:28,880][0m Trial 83 finished with value: 0.8809834399393627 and parameters: {'guassian_blur': True, 'guassian_sigma': 2.941653028474351, 'downsample': False, 'cell_width_pct': 0.125, 'lr': 0.0009006314507691913, 'momentum': 0.917247207760251, 'conv_kernel_size': 5, 'num_layers': 2, 'layer_0': 32, 'layer_1': 16, 'optim': 'adam', 'clip_max_norm': 0.5615448813051307}. Best is trial 23 with value: 0.616194739405598.[0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [05:18<47:49, 318.84s/it]Training Epochs:  10%|█         | 1/10 [10:34<1:35:06, 634.06s/it]
+[32m[I 2022-05-24 00:26:57,489][0m Trial 92 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [04:01<?, ?it/s]
+[32m[I 2022-05-24 00:35:52,522][0m Trial 99 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [04:11<?, ?it/s]
+[32m[I 2022-05-24 00:44:56,980][0m Trial 102 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [04:12<?, ?it/s]
+[32m[I 2022-05-24 00:54:01,267][0m Trial 103 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [03:40<?, ?it/s]
+[32m[I 2022-05-24 01:02:37,194][0m Trial 104 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [04:45<?, ?it/s]
+[32m[I 2022-05-24 01:12:23,792][0m Trial 105 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [05:58<?, ?it/s]
+[32m[I 2022-05-24 01:23:16,413][0m Trial 110 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [03:19<?, ?it/s]
+[32m[I 2022-05-24 01:31:38,911][0m Trial 117 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [05:11<46:41, 311.27s/it]Training Epochs:  20%|██        | 2/10 [10:16<41:02, 307.82s/it]Training Epochs:  30%|███       | 3/10 [15:28<36:08, 309.84s/it]Training Epochs:  30%|███       | 3/10 [20:37<48:07, 412.46s/it]
+[32m[I 2022-05-24 01:57:09,470][0m Trial 124 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [05:24<48:44, 324.97s/it]Training Epochs:  20%|██        | 2/10 [10:43<42:48, 321.04s/it]Training Epochs:  20%|██        | 2/10 [15:55<1:03:41, 477.66s/it]
+[32m[I 2022-05-24 02:17:56,648][0m Trial 136 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [10:11<1:31:46, 611.84s/it]Training Epochs:  20%|██        | 2/10 [19:58<1:19:37, 597.21s/it]Training Epochs:  30%|███       | 3/10 [29:39<1:08:48, 589.72s/it]Training Epochs:  40%|████      | 4/10 [39:24<58:47, 587.92s/it]  Training Epochs:  50%|█████     | 5/10 [49:13<49:01, 588.30s/it]Training Epochs:  60%|██████    | 6/10 [59:00<39:11, 587.76s/it]Training Epochs:  70%|███████   | 7/10 [1:08:52<29:27, 589.29s/it]Training Epochs:  80%|████████  | 8/10 [1:18:38<19:36, 588.17s/it]Training Epochs:  90%|█████████ | 9/10 [1:28:22<09:46, 586.74s/it]Training Epochs: 100%|██████████| 10/10 [1:38:09<00:00, 586.77s/it]Training Epochs: 100%|██████████| 10/10 [1:38:09<00:00, 588.91s/it]
+[32m[I 2022-05-24 04:01:09,435][0m Trial 142 finished with value: 0.8147427375827517 and parameters: {'guassian_blur': True, 'guassian_sigma': 3.648144464613054, 'downsample': False, 'cell_width_pct': 1, 'lr': 0.0005066994621767351, 'momentum': 0.7542028364837716, 'conv_kernel_size': 6, 'num_layers': 2, 'layer_0': 32, 'layer_1': 32, 'optim': 'adam', 'clip_max_norm': 0.7580532150331091}. Best is trial 23 with value: 0.616194739405598.[0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [10:08<1:31:18, 608.75s/it]Training Epochs:  20%|██        | 2/10 [20:03<1:20:03, 600.50s/it]Training Epochs:  30%|███       | 3/10 [30:17<1:10:46, 606.71s/it]Training Epochs:  40%|████      | 4/10 [40:27<1:00:47, 607.99s/it]Training Epochs:  50%|█████     | 5/10 [50:36<50:41, 608.31s/it]  Training Epochs:  60%|██████    | 6/10 [1:00:46<40:35, 608.78s/it]Training Epochs:  70%|███████   | 7/10 [1:10:52<30:23, 607.90s/it]Training Epochs:  80%|████████  | 8/10 [1:20:58<20:14, 607.47s/it]Training Epochs:  90%|█████████ | 9/10 [1:31:08<10:08, 608.22s/it]Training Epochs: 100%|██████████| 10/10 [1:41:11<00:00, 606.51s/it]Training Epochs: 100%|██████████| 10/10 [1:41:11<00:00, 607.13s/it]
+[32m[I 2022-05-24 05:47:17,708][0m Trial 177 finished with value: 0.8942599360431943 and parameters: {'guassian_blur': True, 'guassian_sigma': 4.22598772386781, 'downsample': False, 'cell_width_pct': 1, 'lr': 0.00026188064236029113, 'momentum': 0.7748867247787895, 'conv_kernel_size': 6, 'num_layers': 2, 'layer_0': 32, 'layer_1': 32, 'optim': 'adam', 'clip_max_norm': 0.6960541221265945}. Best is trial 23 with value: 0.616194739405598.[0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [10:04<?, ?it/s]
+[32m[I 2022-05-24 06:02:11,776][0m Trial 190 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [09:52<?, ?it/s]
+[32m[I 2022-05-24 06:16:54,715][0m Trial 192 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [10:09<?, ?it/s]
+[32m[I 2022-05-24 06:32:04,626][0m Trial 196 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:   0%|          | 0/10 [10:05<?, ?it/s]
+[32m[I 2022-05-24 06:46:55,270][0m Trial 200 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [09:54<1:29:09, 594.40s/it]Training Epochs:  20%|██        | 2/10 [19:48<1:19:15, 594.45s/it]Training Epochs:  30%|███       | 3/10 [29:38<1:09:07, 592.46s/it]Training Epochs:  40%|████      | 4/10 [39:33<59:20, 593.46s/it]  Training Epochs:  40%|████      | 4/10 [49:21<1:14:02, 740.47s/it]
+[32m[I 2022-05-24 07:41:08,652][0m Trial 204 pruned. [0m
+Training Epochs:   0%|          | 0/10 [00:00<?, ?it/s]Training Epochs:  10%|█         | 1/10 [09:52<1:28:52, 592.52s/it]
