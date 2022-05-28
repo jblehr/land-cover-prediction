@@ -485,6 +485,7 @@ def objective(trial, train_dataloader=False, test_dataloader=False, fixed=False)
                 f"layer_{layer_idx}", [4, 8, 16, 32, 64, 128, 256]
             )
             hidden_channels.append(hidden_channels_idx)
+
     else:
         # if fixed, fix the 'unimportant' hyperpars according to first pass
         epochs = 15
